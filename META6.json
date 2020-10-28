@@ -1,0 +1,35 @@
+{
+  "auth": "github:pdf-raku",
+  "authors": [
+    "David Warring"
+  ],
+  "build-depends": [
+    "LibraryMake"
+  ],
+  "depends": [
+    "Method::Also"
+  ],
+  "description": "binds to the HarfBuzz font shaping library",
+  "license": "Artistic-2.0",
+  "name": "HarfBuzz",
+  "raku": "6",
+  "provides": {
+    "HarfBuzz": "lib/HarfBuzz.rakumod",
+    "HarfBuzz::Blob": "lib/HarfBuzz/Blob.rakumod",
+    "HarfBuzz::Buffer": "lib/HarfBuzz/Buffer.rakumod",
+    "HarfBuzz::Face": "lib/HarfBuzz/Face.rakumod",
+    "HarfBuzz::Font": "lib/HarfBuzz/Font.rakumod",
+    "HarfBuzz::Raw": "lib/HarfBuzz/Raw.rakumod",
+    "HarfBuzz::Raw::Defs": "lib/HarfBuzz/Raw/Defs.rakumod"
+  },
+  "resources": [
+    "libraries/hb-raku"
+  ],
+  "source-url": "git://github.com/pdf-raku/HarfBuzz-raku.git",
+  "tags": [
+    "font"
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}
