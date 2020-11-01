@@ -6,7 +6,7 @@ use HarfBuzz::Face;
 use HarfBuzz::Font;
 use HarfBuzz::Raw;
 use NativeCall;
-use CStruct::Packing;
+use Method::Also;
 
 has Str:D $.file is required;
 has HarfBuzz::Buffer $!buf handles<length>;
@@ -35,6 +35,10 @@ method glyphs {
         }
     }
     Iteration.new: :$!buf, :$!font;
+}
+
+method ast is also<shaper> {
+    self.glyphs.map: *.ast;
 }
 
 method version {

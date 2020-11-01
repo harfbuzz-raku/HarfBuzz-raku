@@ -7,3 +7,4 @@ constant hb_bool      is export(:types) = int32;
 constant hb_codepoint is export(:types) = uint32;
 constant hb_position  is export(:types) = int32;
 constant hb_mask      is export(:types) = uint32;
+constant hb_tag       is export(:types) = uint32;

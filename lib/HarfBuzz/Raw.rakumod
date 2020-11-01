@@ -13,11 +13,11 @@ role ContiguousArray {
 
 class hb_var_int is repr('CUnion') {
   has uint32 $.u32;
-  has int32 $.i32;
+  has int32  $.i32;
   has uint16 $!u16a; #[2]
   has int16  $!i16a; #[2]
-  has uint8 $!u8a;   #[4]
-  has int8 $!i8;     #[4]
+  has uint8  $!u8a;  #[4]
+  has int8   $!i8;   #[4]
 }
 
 class hb_glyph_position is export is repr('CStruct') does ContiguousArray {
@@ -72,8 +72,18 @@ class hb_face is repr('CPointer') is export {
     method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
 }
 
-class hb_feature is repr('CPointer') is export {
-}
+class hb_feature is export is repr('CStruct') is rw {
+    has hb_tag  $.tag;
+    has uint32  $.value;
+    has uint32  $.start;
+    has uint32  $.end;
+    sub from-string(Blob, int32, hb_feature --> hb_bool) is native($HB) is symbol('hb_feature_from_string')  {*}
+    method to-string(blob8) is native($HB) is symbol('hb_feature_to_string')  {*}
+    method from-string(Blob $buf, $len = $buf.bytes) {
+        from-string($buf, $len, self);
+    }
+};
+
 
 class hb_font is repr('CPointer') is export {
     sub hb_font_create(hb_face --> hb_font) is native($HB) {*}
@@ -89,3 +99,6 @@ class hb_font is repr('CPointer') is export {
 }
 
 sub hb_version(uint32 $major is rw, uint32 $minor is rw, uint32 $micro is rw) is export is native($HB) {*}
+
+sub hb_tag_from_string(Blob, int32 --> hb_tag) is export is native($HB) {*}
+sub hb_tag_to_string(hb_tag, Blob) is export is native($HB) {*}
