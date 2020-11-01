@@ -1,4 +1,4 @@
 HarfBuzz-raku
 =============
 
-HarfBuzz font shaping engine.
+Bindings to the HarfBuzz font shaping and manipulation engine.
