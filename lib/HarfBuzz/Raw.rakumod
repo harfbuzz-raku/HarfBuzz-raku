@@ -1,6 +1,6 @@
 unit module HarfBuzz::Raw;
 
-use HarfBuzz::Raw::Defs :$HB, :$HB-BIND, :types;
+use HarfBuzz::Raw::Defs :$HB, :$HB-BIND, :$CLIB, :types;
 use NativeCall;
 
 role ContiguousArray {
@@ -82,8 +82,18 @@ class hb_feature is export is repr('CStruct') is rw {
     method from-string(Blob $buf, $len = $buf.bytes) {
         from-string($buf, $len, self);
     }
+    method !memcpy(hb_feature $feature, size_t $len) is native($CLIB) {*}
+    method copy(hb_feature $feature) {
+        self!memcpy($feature, nativesizeof($feature));
+    }
 };
 
+class hb_feature_array
+    is hb_feature
+    is export
+    is repr('CStruct')
+    does ContiguousArray {
+}
 
 class hb_font is repr('CPointer') is export {
     sub hb_font_create(hb_face --> hb_font) is native($HB) {*}
@@ -93,7 +103,7 @@ class hb_font is repr('CPointer') is export {
     method set-scale(int32 $x, int32 $y) is native($HB) is symbol('hb_font_set_scale') {*}
     method get-scale(int32 $x is rw, int32 $y) is native($HB) is symbol('hb_font_get_scale') {*}
     method get-glyph-name(hb_codepoint, Blob, int32 --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_name') {*}
-    method shape(hb_buffer, hb_feature, uint32 --> hb_font)  is native($HB) is symbol('hb_shape') {*}
+    method shape(hb_buffer, hb_feature_array, uint32 --> hb_font)  is native($HB) is symbol('hb_shape') {*}
     method reference(--> hb_font) is native($HB) is symbol('hb_font_reference') {*}
     method destroy() is native($HB) is symbol('hb_font_destroy')  {*}
 }

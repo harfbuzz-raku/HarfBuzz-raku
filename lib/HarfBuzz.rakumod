@@ -3,6 +3,7 @@ unit class HarfBuzz:ver<0.0.1>;
 use HarfBuzz::Blob;
 use HarfBuzz::Buffer;
 use HarfBuzz::Face;
+use HarfBuzz::Feature;
 use HarfBuzz::Font;
 use HarfBuzz::Raw;
 use NativeCall;
@@ -11,6 +12,8 @@ use Method::Also;
 has Str:D $.file is required;
 has HarfBuzz::Buffer $!buf handles<length>;
 has HarfBuzz::Font $!font handles<face size scale>;
+has HarfBuzz::Feature @!features;
+method features { @!features }
 
 method glyphs {
     class Iteration does Iterable does Iterator {
@@ -46,12 +49,20 @@ method version {
     Version.new: [$major, $minor, $micro];
 }
 
-submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$text) {
+submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$text, :@features) {
     my HarfBuzz::Face:D $face .= new: :$!file;
     $!font .= new: :$face, :@scale;
     $!font.size = $_ with $size;
     $!buf .= new;
     $!buf.add-text($_) with $text;
     $!buf.guess-segment-properties();
-    $!font.shape: :$!buf;
+
+    for @features {
+        when HarfBuzz::Feature:D { @!features.push: $_ }
+        when hb_feature:D { @!features.push: HarfBuzz::Feature.new: :raw($_) }
+        when Str { @!features.push: HarfBuzz::Feature.new: :str($_) }
+        default { warn "ignoring unknown feature: {.raku}"; }
+    }
+
+    $!font.shape: :$!buf, :@!features;
 }

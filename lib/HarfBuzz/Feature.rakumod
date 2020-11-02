@@ -2,8 +2,9 @@ unit class HarfBuzz::Feature;
 
 use HarfBuzz::Raw;
 
-has hb_feature $!raw handles<value start>;
+has hb_feature $.raw handles<value start>;
 
+multi submethod TWEAK(:$!raw!) {}
 multi submethod TWEAK(Str:D :$str!) {
     $!raw .= new;
     my Blob $buf = $str.encode;

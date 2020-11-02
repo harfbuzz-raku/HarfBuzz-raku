@@ -3,6 +3,9 @@ unit class HarfBuzz::Font;
 use HarfBuzz::Raw;
 use HarfBuzz::Buffer;
 use HarfBuzz::Face;
+use HarfBuzz::Feature;
+use NativeCall;
+
 has HarfBuzz::Face:D $.face is required;
 has hb_font:D $!raw .= new: :face($!face.raw);
 
@@ -37,6 +40,11 @@ method glyph-name(UInt:D $codepoint --> Str) {
     $name-buf.decode;
 }
 
-method shape(HarfBuzz::Buffer:D :$buf!) {
-    $!raw.shape($buf.raw, hb_feature, 0);
+method shape(HarfBuzz::Buffer:D :$buf!, HarfBuzz::Feature :@features) {
+    my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@features);
+    my hb_feature_array $feats = nativecast(hb_feature_array, $feats-buf);
+    for 0 ..^ +@features {
+        $feats[$_].copy: @features[$_].raw;
+    }
+    $!raw.shape($buf.raw, $feats, +@features);
 }

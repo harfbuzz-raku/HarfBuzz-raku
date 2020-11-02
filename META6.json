@@ -7,7 +7,6 @@
     "LibraryMake"
   ],
   "depends": [
-      "CStruct::Packing",
       "Method::Also"
   ],
   "description": "binds to the HarfBuzz font shaping library",
