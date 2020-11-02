@@ -42,7 +42,7 @@ method glyph-name(UInt:D $codepoint --> Str) {
 
 method shape(HarfBuzz::Buffer:D :$buf!, HarfBuzz::Feature :@features) {
     my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@features);
-    my hb_feature_array $feats = nativecast(hb_feature_array, $feats-buf);
+    my hb_features $feats = nativecast(hb_features, $feats-buf);
     for 0 ..^ +@features {
         $feats[$_].copy: @features[$_].raw;
     }

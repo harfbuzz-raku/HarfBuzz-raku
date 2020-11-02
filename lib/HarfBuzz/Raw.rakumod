@@ -20,7 +20,7 @@ class hb_var_int is repr('CUnion') {
   has int8   $!i8;   #[4]
 }
 
-class hb_glyph_position is export is repr('CStruct') does ContiguousArray {
+class hb_glyph_position is export is repr('CStruct') {
     has hb_position  $.x-advance;
     has hb_position  $.y-advance;
     has hb_position  $.x-offset;
@@ -30,7 +30,14 @@ class hb_glyph_position is export is repr('CStruct') does ContiguousArray {
     HAS hb_var_int   $!var;
 }
 
-class hb_glyph_info is export is repr('CStruct') does ContiguousArray {
+class hb_glyph_positions
+    is hb_glyph_position
+    is export
+    is repr('CStruct')
+    does ContiguousArray {
+}
+
+class hb_glyph_info is export is repr('CStruct') {
     has hb_codepoint $.codepoint;
     #< private >
     has hb_mask      $!mask;
@@ -43,6 +50,13 @@ class hb_glyph_info is export is repr('CStruct') does ContiguousArray {
     # + more private fields. disable new
     method new(|) {
     }
+}
+
+class hb_glyph_infos
+    is hb_glyph_info
+    is export
+    is repr('CStruct')
+    does ContiguousArray {
 }
 
 class hb_blob is repr('CPointer') is export {
@@ -58,8 +72,8 @@ class hb_buffer is repr('CPointer') is export {
     method add-utf8(blob8 $buf, int32 $len, uint32 $offset, int32 $n) is native($HB) is symbol('hb_buffer_add_utf8') {*}
     method guess-segment-properties() is native($HB) is symbol('hb_buffer_guess_segment_properties')  {*}
     method length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
-    method get-glyph-positions(uint32 --> hb_glyph_position) is native($HB) is symbol('hb_buffer_get_glyph_positions')  {*}
-    method get-glyph-infos(uint32 --> hb_glyph_info) is native($HB) is symbol('hb_buffer_get_glyph_infos')  {*}
+    method get-glyph-positions(uint32 --> hb_glyph_positions) is native($HB) is symbol('hb_buffer_get_glyph_positions')  {*}
+    method get-glyph-infos(uint32 --> hb_glyph_infos) is native($HB) is symbol('hb_buffer_get_glyph_infos')  {*}
 
     method reference(--> hb_buffer) is native($HB) is symbol('hb_buffer_reference') {*}
     method destroy() is native($HB) is symbol('hb_buffer_destroy')  {*}
@@ -88,7 +102,7 @@ class hb_feature is export is repr('CStruct') is rw {
     }
 };
 
-class hb_feature_array
+class hb_features
     is hb_feature
     is export
     is repr('CStruct')
@@ -103,7 +117,7 @@ class hb_font is repr('CPointer') is export {
     method set-scale(int32 $x, int32 $y) is native($HB) is symbol('hb_font_set_scale') {*}
     method get-scale(int32 $x is rw, int32 $y) is native($HB) is symbol('hb_font_get_scale') {*}
     method get-glyph-name(hb_codepoint, Blob, int32 --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_name') {*}
-    method shape(hb_buffer, hb_feature_array, uint32 --> hb_font)  is native($HB) is symbol('hb_shape') {*}
+    method shape(hb_buffer, hb_features, uint32 --> hb_font)  is native($HB) is symbol('hb_shape') {*}
     method reference(--> hb_font) is native($HB) is symbol('hb_font_reference') {*}
     method destroy() is native($HB) is symbol('hb_font_destroy')  {*}
 }
