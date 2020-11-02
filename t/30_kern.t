@@ -5,7 +5,7 @@ plan 2;
 my $file := 't/fonts/NimbusRoman-Regular.otf';
 my $size := 36;
 my $text := 'LVAT';
-my HarfBuzz $hb .= new: :$file, :$size, :$text;
+my HarfBuzz $hb .= new: :$file, :$size, :$text, :lang<epo>;
 my @info = $hb.shaper;
 my @expected = [
   { ax => 17.86, ay => 0.0, dx => 0.0, dy => 0.0, g => 45, name => 'L' },
@@ -20,7 +20,7 @@ if HarfBuzz.version < v2.6.6 {
 }
 is-deeply @info, @expected, "content default kern";
 
-$hb .= new: :$file, :$size, :$text, :features[ '-kern' ];
+$hb .= new: :$file, :$size, :$text, :lang<epo>, :features[ '-kern' ];
 @info = $hb.shaper;
 
 @expected = [

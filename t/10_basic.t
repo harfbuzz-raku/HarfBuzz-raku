@@ -1,15 +1,16 @@
 use HarfBuzz;
 use Test;
-plan 5;
+plan 6;
 my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
 
 my $file = 't/fonts/NimbusRoman-Regular.otf';
-my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<Hell€!>;
+my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<Hell€!>, :lang<epo>;
 is $hb.size, 36;
 is $hb.scale[0], 1000;
 is $hb.length, 6;
+is $hb.lang, 'epo';
 my @info = $hb.glyphs>>.ast;
 my @expected = [
   {

@@ -12,7 +12,7 @@ my $text =
   "\c[DEVANAGARI SIGN VIRAMA]"~
   "\c[DEVANAGARI LETTER GA]";
 
-my HarfBuzz $hb .= new: :$file, :$size, :$text;
+my HarfBuzz $hb .= new: :$file, :$size, :$text, :lang<epo>;
 my @info = $hb.glyphs>>.ast;
 my $version = HarfBuzz.version;
 

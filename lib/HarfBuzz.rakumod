@@ -10,7 +10,7 @@ use NativeCall;
 use Method::Also;
 
 has Str:D $.file is required;
-has HarfBuzz::Buffer $!buf handles<length>;
+has HarfBuzz::Buffer $!buf handles<length language lang>;
 has HarfBuzz::Font $!font handles<face size scale>;
 has HarfBuzz::Feature @!features;
 method features { @!features }
@@ -49,13 +49,14 @@ method version {
     Version.new: [$major, $minor, $micro];
 }
 
-submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$text, :@features) {
+submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$lang, Str :$text, :@features) {
     my HarfBuzz::Face:D $face .= new: :$!file;
     $!font .= new: :$face, :@scale;
     $!font.size = $_ with $size;
     $!buf .= new;
     $!buf.add-text($_) with $text;
     $!buf.guess-segment-properties();
+    $!buf.set-language($_) with $lang;
 
     for @features {
         when HarfBuzz::Feature:D { @!features.push: $_ }

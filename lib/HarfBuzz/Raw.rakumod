@@ -66,6 +66,14 @@ class hb_blob is repr('CPointer') is export {
     method destroy() is native($HB) is symbol('hb_blob_destroy')  {*}
 }
 
+class hb_language is repr('CPointer') is export {
+    sub hb_language_from_string(Blob, int32 --> hb_language) is native($HB) is symbol('hb_language_from_string') {*}
+    method from-string(Blob $tag, UInt $len = $tag.bytes) {
+        hb_language_from_string($tag, $len);
+    }
+    method to-string(--> str) is native($HB) is symbol('hb_language_to_string') {*}
+}
+
 class hb_buffer is repr('CPointer') is export {
     sub hb_buffer_create(--> hb_buffer) is native($HB) {*}
     method new(--> hb_buffer) { hb_buffer_create }
@@ -74,6 +82,8 @@ class hb_buffer is repr('CPointer') is export {
     method length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
     method get-glyph-positions(uint32 --> hb_glyph_positions) is native($HB) is symbol('hb_buffer_get_glyph_positions')  {*}
     method get-glyph-infos(uint32 --> hb_glyph_infos) is native($HB) is symbol('hb_buffer_get_glyph_infos')  {*}
+    method set-language(hb_language) is native($HB) is symbol('hb_buffer_set_language') {*}
+    method get-language(--> hb_language) is native($HB) is symbol('hb_buffer_get_language') {*}
 
     method reference(--> hb_buffer) is native($HB) is symbol('hb_buffer_reference') {*}
     method destroy() is native($HB) is symbol('hb_buffer_destroy')  {*}
