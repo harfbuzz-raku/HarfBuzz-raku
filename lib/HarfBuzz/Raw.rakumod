@@ -1,6 +1,6 @@
 unit module HarfBuzz::Raw;
 
-use HarfBuzz::Raw::Defs :$HB, :$HB-BIND, :$CLIB, :types;
+use HarfBuzz::Raw::Defs :$HB, :$HB-BIND, :$CLIB, :types, :hb-memory-mode;
 use NativeCall;
 
 role ContiguousArray {
@@ -60,23 +60,33 @@ class hb_glyph_infos
 }
 
 class hb_blob is repr('CPointer') is export {
-    sub hb_blob_create_from_file(Str --> hb_blob) is native($HB) {*}
-    method new(Str :$file!, --> hb_blob) { hb_blob_create_from_file($file) }
+    our sub create(Blob, uint32, int32, Pointer, Pointer --> hb_blob) is native($HB) is symbol('hb_blob_create') {*}
+    our sub create_from_file(Str --> hb_blob) is native($HB) is symbol('hb_blob_create_from_file') {*}
+    method new(Str :$file!, --> hb_blob) {
+        if version() >= v1.7.7 {
+            create_from_file($file);
+        }
+        else {
+            my Blob $data = $file.IO.open(:r).slurp: :bin;
+            create($data, $data.bytes, HB_MEMORY_MODE_READONLY, Pointer, Pointer);
+        }
+    }
+
     method reference(--> hb_blob) is native($HB) is symbol('hb_blob_reference') {*}
     method destroy() is native($HB) is symbol('hb_blob_destroy')  {*}
 }
 
 class hb_language is repr('CPointer') is export {
-    sub hb_language_from_string(Blob, int32 --> hb_language) is native($HB) is symbol('hb_language_from_string') {*}
+    our sub from_string(Blob, int32 --> hb_language) is native($HB) is symbol('hb_language_from_string') {*}
     method from-string(Blob $tag, UInt $len = $tag.bytes) {
-        hb_language_from_string($tag, $len);
+        from_string($tag, $len);
     }
     method to-string(--> str) is native($HB) is symbol('hb_language_to_string') {*}
 }
 
 class hb_buffer is repr('CPointer') is export {
-    sub hb_buffer_create(--> hb_buffer) is native($HB) {*}
-    method new(--> hb_buffer) { hb_buffer_create }
+    our sub create(--> hb_buffer) is native($HB) is symbol('hb_buffer_create') {*}
+    method new(--> hb_buffer) { create() }
     method add-utf8(blob8 $buf, int32 $len, uint32 $offset, int32 $n) is native($HB) is symbol('hb_buffer_add_utf8') {*}
     method guess-segment-properties() is native($HB) is symbol('hb_buffer_guess_segment_properties')  {*}
     method length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
@@ -90,8 +100,8 @@ class hb_buffer is repr('CPointer') is export {
 }
 
 class hb_face is repr('CPointer') is export {
-    sub hb_face_create(hb_blob, uint32 --> hb_face) is native($HB) {*}
-    method new(hb_blob :$blob!, UInt:D :$index=0 --> hb_face) { hb_face_create($blob, $index) }
+    our sub create(hb_blob, uint32 --> hb_face) is native($HB) is symbol('hb_face_create') {*}
+    method new(hb_blob :$blob!, UInt:D :$index=0 --> hb_face) { create($blob, $index) }
     method reference(--> hb_face) is native($HB) is symbol('hb_face_reference') {*}
     method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
 }
@@ -120,8 +130,8 @@ class hb_features
 }
 
 class hb_font is repr('CPointer') is export {
-    sub hb_font_create(hb_face --> hb_font) is native($HB) {*}
-    method new(hb_face :$face! --> hb_font) { hb_font_create($face) }
+    our sub create(hb_face --> hb_font) is native($HB) is symbol('hb_font_create') {*}
+    method new(hb_face :$face! --> hb_font) { create($face) }
     method set-size(num32) is native($HB) is symbol('hb_font_set_ptem') {*}
     method get-size(--> num32) is native($HB) is symbol('hb_font_get_ptem') {*}
     method set-scale(int32 $x, int32 $y) is native($HB) is symbol('hb_font_set_scale') {*}
@@ -136,3 +146,9 @@ sub hb_version(uint32 $major is rw, uint32 $minor is rw, uint32 $micro is rw) is
 
 sub hb_tag_from_string(Blob, int32 --> hb_tag) is export is native($HB) {*}
 sub hb_tag_to_string(hb_tag, Blob) is export is native($HB) {*}
+
+our sub version () {
+    hb_version(my uint32 $major, my uint32 $minor, my uint32 $micro);
+    Version.new: [$major, $minor, $micro];
+}
+

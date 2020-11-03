@@ -45,8 +45,7 @@ method ast is also<shaper> {
 }
 
 method version {
-    hb_version(my uint32 $major, my uint32 $minor, my uint32 $micro);
-    Version.new: [$major, $minor, $micro];
+    HarfBuzz::Raw::version();
 }
 
 submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$lang, Str :$text, :@features) {

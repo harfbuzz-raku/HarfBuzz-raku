@@ -9,3 +9,10 @@ constant hb_codepoint is export(:types) = uint32;
 constant hb_position  is export(:types) = int32;
 constant hb_mask      is export(:types) = uint32;
 constant hb_tag       is export(:types) = uint32;
+
+enum hb-memory-mode is export(:hb-memory-mode) «
+    :HB_MEMORY_MODE_DUPLICATE(0)
+    :HB_MEMORY_MODE_READONLY(1)
+    :HB_MEMORY_MODE_WRITABLE(2)
+    :HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE(3)
+    »;
