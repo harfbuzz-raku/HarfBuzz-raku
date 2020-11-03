@@ -99,10 +99,19 @@ class hb_buffer is repr('CPointer') is export {
     method destroy() is native($HB) is symbol('hb_buffer_destroy')  {*}
 }
 
+class hb_set is repr('CPointer') is export {
+    method add(hb_codepoint) is native($HB) is symbol('hb_set_add') {*}
+    method add-range (hb_codepoint, hb_codepoint) is native($HB) is symbol('hb_set_add_range') {*}
+    method min(--> hb_codepoint) is native($HB) is symbol('hb_set_min') {*}
+    method max(--> hb_codepoint) is native($HB) is symbol('hb_set_max') {*}
+}
+
 class hb_face is repr('CPointer') is export {
     our sub create(hb_blob, uint32 --> hb_face) is native($HB) is symbol('hb_face_create') {*}
     method new(hb_blob :$blob!, UInt:D :$index=0 --> hb_face) { create($blob, $index) }
     method reference(--> hb_face) is native($HB) is symbol('hb_face_reference') {*}
+    method reference-blob(--> hb_blob)  is native($HB) is symbol('hb_face_reference_blob') {*}
+    method get-glyph-count(--> uint32) is native($HB) is symbol('hb_face_get_glyph_count') {*}
     method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
 }
 

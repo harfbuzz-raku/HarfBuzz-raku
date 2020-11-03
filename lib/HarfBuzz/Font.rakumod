@@ -21,7 +21,7 @@ submethod DESTROY {
 method size is rw {
     Proxy.new(
         FETCH => { $!raw.get-size },
-        STORE => -> $, Num() $_ {$!raw.set-size($_) }
+        STORE => -> $, Num() $_ { $!raw.set-size($_) }
     );
 }
 
