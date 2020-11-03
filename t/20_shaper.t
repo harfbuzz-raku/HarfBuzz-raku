@@ -2,6 +2,12 @@ use HarfBuzz;
 use Test;
 plan 1;
 
+my $version = HarfBuzz.version;
+if $version < v1.6.0 {
+    skip-rest "HarfBuzz version is too old";
+    exit;
+}
+
 my $file = 't/fonts/Lohit-Devanagari.ttf';
 my $size = 36;
 my $text =
@@ -14,7 +20,6 @@ my $text =
 
 my HarfBuzz $hb .= new: :$file, :$size, :$text, :lang<epo>;
 my @info = $hb.glyphs>>.ast;
-my $version = HarfBuzz.version;
 
 my @expected = [
   {

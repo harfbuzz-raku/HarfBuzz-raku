@@ -5,6 +5,11 @@ my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
 
+if $version < v1.6.0 {
+    skip-rest "HarfBuzz version is too old";
+    exit;
+}
+
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<Hell€!>, :lang<epo>;
 is $hb.size, 36;

@@ -1,6 +1,12 @@
 use Test;
 plan 12;
+use HarfBuzz;
 use HarfBuzz::Feature;
+
+if HarfBuzz.version < v1.6.0 {
+    skip-rest "HarfBuzz version is too old";
+    exit;
+}
 
 my HarfBuzz::Feature $feature .= new: :str("kern=1");
 

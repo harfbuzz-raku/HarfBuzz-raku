@@ -2,6 +2,12 @@ use HarfBuzz;
 use Test;
 plan 2;
 
+my $version = HarfBuzz.version;
+if $version < v1.6.0 {
+    skip-rest "HarfBuzz version is too old";
+    exit;
+}
+
 my $file := 't/fonts/NimbusRoman-Regular.otf';
 my $size := 36;
 my $text := 'LVAT';
@@ -14,7 +20,7 @@ my @expected = [
   { ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 53, name => 'T' },
 ];
 
-if HarfBuzz.version < v2.6.6 {
+if $version < v2.6.6 {
     # name not available in older HarfBuzz versions
     .<name>:delete for flat @expected, @info;
 }
