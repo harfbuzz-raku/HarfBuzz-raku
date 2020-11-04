@@ -3,19 +3,7 @@ DocProj=pdf-raku.github.io
 DocRepo=https://github.com/pdf-raku/$(DocProj)
 DocLinker=../$(DocProj)/etc/resolve-links.raku
 
-all : lib
-
-# 'all', with compilation warnings and debug symbols enabled
-debug :
-	%MAKE% "CF=-Wall -g"  all
-
-lib : resources/libraries/%LIB-NAME%
-
-resources/libraries/%LIB-NAME% : $(SRC)/hb_bind_subset%O%
-	%LD% %LDSHARED% %LDFLAGS% %LDOUT%resources/libraries/%LIB-NAME% $(SRC)/hb_bind_subset%O%
-
-$(SRC)/hb_bind_subset%O% : $(SRC)/hb_bind_subset.c $(SRC)/hb_bind_subset.h
-	%CC% -I $(SRC) -c %CCSHARED% %CCFLAGS% %CCOUT%$(SRC)/hb_bind_subset%O% $(SRC)/hb_bind_subset.c %LIB-CFLAGS% $(CF)
+all : doc
 
 docs/index.md : README.md
 	cp $< $@
@@ -39,7 +27,7 @@ loudtest : all
 	@prove -e"raku -I ." -v t
 
 clean :
-	@rm -f $(SRC)/ft6_*%O% resources/libraries/*%LIB-NAME%
+	@rm -f $(SRC)/ft6_*%O%
 
 realclean : clean
 	@rm -f Makefile README.md docs/*.md docs/HarfBuzz/*.md

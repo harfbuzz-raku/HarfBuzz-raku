@@ -25,7 +25,6 @@
     "HarfBuzz::Raw::Defs" : "lib/HarfBuzz/Raw/Defs.rakumod"
   },
   "resources": [
-    "libraries/hb-raku"
   ],
   "source-url": "git://github.com/pdf-raku/HarfBuzz-raku.git",
   "tags": [

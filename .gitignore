@@ -4,5 +4,5 @@
 Makefile
 *.gz
 resources
-HarfBuf-*
+HarfBuzz-*
 .gitignore

@@ -72,6 +72,8 @@ class hb_blob is repr('CPointer') is export {
         }
     }
 
+    method get-data(uint32 $ is rw --> Pointer) is native($HB) is symbol('hb_blob_get_data') {*}
+
     method reference(--> hb_blob) is native($HB) is symbol('hb_blob_reference') {*}
     method destroy() is native($HB) is symbol('hb_blob_destroy')  {*}
 }
@@ -106,15 +108,6 @@ class hb_set is repr('CPointer') is export {
     method max(--> hb_codepoint) is native($HB) is symbol('hb_set_max') {*}
 }
 
-class hb_face is repr('CPointer') is export {
-    our sub create(hb_blob, uint32 --> hb_face) is native($HB) is symbol('hb_face_create') {*}
-    method new(hb_blob :$blob!, UInt:D :$index=0 --> hb_face) { create($blob, $index) }
-    method reference(--> hb_face) is native($HB) is symbol('hb_face_reference') {*}
-    method reference-blob(--> hb_blob)  is native($HB) is symbol('hb_face_reference_blob') {*}
-    method get-glyph-count(--> uint32) is native($HB) is symbol('hb_face_get_glyph_count') {*}
-    method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
-}
-
 class hb_feature is export is repr('CStruct') is rw {
     has hb_tag  $.tag;
     has uint32  $.value;
@@ -136,6 +129,15 @@ class hb_features
     is export
     is repr('CStruct')
     does ContiguousArray {
+}
+
+class hb_face is repr('CPointer') is export {
+    our sub create(hb_blob, uint32 --> hb_face) is native($HB) is symbol('hb_face_create') {*}
+    method new(hb_blob :$blob!, UInt:D :$index=0 --> hb_face) { create($blob, $index) }
+    method reference(--> hb_face) is native($HB) is symbol('hb_face_reference') {*}
+    method reference-blob(--> hb_blob)  is native($HB) is symbol('hb_face_reference_blob') {*}
+    method get-glyph-count(--> uint32) is native($HB) is symbol('hb_face_get_glyph_count') {*}
+    method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
 }
 
 class hb_font is repr('CPointer') is export {
@@ -161,3 +163,4 @@ our sub version () {
     Version.new: [$major, $minor, $micro];
 }
 
+our sub memcpy(Pointer $dest, Pointer $src, size_t $len) is native($CLIB) {*}
