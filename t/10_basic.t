@@ -1,6 +1,7 @@
 use HarfBuzz;
+use HarfBuzz::Raw::Defs :&hb-tag-dec, :hb-script, :hb-direction;
 use Test;
-plan 6;
+plan 9;
 my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
@@ -16,6 +17,9 @@ is $hb.size, 36;
 is $hb.scale[0], 1000;
 is $hb.length, 6;
 is $hb.lang, 'epo';
+is $hb.script, +HB_SCRIPT_LATIN;
+is $hb.script.&hb-tag-dec, 'Latn';
+is $hb.direction, +HB_DIRECTION_LTR;
 my @info = $hb.glyphs>>.ast;
 my @expected = [
   {

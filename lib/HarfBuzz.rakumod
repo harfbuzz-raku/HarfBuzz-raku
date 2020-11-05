@@ -10,7 +10,7 @@ use NativeCall;
 use Method::Also;
 
 has Str:D $.file is required;
-has HarfBuzz::Buffer $!buf handles<length language lang>;
+has HarfBuzz::Buffer $!buf handles<length language lang script direction>;
 has HarfBuzz::Font $!font handles<face size scale>;
 has HarfBuzz::Feature @!features;
 method features { @!features }

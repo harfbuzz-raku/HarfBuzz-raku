@@ -1,6 +1,7 @@
 unit class HarfBuzz::Buffer;
 
 use HarfBuzz::Raw;
+use HarfBuzz::Raw::Defs :types, :&hb-tag-enc;
 use HarfBuzz::Glyph;
 use Method::Also;
 
@@ -16,6 +17,35 @@ method language is rw is also<lang> {
         FETCH => { self.get-language },
         STORE => -> $, Str() $_ {
             self.set-language($_);
+        }
+    );
+}
+
+method get-script { $!raw.get-script }
+multi method set-script(Str:D $script) {
+    $!raw.set-script(hb-tag-enc($script));
+}
+multi method set-script(UInt:D $script) {
+    $!raw.set-script($script);
+}
+method script is rw {
+    Proxy.new(
+        FETCH => { self.get-script },
+        STORE => -> $, $_ {
+            self.set-script($_);
+        }
+    );
+}
+
+method get-direction { $!raw.get-direction }
+multi method set-direction(UInt:D $direction) {
+    $!raw.set-direction($direction);
+}
+method direction is rw {
+    Proxy.new(
+        FETCH => { self.get-direction },
+        STORE => -> $, $_ {
+            self.set-direction($_);
         }
     );
 }

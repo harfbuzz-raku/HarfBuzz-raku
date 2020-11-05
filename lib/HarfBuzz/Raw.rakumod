@@ -99,8 +99,12 @@ class hb_buffer is repr('CPointer') is export {
     method length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
     method get-glyph-positions(uint32 --> hb_glyph_positions) is native($HB) is symbol('hb_buffer_get_glyph_positions')  {*}
     method get-glyph-infos(uint32 --> hb_glyph_infos) is native($HB) is symbol('hb_buffer_get_glyph_infos')  {*}
+    method set-direction(hb_direction) is native($HB) is symbol('hb_buffer_set_direction') {*}
+    method get-direction(--> hb_direction) is native($HB) is symbol('hb_buffer_get_direction') {*}
     method set-language(hb_language) is native($HB) is symbol('hb_buffer_set_language') {*}
     method get-language(--> hb_language) is native($HB) is symbol('hb_buffer_get_language') {*}
+    method set-script(hb_script) is native($HB) is symbol('hb_buffer_set_script') {*}
+    method get-script(--> hb_script) is native($HB) is symbol('hb_buffer_get_script') {*}
 
     method reference(--> hb_buffer) is native($HB) is symbol('hb_buffer_reference') {*}
     method destroy() is native($HB) is symbol('hb_buffer_destroy')  {*}
