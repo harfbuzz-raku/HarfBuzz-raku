@@ -62,14 +62,19 @@ class hb_glyph_infos
 class hb_blob is repr('CPointer') is export {
     our sub create(Blob, uint32, int32, Pointer, Pointer --> hb_blob) is native($HB) is symbol('hb_blob_create') {*}
     our sub create_from_file(Str --> hb_blob) is native($HB) is symbol('hb_blob_create_from_file') {*}
-    method new(Str :$file!, --> hb_blob) {
+
+    multi method new(Str :$file!, --> hb_blob) {
         if version() >= v1.7.7 {
             create_from_file($file);
         }
         else {
-            my Blob $data = $file.IO.open(:r).slurp: :bin;
-            create($data, $data.bytes, HB_MEMORY_MODE_READONLY, Pointer, Pointer);
+            my Blob $buf = $file.IO.open(:r).slurp: :bin;
+            self.new: :$buf;
         }
+    }
+
+    multi method new(Blob :$buf!) {
+            create($buf, $buf.bytes, HB_MEMORY_MODE_READONLY, Pointer, Pointer);
     }
 
     method get-data(uint32 $ is rw --> Pointer) is native($HB) is symbol('hb_blob_get_data') {*}

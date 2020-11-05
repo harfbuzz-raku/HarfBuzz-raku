@@ -10,7 +10,12 @@ multi submethod TWEAK(Str:D :$file!) {
     $!raw.reference;
 }
 
-multi submethod TWEAK(hb_blob:D :$!raw) {
+multi submethod TWEAK(hb_blob:D :$!raw!) {
+}
+
+multi submethod TWEAK(Blob:D :$buf!) {
+    $!raw .= new: :$buf;
+    $!raw.reference;
 }
 
 method Blob {

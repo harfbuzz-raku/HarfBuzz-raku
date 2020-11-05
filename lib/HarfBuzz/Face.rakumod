@@ -12,11 +12,16 @@ multi submethod TWEAK(Str:D :$file!) {
     $!raw.reference;
 }
 
+multi submethod TWEAK(Blob:D :$buf!) {
+    $!blob .= new: :$buf;
+    $!raw .= new: :blob($!blob.raw);
+    $!raw.reference;
+}
+
 multi submethod TWEAK(hb_face:D :$!raw) {
     $!raw.reference;
     given $!raw.reference-blob() {
         use NativeCall;
-        warn +nativecast(Pointer, $_);
         $!blob .= new: :raw($_);
     }
 }
