@@ -1,7 +1,7 @@
 use HarfBuzz;
-use HarfBuzz::Raw::Defs :&hb-tag-dec, :hb-script, :hb-direction;
+use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
 use Test;
-plan 9;
+plan 10;
 my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
@@ -10,6 +10,8 @@ if $version < v1.6.0 {
     skip-rest "HarfBuzz version is too old";
     exit;
 }
+
+is hb-tag-dec(hb-tag-enc('post')), 'post';
 
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<Hell€!>, :lang<epo>;

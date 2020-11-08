@@ -113,9 +113,12 @@ class hb_buffer is repr('CPointer') is export {
 
 class hb_set is repr('CPointer') is export {
     method add(hb_codepoint) is native($HB) is symbol('hb_set_add') {*}
+    method del(hb_codepoint) is native($HB) is symbol('hb_set_del') {*}
     method add-range (hb_codepoint, hb_codepoint) is native($HB) is symbol('hb_set_add_range') {*}
     method min(--> hb_codepoint) is native($HB) is symbol('hb_set_min') {*}
     method max(--> hb_codepoint) is native($HB) is symbol('hb_set_max') {*}
+    method next(hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_set_next') {*}
+    method prev(hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_set_previous') {*}
 }
 
 class hb_feature is export is repr('CStruct') is rw {
