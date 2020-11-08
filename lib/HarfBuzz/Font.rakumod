@@ -6,12 +6,13 @@ use HarfBuzz::Face;
 use HarfBuzz::Feature;
 use NativeCall;
 
-has HarfBuzz::Face:D $.face is required handles<Blob>;
-has hb_font:D $!raw .= new: :face($!face.raw);
+has HarfBuzz::Face $.face handles<Blob>;
+has hb_font $.raw is required;
 
-submethod TWEAK(:@scale) {
+submethod TWEAK(:@scale, Numeric :$size) {
     $!raw.reference;
     self.scale = @scale if @scale;
+    self.size = $size if $size;
 }
 
 submethod DESTROY {

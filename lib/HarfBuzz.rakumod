@@ -5,13 +5,15 @@ use HarfBuzz::Buffer;
 use HarfBuzz::Face;
 use HarfBuzz::Feature;
 use HarfBuzz::Font;
+use HarfBuzz::Font::FreeType;
 use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
+use Font::FreeType::Face;
 
 has Str:D $.file is required;
 has HarfBuzz::Buffer $!buf handles<length language lang script direction>;
-has HarfBuzz::Font $!font handles<face size scale>;
+has HarfBuzz::Font $!font handles<face size scale ft-load-flags>;
 has HarfBuzz::Feature @!features;
 method features { @!features }
 
@@ -48,10 +50,17 @@ method version {
     HarfBuzz::Raw::version();
 }
 
-submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$lang, Str :$text, :@features) {
-    my HarfBuzz::Face:D $face .= new: :$!file;
-    $!font .= new: :$face, :@scale;
-    $!font.size = $_ with $size;
+submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$lang, Str :$text, :@features, Font::FreeType::Face :$ft-face) {
+    if $ft-face.defined {
+        my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
+        my HarfBuzz::Face $face .= new: raw => $raw.get-face();
+        $!font = HarfBuzz::Font::FreeType.new(:$raw, :$face, :$ft-face, :@scale, :$size);
+    }
+    else {
+        my HarfBuzz::Face $face .= new: :$!file, :$ft-face;
+        my hb_font $raw = hb_font::create($face.raw);
+        $!font = HarfBuzz::Font.new(:$raw, :$face, :@scale, :$size);
+    }
     $!buf .= new;
     $!buf.add-text($_) with $text;
     $!buf.guess-segment-properties();

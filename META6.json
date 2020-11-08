@@ -7,6 +7,7 @@
     "LibraryMake"
   ],
   "depends": [
+      "Font::FreeType",
       "Method::Also"
   ],
   "description": "binds to the HarfBuzz font shaping library",
@@ -14,15 +15,16 @@
   "name": "HarfBuzz",
   "raku": "6",
   "provides": {
-    "HarfBuzz"            : "lib/HarfBuzz.rakumod",
-    "HarfBuzz::Blob"      : "lib/HarfBuzz/Blob.rakumod",
-    "HarfBuzz::Buffer"    : "lib/HarfBuzz/Buffer.rakumod",
-    "HarfBuzz::Face"      : "lib/HarfBuzz/Face.rakumod",
-    "HarfBuzz::Feature"   : "lib/HarfBuzz/Feature.rakumod",
-    "HarfBuzz::Font"      : "lib/HarfBuzz/Font.rakumod",
-    "HarfBuzz::Glyph"     : "lib/HarfBuzz/Glyph.rakumod",
-    "HarfBuzz::Raw"       : "lib/HarfBuzz/Raw.rakumod",
-    "HarfBuzz::Raw::Defs" : "lib/HarfBuzz/Raw/Defs.rakumod"
+    "HarfBuzz"                 : "lib/HarfBuzz.rakumod",
+    "HarfBuzz::Blob"           : "lib/HarfBuzz/Blob.rakumod",
+    "HarfBuzz::Buffer"         : "lib/HarfBuzz/Buffer.rakumod",
+    "HarfBuzz::Face"           : "lib/HarfBuzz/Face.rakumod",
+    "HarfBuzz::Feature"        : "lib/HarfBuzz/Feature.rakumod",
+    "HarfBuzz::Font"           : "lib/HarfBuzz/Font.rakumod",
+    "HarfBuzz::Font::FreeType" : "lib/HarfBuzz/Font/FreeType.rakumod",
+    "HarfBuzz::Glyph"          : "lib/HarfBuzz/Glyph.rakumod",
+    "HarfBuzz::Raw"            : "lib/HarfBuzz/Raw.rakumod",
+    "HarfBuzz::Raw::Defs"      : "lib/HarfBuzz/Raw/Defs.rakumod"
   },
   "resources": [
   ],

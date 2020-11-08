@@ -1,5 +1,6 @@
 unit module HarfBuzz::Raw;
 
+use Font::FreeType::Raw;
 use HarfBuzz::Raw::Defs :$HB, :$HB-BIND, :$CLIB, :types, :hb-memory-mode;
 use NativeCall;
 
@@ -152,14 +153,26 @@ class hb_face is repr('CPointer') is export {
 class hb_font is repr('CPointer') is export {
     our sub create(hb_face --> hb_font) is native($HB) is symbol('hb_font_create') {*}
     method new(hb_face :$face! --> hb_font) { create($face) }
+    method set-face(hb_face) is native($HB) is symbol('hb_font_set_face') {*}
+    method get-face(--> hb_face) is native($HB) is symbol('hb_font_get_face') {*}
     method set-size(num32) is native($HB) is symbol('hb_font_set_ptem') {*}
     method get-size(--> num32) is native($HB) is symbol('hb_font_get_ptem') {*}
     method set-scale(int32 $x, int32 $y) is native($HB) is symbol('hb_font_set_scale') {*}
     method get-scale(int32 $x is rw, int32 $y) is native($HB) is symbol('hb_font_get_scale') {*}
     method get-glyph-name(hb_codepoint, Blob, int32 --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_name') {*}
     method shape(hb_buffer, hb_features, uint32 --> hb_font)  is native($HB) is symbol('hb_shape') {*}
+
     method reference(--> hb_font) is native($HB) is symbol('hb_font_reference') {*}
     method destroy() is native($HB) is symbol('hb_font_destroy')  {*}
+}
+
+class hb_ft_font is hb_font is repr('CPointer') is export {
+    # FreeType integration
+    our sub create(FT_Face --> hb_ft_font) is native($HB) is symbol('hb_ft_font_create_referenced') {*}
+    method new(FT_Face :$ft-face! --> hb_font) { create($ft-face) }
+    method ft-font-has-changed() is native($HB) is symbol('hb_ft_font_has_changed') {*}
+    method ft-set-load-flags(int32) is native($HB) is symbol('hb_ft_font_set_load_flags') {*}
+    method ft-get-load-flags(--> int32) is native($HB) is symbol('hb_ft_font_get_load_flags') {*}
 }
 
 sub hb_version(uint32 $major is rw, uint32 $minor is rw, uint32 $micro is rw) is export is native($HB) {*}
