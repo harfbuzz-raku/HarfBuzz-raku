@@ -7,10 +7,12 @@ use HarfBuzz::Raw;
 use Font::FreeType::Face;
 has Font::FreeType::Face:D $.ft-face is required;
 
-submethod TWEAK(:@scale = [1000, 1000]) {
+submethod TWEAK(:@scale = [1000, 1000], Bool :$funcs = True) {
     my $sc0 = @scale[0];
     my $sc1 = @scale[1] || $sc0;
     $!ft-face.set-char-size(0, 0, $sc0, $sc1);
+    self.raw.ft-set-funcs()
+        if $funcs;
 }
 
 method raw(--> hb_ft_font) handles <ft-set-load-flags ft-get-load-flags ft-font-has-changed> {

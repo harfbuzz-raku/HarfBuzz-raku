@@ -176,6 +176,7 @@ class hb_ft_font is hb_font is repr('CPointer') is export {
     method ft-font-has-changed() is native($HB) is symbol('hb_ft_font_has_changed') {*}
     method ft-set-load-flags(int32) is native($HB) is symbol('hb_ft_font_set_load_flags') {*}
     method ft-get-load-flags(--> int32) is native($HB) is symbol('hb_ft_font_get_load_flags') {*}
+    method ft-set-funcs(--> int32) is native($HB) is symbol('hb_ft_font_set_funcs') {*}
 }
 
 sub hb_version(uint32 $major is rw, uint32 $minor is rw, uint32 $micro is rw) is export is native($HB) {*}

@@ -28,7 +28,7 @@ is $hb.ft-load-flags, +FT_LOAD_NO_HINTING;
 my @info = $hb.glyphs>>.ast;
 my @expected = [
   {
-    ax => 23.11,
+    ax => 25.99,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -36,7 +36,7 @@ my @expected = [
     name => 'H',
   },
   {
-    ax => 13.43,
+    ax => 15.19,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -44,7 +44,7 @@ my @expected = [
     name => 'e',
   },
   {
-    ax => 8.89,
+    ax => 10.01,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -52,7 +52,7 @@ my @expected = [
     name => 'l',
   },
   {
-    ax => 8.89,
+    ax => 10.01,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -60,7 +60,7 @@ my @expected = [
     name => 'l',
   },
   {
-    ax => 16.02,
+    ax => 18.00,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -68,7 +68,7 @@ my @expected = [
     name => 'Euro',
   },
   {
-    ax => 10.66,
+    ax => 11.99,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
