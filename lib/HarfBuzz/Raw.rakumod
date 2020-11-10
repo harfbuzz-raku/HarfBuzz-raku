@@ -89,7 +89,7 @@ class hb_language is repr('CPointer') is export {
     method from-string(Blob $tag, UInt $len = $tag.bytes) {
         from_string($tag, $len);
     }
-    method to-string(--> str) is native($HB) is symbol('hb_language_to_string') {*}
+    method to-string(--> Str) is native($HB) is symbol('hb_language_to_string') {*}
 }
 
 class hb_buffer is repr('CPointer') is export {
@@ -97,7 +97,8 @@ class hb_buffer is repr('CPointer') is export {
     method new(--> hb_buffer) { create() }
     method add-utf8(blob8 $buf, int32 $len, uint32 $offset, int32 $n) is native($HB) is symbol('hb_buffer_add_utf8') {*}
     method guess-segment-properties() is native($HB) is symbol('hb_buffer_guess_segment_properties')  {*}
-    method length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
+    method get-length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
+    method set-length(int32) is native($HB) is symbol('hb_buffer_set_length') {*}
     method get-glyph-positions(uint32 --> hb_glyph_positions) is native($HB) is symbol('hb_buffer_get_glyph_positions')  {*}
     method get-glyph-infos(uint32 --> hb_glyph_infos) is native($HB) is symbol('hb_buffer_get_glyph_infos')  {*}
     method set-direction(hb_direction) is native($HB) is symbol('hb_buffer_set_direction') {*}
@@ -106,6 +107,7 @@ class hb_buffer is repr('CPointer') is export {
     method get-language(--> hb_language) is native($HB) is symbol('hb_buffer_get_language') {*}
     method set-script(hb_script) is native($HB) is symbol('hb_buffer_set_script') {*}
     method get-script(--> hb_script) is native($HB) is symbol('hb_buffer_get_script') {*}
+    method clear-contents() is native($HB) is symbol('hb_buffer_clear_contents')  {*}
 
     method reference(--> hb_buffer) is native($HB) is symbol('hb_buffer_reference') {*}
     method destroy() is native($HB) is symbol('hb_buffer_destroy')  {*}
@@ -127,7 +129,7 @@ class hb_feature is export is repr('CStruct') is rw {
     has uint32  $.start;
     has uint32  $.end;
     sub from-string(Blob, int32, hb_feature --> hb_bool) is native($HB) is symbol('hb_feature_from_string')  {*}
-    method to-string(blob8) is native($HB) is symbol('hb_feature_to_string')  {*}
+    method to-string(blob8, uint32) is native($HB) is symbol('hb_feature_to_string')  {*}
     method from-string(Blob $buf, $len = $buf.bytes) {
         from-string($buf, $len, self);
     }

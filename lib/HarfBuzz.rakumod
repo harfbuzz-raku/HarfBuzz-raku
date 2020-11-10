@@ -11,11 +11,34 @@ use NativeCall;
 use Method::Also;
 use Font::FreeType::Face;
 
-has Str:D $.file is required;
-has HarfBuzz::Buffer $!buf handles<length language lang script direction>;
+has HarfBuzz::Buffer $!buf handles<length language lang script direction add-text cairo-glyphs>;
 has HarfBuzz::Font $!font handles<face size scale ft-load-flags>;
 has HarfBuzz::Feature @!features;
 method features { @!features }
+
+submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, :@features, Str :$file, Font::FreeType::Face :$ft-face, |buf-opts) {
+    if $ft-face.defined {
+        my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
+        my HarfBuzz::Face $face .= new: raw => $raw.get-face();
+        $!font = HarfBuzz::Font::FreeType.new(:$raw, :$face, :$ft-face, :@scale, :$size);
+    }
+    else {
+        my HarfBuzz::Face $face .= new: :$file, :$ft-face;
+        my hb_font $raw = hb_font::create($face.raw);
+        $!font = HarfBuzz::Font.new(:$raw, :$face, :@scale, :$size);
+    }
+    $!buf .= new: |buf-opts;
+
+    for @features {
+        when HarfBuzz::Feature:D { @!features.push: $_ }
+        when hb_feature:D { @!features.push: HarfBuzz::Feature.new: :raw($_) }
+        when Pair { @!features.push: HarfBuzz::Feature.new: :str(.key), :disabled(.value) }
+        when Str { @!features.push: HarfBuzz::Feature.new: :str($_) }
+        default { warn "ignoring unknown feature: {.raku}"; }
+    }
+
+    $!font.shape: :$!buf, :@!features;
+}
 
 method glyphs {
     class Iteration does Iterable does Iterator {
@@ -50,28 +73,8 @@ method version {
     HarfBuzz::Raw::version();
 }
 
-submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, Str :$lang, Str :$text, :@features, Font::FreeType::Face :$ft-face) {
-    if $ft-face.defined {
-        my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
-        my HarfBuzz::Face $face .= new: raw => $raw.get-face();
-        $!font = HarfBuzz::Font::FreeType.new(:$raw, :$face, :$ft-face, :@scale, :$size);
-    }
-    else {
-        my HarfBuzz::Face $face .= new: :$!file, :$ft-face;
-        my hb_font $raw = hb_font::create($face.raw);
-        $!font = HarfBuzz::Font.new(:$raw, :$face, :@scale, :$size);
-    }
-    $!buf .= new;
-    $!buf.add-text($_) with $text;
-    $!buf.guess-segment-properties();
-    $!buf.set-language($_) with $lang;
-
-    for @features {
-        when HarfBuzz::Feature:D { @!features.push: $_ }
-        when hb_feature:D { @!features.push: HarfBuzz::Feature.new: :raw($_) }
-        when Str { @!features.push: HarfBuzz::Feature.new: :str($_) }
-        default { warn "ignoring unknown feature: {.raku}"; }
-    }
-
+method set-text(Str:D $text) {
+    $!buf .= clone: :$text;
     $!font.shape: :$!buf, :@!features;
 }
+

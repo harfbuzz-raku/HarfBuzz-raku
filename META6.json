@@ -7,6 +7,7 @@
     "LibraryMake"
   ],
   "depends": [
+      "Cairo",
       "Font::FreeType",
       "Method::Also"
   ],
@@ -18,6 +19,7 @@
     "HarfBuzz"                 : "lib/HarfBuzz.rakumod",
     "HarfBuzz::Blob"           : "lib/HarfBuzz/Blob.rakumod",
     "HarfBuzz::Buffer"         : "lib/HarfBuzz/Buffer.rakumod",
+    "HarfBuzz::Cairo::Glyphs"  : "lib/HarfBuzz/Cairo/Glyphs.rakumod",
     "HarfBuzz::Face"           : "lib/HarfBuzz/Face.rakumod",
     "HarfBuzz::Feature"        : "lib/HarfBuzz/Feature.rakumod",
     "HarfBuzz::Font"           : "lib/HarfBuzz/Font.rakumod",

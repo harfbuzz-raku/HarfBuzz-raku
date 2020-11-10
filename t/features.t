@@ -1,5 +1,5 @@
 use Test;
-plan 12;
+plan 21;
 use HarfBuzz;
 use HarfBuzz::Feature;
 
@@ -14,6 +14,7 @@ is $feature.tag, 'kern';
 is $feature.value, 1;
 is $feature.start, 0;
 is $feature.end, Inf;
+is-deeply $feature.enabled, True;
 
 $feature .= new: :str("kern[3;5]");
 
@@ -28,4 +29,16 @@ is $feature.tag, 'kern';
 is $feature.value, 1;
 is $feature.start, 4;
 is $feature.end, 6;
+
+$feature .= new: :tag<kern>, :!enabled;
+
+is $feature.tag, 'kern';
+is $feature.value, 0;
+is $feature.start, 0;
+is $feature.end, Inf;
+is-deeply $feature.enabled, False;
+is $feature.Str, '-kern';
+$feature.enabled = True;
+is-deeply $feature.enabled, True;
+is $feature.Str, 'kern';
 

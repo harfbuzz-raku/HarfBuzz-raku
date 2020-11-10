@@ -14,11 +14,11 @@ if $version < v1.6.0 {
 is hb-tag-dec(hb-tag-enc('post')), 'post';
 
 my $file = 't/fonts/NimbusRoman-Regular.otf';
-my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<Hell€!>, :lang<epo>;
+my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<Hell€!>, :language<epo>;
 is $hb.size, 36;
 is $hb.scale[0], 1000;
 is $hb.length, 6;
-is $hb.lang, 'epo';
+is $hb.language, 'epo';
 is $hb.script, +HB_SCRIPT_LATIN;
 is $hb.script.&hb-tag-dec, 'Latn';
 is $hb.direction, +HB_DIRECTION_LTR;

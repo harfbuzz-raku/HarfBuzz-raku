@@ -11,7 +11,7 @@ multi submethod TWEAK(Str:D :$str!) {
     $!raw.from-string($buf, $buf.bytes);
 }
 
-multi submethod TWEAK(Str:D :$tag!, UInt :$start = 0, :$end = Inf, UInt :$value = 1 ) {
+multi submethod TWEAK(Str:D :$tag!, UInt :$start = 0, :$end = Inf, Bool :$enabled = True, UInt :$value = $enabled.so.Int ) {
     $!raw .= new;
     my Blob $buf = $tag.encode;
     $!raw.tag = hb_tag_from_string($buf, $buf.bytes);
@@ -40,8 +40,19 @@ method end is rw {
             my $end := $!raw.end;
             $end < 0 ?? Inf !! $end
         },
-        STORE => -> $, UInt:D $end {
+        STORE => -> $, $end {
             $!raw.end = ($end === Inf ?? -1 !! $end);
+        },
+    )
+}
+
+method enabled is rw {
+    Proxy.new(
+        FETCH => {
+            ? self.value
+        },
+        STORE => -> $, $_ {
+            self.value = .so.Int;
         },
     )
 }
