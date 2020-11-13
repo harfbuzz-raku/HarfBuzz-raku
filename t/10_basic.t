@@ -1,7 +1,7 @@
 use HarfBuzz;
 use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
 use Test;
-plan 10;
+plan 22;
 my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
@@ -22,7 +22,7 @@ is $hb.language, 'epo';
 is $hb.script, +HB_SCRIPT_LATIN;
 is $hb.script.&hb-tag-dec, 'Latn';
 is $hb.direction, +HB_DIRECTION_LTR;
-my @info = $hb.glyphs>>.ast;
+my @info = $hb.shape>>.ast;
 my @expected = [
   {
     ax => 25.99,
@@ -79,3 +79,21 @@ unless $version >= v2.6.6 {
     .<name>:delete for flat @expected, @info;
 }
 is-deeply @info, @expected;
+
+my $codepoint = $hb.glyph-from-name('H');
+is $codepoint, 41;
+is $hb.glyph-name($codepoint), 'H';
+my $extents = $hb.glyph-extents($codepoint);
+is $extents.x-bearing, 19;
+is $extents.y-bearing, 662;
+is $extents.width, 683;
+is $extents.height, -662;
+
+$codepoint = $hb.glyph-from-name('e');
+is $codepoint, 70;
+is $hb.glyph-name($codepoint), 'e';
+$extents = $hb.glyph-extents($codepoint);
+is $extents.x-bearing, 25;
+is $extents.y-bearing, 460;
+is $extents.width, 399;
+is $extents.height, -470;

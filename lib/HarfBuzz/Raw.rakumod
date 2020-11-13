@@ -5,10 +5,24 @@ use HarfBuzz::Raw::Defs :$HB, :$HB-BIND, :$CLIB, :types, :hb-memory-mode;
 use NativeCall;
 
 role ContiguousArray {
+    sub memcpy(Pointer, Pointer, size_t) is native($CLIB) {*}
+
     method AT-POS(UInt:D $idx) {
-        my Pointer $base-addr = nativecast(Pointer, self);
-        my Pointer $elem-addr = Pointer.new(+$base-addr  +  $idx * nativesizeof(self));
-        nativecast(self.WHAT, $elem-addr);
+        my Pointer:D $base-addr = nativecast(Pointer, self);
+        my Pointer:D $src = Pointer.new(+$base-addr  +  $idx * nativesizeof(self));
+        given self.new -> $dest {
+            my size_t $len = nativesizeof(self); 
+            memcpy(nativecast(Pointer, $dest), $src, $len);
+            $dest
+        }
+    }
+
+    method ASSIGN-POS(UInt:D $idx, $src) is rw {
+        my Pointer:D $base-addr = nativecast(Pointer, self);
+        my Pointer:D $dest = Pointer.new(+$base-addr  +  $idx * nativesizeof(self));
+        my size_t $len = nativesizeof(self);
+        memcpy($dest, nativecast(Pointer, $src), $len);
+        nativecast(self.WHAT, $dest);
     }
 }
 
@@ -48,9 +62,6 @@ class hb_glyph_info is export is repr('CStruct') {
     #< private >
     HAS hb_var_int   $!var1;
     HAS hb_var_int   $!var2;
-    # + more private fields. disable new
-    method new(|) {
-    }
 }
 
 class hb_glyph_infos
@@ -58,6 +69,14 @@ class hb_glyph_infos
     is export
     is repr('CStruct')
     does ContiguousArray {
+}
+
+class hb_glyph_extents is export is repr('CStruct') {
+    # Note that height is negative in coordinate systems that grow up.
+    has hb_position $.x-bearing; # left side of glyph from origin.
+    has hb_position $.y-bearing; # top side of glyph from origin.
+    has hb_position $.width;     # distance from left to right side.
+    has hb_position $.height;    # distance from top to bottom side.
 }
 
 class hb_blob is repr('CPointer') is export {
@@ -133,10 +152,6 @@ class hb_feature is export is repr('CStruct') is rw {
     method from-string(Blob $buf, $len = $buf.bytes) {
         from-string($buf, $len, self);
     }
-    method !memcpy(hb_feature $feature, size_t $len) is native($CLIB) {*}
-    method copy(hb_feature $feature) {
-        self!memcpy($feature, nativesizeof($feature));
-    }
 };
 
 class hb_features
@@ -165,6 +180,8 @@ class hb_font is repr('CPointer') is export {
     method set-scale(int32 $x, int32 $y) is native($HB) is symbol('hb_font_set_scale') {*}
     method get-scale(int32 $x is rw, int32 $y) is native($HB) is symbol('hb_font_get_scale') {*}
     method get-glyph-name(hb_codepoint, Blob, int32 --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_name') {*}
+    method get-glyph-from-name(Blob, int32, hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_from_name') {*}
+    method get-glyph-extents(hb_codepoint, hb_glyph_extents --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_extents') {*}
     method shape(hb_buffer, hb_features, uint32 --> hb_font)  is native($HB) is symbol('hb_shape') {*}
 
     method reference(--> hb_font) is native($HB) is symbol('hb_font_reference') {*}

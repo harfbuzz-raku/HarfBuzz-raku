@@ -25,7 +25,7 @@ is $hb.script, +HB_SCRIPT_LATIN;
 is $hb.script.&hb-tag-dec, 'Latn';
 is $hb.direction, +HB_DIRECTION_LTR;
 is $hb.ft-load-flags, +FT_LOAD_NO_HINTING;
-my @info = $hb.glyphs>>.ast;
+my @info = $hb.shape>>.ast;
 my @expected = [
   {
     ax => 25.99,

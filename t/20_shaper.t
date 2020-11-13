@@ -1,6 +1,6 @@
 use HarfBuzz;
 use Test;
-plan 1;
+plan 3;
 
 my $version = HarfBuzz.version;
 if $version < v1.6.0 {
@@ -18,12 +18,15 @@ my $text =
   "\c[DEVANAGARI SIGN VIRAMA]"~
   "\c[DEVANAGARI LETTER GA]";
 
-my HarfBuzz $hb .= new: :$file, :$size, :$text, :language<epo>;
-my @info = $hb.glyphs>>.ast;
+my HarfBuzz $hb .= new: :$file, :$text, :language<epo>, :$size;
+my @info = $hb.shape>>.ast;
+
+is-deeply $hb.scale, (1024, 1024);
+is-deeply $hb.size, $size.Num;
 
 my @expected = [
   {
-    ax => 21.35,
+    ax => 21.38,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -31,7 +34,7 @@ my @expected = [
     name => 'tadeva',
   },
   {
-    ax => 20.34,
+    ax => 20.36,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -39,7 +42,7 @@ my @expected = [
     name => 'madeva',
   },
   {
-    ax => 9.32,
+    ax => 9.35,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,
@@ -47,7 +50,7 @@ my @expected = [
     name => 'aasigndeva',
   },
   {
-    ax => 23.90,
+    ax => 23.91,
     ay => 0.0,
     dx => 0.0,
     dy => 0.0,

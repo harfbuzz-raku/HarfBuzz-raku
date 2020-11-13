@@ -1,6 +1,7 @@
 unit class HarfBuzz::Font;
 
 use HarfBuzz::Raw;
+use HarfBuzz::Raw::Defs :types;
 use HarfBuzz::Buffer;
 use HarfBuzz::Face;
 use HarfBuzz::Feature;
@@ -35,17 +36,30 @@ method scale is rw {
 
 method glyph-name(UInt:D $codepoint --> Str) {
     my buf8 $name-buf .= allocate(64);
-    my $rv := $!raw.get-glyph-name($codepoint, $name-buf, $name-buf.elems);
+    $!raw.get-glyph-name($codepoint, $name-buf, $name-buf.elems);
     $name-buf.reallocate: (0 ..^ $name-buf.elems).first: {$name-buf[$_] == 0};
 
     $name-buf.decode;
+}
+
+method glyph-from-name(Str:D $name) {
+    my Blob $buf = $name.encode;
+    my hb_codepoint $codepoint;
+    $!raw.get-glyph-from-name($buf, $buf.bytes, $codepoint);
+    $codepoint;
+}
+
+method glyph-extents(UInt:D $codepoint) {
+    my hb_glyph_extents $glyph-extents .= new;
+    $!raw.get-glyph-extents($codepoint, $glyph-extents);
+    $glyph-extents;
 }
 
 method shape(HarfBuzz::Buffer:D :$buf!, HarfBuzz::Feature :@features) {
     my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@features);
     my hb_features $feats = nativecast(hb_features, $feats-buf);
     for 0 ..^ +@features {
-        $feats[$_].copy: @features[$_].raw;
+        $feats[$_] = @features[$_].raw;
     }
     $!raw.shape($buf.raw, $feats, +@features);
 }

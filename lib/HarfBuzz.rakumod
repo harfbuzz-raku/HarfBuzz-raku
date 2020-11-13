@@ -6,18 +6,20 @@ use HarfBuzz::Face;
 use HarfBuzz::Feature;
 use HarfBuzz::Font;
 use HarfBuzz::Font::FreeType;
+use HarfBuzz::Glyph;
 use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
 use Font::FreeType::Face;
 
-has HarfBuzz::Buffer $!buf handles<length language lang script direction add-text cairo-glyphs>;
-has HarfBuzz::Font $!font handles<face size scale ft-load-flags>;
+has HarfBuzz::Buffer $!buf handles<length language lang script direction add-text cairo-glyphs is-horizontal is-vertical>;
+has HarfBuzz::Font $!font handles<face size scale glyph-name glyph-from-name glyph-extents ft-load-flags>;
 has HarfBuzz::Feature @!features;
 method features { @!features }
 
-submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, :@features, Str :$file, Font::FreeType::Face :$ft-face, |buf-opts) {
+submethod TWEAK( :@scale, Numeric :$size=12, :@features, Str :$file, Font::FreeType::Face :$ft-face, |buf-opts) {
     if $ft-face.defined {
+        $ft-face.set-char-size($size);
         my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
         my HarfBuzz::Face $face .= new: raw => $raw.get-face();
         $!font = HarfBuzz::Font::FreeType.new(:$raw, :$face, :$ft-face, :@scale, :$size);
@@ -40,7 +42,7 @@ submethod TWEAK( :@scale = [1000, 1000], Numeric :$size, :@features, Str :$file,
     $!font.shape: :$!buf, :@!features;
 }
 
-method glyphs {
+method shape {
     class Iteration does Iterable does Iterator {
         has UInt $.idx = 0;
         has HarfBuzz::Buffer:D $.buf is required;
@@ -66,7 +68,7 @@ method glyphs {
 }
 
 method ast is also<shaper> {
-    self.glyphs.map: *.ast;
+    self.shape.map: *.ast;
 }
 
 method version {

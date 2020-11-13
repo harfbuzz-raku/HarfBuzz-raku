@@ -13,8 +13,9 @@ if HarfBuzz.version < v1.6.0 {
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my $ft-face = Font::FreeType.new.face($file);
 my $text = 'Hell€!';
-my HarfBuzz $hb .= new: :$file, :$text, :language<epo>;
-my HarfBuzz $hb-ft .= new: :text<blah>, :language<epo>, :$ft-face;
+my @scale = 1000;
+my HarfBuzz $hb .= new: :$file, :$text, :language<epo>, :@scale;
+my HarfBuzz $hb-ft .= new: :text<blah>, :language<epo>, :$ft-face, :@scale;
 $hb-ft.set-text: $text;
 
 for $hb, $hb-ft {

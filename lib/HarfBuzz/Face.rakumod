@@ -21,7 +21,6 @@ multi submethod TWEAK(Blob:D :$buf!) {
 multi submethod TWEAK(hb_face:D :$!raw) {
     $!raw.reference;
     given $!raw.reference-blob() {
-        use NativeCall;
         $!blob .= new: :raw($_);
     }
 }

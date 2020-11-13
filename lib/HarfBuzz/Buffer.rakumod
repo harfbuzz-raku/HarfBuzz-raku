@@ -1,8 +1,7 @@
 unit class HarfBuzz::Buffer;
 
 use HarfBuzz::Raw;
-use HarfBuzz::Raw::Defs :types, :&hb-tag-enc;
-use HarfBuzz::Glyph;
+use HarfBuzz::Raw::Defs :types, :&hb-tag-enc, :hb-direction;
 use Method::Also;
 use Cairo;
 
@@ -64,32 +63,36 @@ method direction is rw {
     );
 }
 
+method is-horizontal { self.get-direction ~~ HB_DIRECTION_LTR |  HB_DIRECTION_RTL }
+method is-vertical { self.get-direction ~~ HB_DIRECTION_TTB |  HB_DIRECTION_BTT }
+
 method add-text(Str:D $text, UInt :$offset = 0) {
     my $utf8 = $text.encode;
     $!raw.add-utf8($utf8, $utf8.elems, $offset, $utf8.elems);
 }
 
-method cairo-glyphs {
+method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scale = 1.0) {
     my $elems = $!raw.get-length;
     my Cairo::Glyphs $glyphs .= new: :$elems;
     my $Pos  = $!raw.get-glyph-positions(0);
     my $Info = $!raw.get-glyph-infos(0);
-    my num64 $x = 0e0;
-    my num64 $y = 0e0;
+    my Num $x = $x0.Num;
+    my Num $y = $y0.Num;
+    my $sc := $scale / 64;
 
     for 0 ..^ $elems {
         my hb_glyph_position:D $pos = $Pos[$_];
         my hb_glyph_info:D $info = $Info[$_];
         my Cairo::cairo_glyph_t $glyph = $glyphs[$_];
         $glyph.index = $info.codepoint;
-        $glyph.x = $x  +  $pos.x-offset / 64;
-        $glyph.y = $y  +  $pos.y-offset / 64;
+        $glyph.x = $x  +  $pos.x-offset * $sc;
+        $glyph.y = $y  +  $pos.y-offset * $sc;
 
-        $x += $pos.x-advance / 64;
-        $y += $pos.y-advance / 64;
+        $x += $pos.x-advance * $sc;
+        $y += $pos.y-advance * $sc;
     }
-    $glyphs.x-advance = $x;
-    $glyphs.y-advance = $y;
+    $glyphs.x-advance = $x - $x0;
+    $glyphs.y-advance = $y - $y0;
     $glyphs;
 }
 
