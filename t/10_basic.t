@@ -80,8 +80,12 @@ unless $version >= v2.6.6 {
 }
 is-deeply @info, @expected;
 
+constant H_Gid = 41;
 my $codepoint = $hb.glyph-from-name('H');
-is $codepoint, 41;
+todo "HarfBuzz 2.6.6+ required for reliable glyph names", 2
+    unless $version >= v2.6.6;
+is $codepoint, H_Gid;
+$codepoint ||= H_Gid;
 is $hb.glyph-name($codepoint), 'H';
 my $extents = $hb.glyph-extents($codepoint);
 is $extents.x-bearing, 19;
@@ -89,8 +93,12 @@ is $extents.y-bearing, 662;
 is $extents.width, 683;
 is $extents.height, -662;
 
+constant e_Gid = 70;
 $codepoint = $hb.glyph-from-name('e');
-is $codepoint, 70;
+todo "HarfBuzz 2.6.6+ required for reliable glyph names", 2
+    unless $version >= v2.6.6;
+is $codepoint, e_Gid;
+$codepoint ||= e_Gid;
 is $hb.glyph-name($codepoint), 'e';
 $extents = $hb.glyph-extents($codepoint);
 is $extents.x-bearing, 25;

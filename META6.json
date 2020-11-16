@@ -7,8 +7,8 @@
     "LibraryMake"
   ],
   "depends": [
-      "Cairo",
-      "Font::FreeType",
+      "Cairo:ver<0.2.7+>",
+      "Font::FreeType:ver<0.3.7+>",
       "Method::Also"
   ],
   "description": "binds to the HarfBuzz font shaping library",

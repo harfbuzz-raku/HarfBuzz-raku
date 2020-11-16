@@ -78,7 +78,7 @@ method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scal
     my $Info = $!raw.get-glyph-infos(0);
     my Num $x = $x0.Num;
     my Num $y = $y0.Num;
-    my $sc := $scale / 64;
+    my $sc := $scale / 64 || die "font scale has not been set";
 
     for 0 ..^ $elems {
         my hb_glyph_position:D $pos = $Pos[$_];
