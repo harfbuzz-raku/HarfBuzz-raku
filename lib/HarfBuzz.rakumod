@@ -19,25 +19,20 @@ method features { @!features }
 
 submethod TWEAK( :@scale, Numeric :$size=12, :@features, Str :$file, Font::FreeType::Face :$ft-face, |buf-opts) {
     if $ft-face.defined {
+        warn "ignoring ':file' option" with $file;
         $ft-face.set-char-size($size);
         my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
         my HarfBuzz::Face $face .= new: raw => $raw.get-face();
         $!font = HarfBuzz::Font::FreeType.new(:$raw, :$face, :$ft-face, :@scale, :$size);
     }
     else {
-        my HarfBuzz::Face $face .= new: :$file, :$ft-face;
+        my HarfBuzz::Face $face .= new: :$file;
         my hb_font $raw = hb_font::create($face.raw);
         $!font = HarfBuzz::Font.new(:$raw, :$face, :@scale, :$size);
     }
     $!buf .= new: |buf-opts;
 
-    for @features {
-        when HarfBuzz::Feature:D { @!features.push: $_ }
-        when hb_feature:D { @!features.push: HarfBuzz::Feature.new: :raw($_) }
-        when Pair { @!features.push: HarfBuzz::Feature.new: :str(.key), :disabled(.value) }
-        when Str { @!features.push: HarfBuzz::Feature.new: :str($_) }
-        default { warn "ignoring unknown feature: {.raku}"; }
-    }
+    @!features = @features.map: { HarfBuzz::Feature.COERCE: $_ }
 
     $!font.shape: :$!buf, :@!features;
 }

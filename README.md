@@ -47,14 +47,19 @@ Methods
 ### new
 ```
 method new(
-    Str :$file, Font::FreeType::Face :$ft-face,
-    Str :$text,
-    Numeric :@scale, Numeric :$size = 12,
-    :@features,
-    Str :$language, Str :$script, UInt :$direction
+    Str :$file,                     # font file to load
+    Font::FreeType::Face :$ft-face, # associated FreeType face
+    Str :$text,                     # test to be shaped
+    Numeric :@scale,                # font scale
+    Numeric :$size = 12,            # font size (default 12)
+    HarfBuzz::Feature() :@features, # font features to enable
+    Str :$language,                 # language code
+    Str :$script,                   # font script
+    UInt :$direction,               # font direction
 ) returns HarfBuzz:D;
 ```
 Creates a new HarfBuzz object for text shaping, font subsetting, etc.
+
 
 See Also
 --------

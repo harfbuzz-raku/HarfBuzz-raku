@@ -5,6 +5,7 @@ use HarfBuzz::Raw;
 has hb_feature $.raw handles<value start>;
 
 multi submethod TWEAK(:$!raw!) {}
+
 multi submethod TWEAK(Str:D :$str!) {
     $!raw .= new;
     my Blob $buf = $str.encode;
@@ -19,6 +20,10 @@ multi submethod TWEAK(Str:D :$tag!, UInt :$start = 0, :$end = Inf, Bool :$enable
     self.start = $start;
     self.end = $end;
 }
+
+multi method COERCE( HarfBuzz::Feature:D $_ ) { $_ }
+multi method COERCE( Str:D $str )             { self.new: :$str  }
+multi method COERCE( hb_feature:D $raw )      { self.new: :$raw  }
 
 method tag is rw {
     Proxy.new(

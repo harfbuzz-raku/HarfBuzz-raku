@@ -18,6 +18,10 @@ multi submethod TWEAK(Blob:D :$buf!) {
     $!raw.reference;
 }
 
+multi method COERCE(Str:D :$file!)     { self.new: :$file; }
+multi method COERCE(hb_blob:D :$blob!) { self.new: :$blob; }
+multi method COERCE(Blob:D :$buf!)     { self.new: :$buf; }
+
 method Blob {
     my uint32 $len;
     my Pointer $data = $!raw.get-data($len);
