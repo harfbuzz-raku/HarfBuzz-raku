@@ -4,7 +4,7 @@ os:
   - linux
 perl6:
   - latest
-  - '2020.06'
+  - '2020.11'
 before_install:
   - sudo apt-get -y install libharfbuzz-dev
 install:

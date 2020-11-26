@@ -13,8 +13,15 @@ multi submethod TWEAK(hb_face:D :$!raw) is default {
     }
 }
 
-multi submethod TWEAK(|c) {
-    $!blob .= new: |c;
+multi submethod TWEAK(Str:D :$file!) {
+    self!to-blob: $file;
+}
+
+multi submethod TWEAK(Blob:D :$buf!) {
+    self!to-blob: $buf;
+}
+
+method !to-blob(HarfBuzz::Blob() $!blob) {
     $!raw .= new: :blob($!blob.raw);
     $!raw.reference;
 }
