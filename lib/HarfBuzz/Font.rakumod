@@ -55,7 +55,7 @@ method glyph-extents(UInt:D $codepoint) {
     $glyph-extents;
 }
 
-method shape(HarfBuzz::Buffer:D :$buf!, HarfBuzz::Feature :@features) {
+method shape(HarfBuzz::Buffer:D :$buf!, HarfBuzz::Feature() :@features) {
     my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@features);
     my hb_features $feats = nativecast(hb_features, $feats-buf);
     for 0 ..^ +@features {

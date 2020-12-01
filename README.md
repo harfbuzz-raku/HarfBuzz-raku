@@ -14,7 +14,8 @@ Synopsis
 ```
 use HarfBuzz;
 my $file = 't/fonts/NimbusRoman-Regular.otf';
-my HarfBuzz $hb .= new: :$file, :size(36), :text<Hello!>;
+my @features = <smcp -kern -liga>; # enable small-caps, disable kerning and ligatures
+my HarfBuzz $hb .= new: :$file, :size(36), :text<Hello!>, :@features;
 my @info = $hb.shape>>.ast;
 ```
 
@@ -25,7 +26,7 @@ Description
 
 HarfBuzz is a Raku module that provides access to a small subset of the native HarfBuzz library. 
 
-The subset is suitable for typesetting programs that need to deal with complex languages like Devanagari, Hebrew or Arabic.
+The subset is suitable for typesetting programs, whether they need to do basic glyph selection and layout, or deal with complex languages like Devanagari, Hebrew or Arabic.
 
 Following the above example, the returned info is an array of hashes, one element for each glyph to be typeset. The hash contains the following items:
 
@@ -46,20 +47,28 @@ Methods
 
 ### new
 ```
-method new(
+multi method new(
     Str :$file,                     # font file to load
+    Str :$text,                     # text to be shaped
+    *%options
+) returns HarfBuzz:D;
+
+multi method new(
     Font::FreeType::Face :$ft-face, # associated FreeType face
-    Str :$text,                     # test to be shaped
-    Numeric :@scale,                # font scale
+    Str :$text,                     # text to be shaped
+    *%options
+) returns HarfBuzz:D;
+```
+Where `%options` is:
+```
+    Numeric :@scale,                # font scale [x and y (optional)]
     Numeric :$size = 12,            # font size (default 12)
     HarfBuzz::Feature() :@features, # font features to enable
     Str :$language,                 # language code
     Str :$script,                   # font script
     UInt :$direction,               # font direction
-) returns HarfBuzz:D;
 ```
 Creates a new HarfBuzz object for text shaping, font subsetting, etc.
-
 
 See Also
 --------

@@ -6,9 +6,9 @@ use HarfBuzz;
 use HarfBuzz::Glyph;
 use Cairo;
 
-sub MAIN(Str $font-file, Str $text = 'Hello from HarfBuzz', :$output = 'out.png', UInt :$font-size = 36, Numeric :$margin = $font-size / 2) {
+sub MAIN(Str $font-file, Str $text = 'Hello from HarfBuzz', :@features, :$output = 'out.png', UInt :$font-size = 36, Numeric :$margin = $font-size / 2) {
     my Font::FreeType::Face:D $ft-face = Font::FreeType.face($font-file);
-    my HarfBuzz $shaper .= new: :$ft-face, :$text, :size($font-size);
+    my HarfBuzz $shaper .= new: :$ft-face, :$text, :size($font-size), :@features;
     my HarfBuzz::Glyph @glyphs = $shaper.shape;
     my $width  = 2 * $margin + @glyphs>>.x-advance.sum ;
     my $height = 2 * $margin - @glyphs>>.y-advance.sum;
@@ -29,7 +29,6 @@ sub MAIN(Str $font-file, Str $text = 'Hello from HarfBuzz', :$output = 'out.png'
     if $shaper.is-horizontal {
         my Cairo::cairo_font_extents_t \font_extents = $ctx.font_extents;
         my $baseline = ($font-size - font_extents.height) * .5  + font_extents.ascent;
-        warn $baseline;
         $ctx.translate(0, $baseline);
     }
     else {
