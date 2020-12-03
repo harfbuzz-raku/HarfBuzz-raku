@@ -15,7 +15,7 @@ Synopsis
 use HarfBuzz;
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my @features = <smcp -kern -liga>; # enable small-caps, disable kerning and ligatures
-my HarfBuzz $hb .= new: :$file, :size(36), :text<Hello!>, :@features;
+my HarfBuzz $hb .= new: :font{:$file, :size(36), :@features} :text<Hello!>;
 my @info = $hb.shape>>.ast;
 ```
 
@@ -48,18 +48,12 @@ Methods
 ### new
 ```
 multi method new(
-    Str :$file,                     # font file to load
-    Str :$text,                     # text to be shaped
-    *%options
-) returns HarfBuzz:D;
-
-multi method new(
-    Font::FreeType::Face :$ft-face, # associated FreeType face
+    HarfBuzz::Font() :$font,                     # font object
     Str :$text,                     # text to be shaped
     *%options
 ) returns HarfBuzz:D;
 ```
-Where `%options` is:
+Where font options are:
 ```
     Numeric :@scale,                # font scale [x and y (optional)]
     Numeric :$size = 12,            # font size (default 12)

@@ -4,36 +4,17 @@ use HarfBuzz::Buffer;
 use HarfBuzz::Face;
 use HarfBuzz::Feature;
 use HarfBuzz::Font;
-use HarfBuzz::Font::FreeType;
 use HarfBuzz::Glyph;
 use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
-use Font::FreeType::Face;
 
 has HarfBuzz::Buffer $!buf handles<length language lang script direction get-text cairo-glyphs is-horizontal is-vertical>;
-has HarfBuzz::Font $!font handles<face size scale glyph-name glyph-from-name glyph-extents ft-load-flags>;
-has HarfBuzz::Feature() @!features;
-method features { @!features }
+has HarfBuzz::Font $!font handles<face size scale glyph-name glyph-from-name glyph-extents ft-load-flags features>;
 
-submethod TWEAK( :@scale, Numeric :$size=12, :@features, Str :$file, Font::FreeType::Face :$ft-face, |buf-opts) {
-    if $ft-face.defined {
-        warn "ignoring ':file' option" with $file;
-        $ft-face.set-char-size($size);
-        my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
-        my HarfBuzz::Face() $face = $raw.get-face();
-        $!font = HarfBuzz::Font::FreeType.new(:$raw, :$face, :$ft-face, :@scale, :$size);
-    }
-    else {
-        my HarfBuzz::Face() $face = $file;
-        my hb_font $raw = hb_font::create($face.raw);
-        $!font = HarfBuzz::Font.new(:$raw, :$face, :@scale, :$size);
-    }
+submethod TWEAK( HarfBuzz::Font() :$!font, |buf-opts) {
     $!buf .= new: |buf-opts;
-
-    @!features = @features;
-
-    $!font.shape: :$!buf, :@!features;
+    $!font.shape: :$!buf;
 }
 
 method shape {
@@ -86,7 +67,7 @@ method version {
 
 method set-text(Str:D $text) {
     $!buf.set-text: $text;
-    $!font.shape: :$!buf, :@!features;
+    $!font.shape: :$!buf;
 }
 
 method text is rw {

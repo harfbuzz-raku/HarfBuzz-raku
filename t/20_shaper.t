@@ -18,7 +18,7 @@ my $text =
   "\c[DEVANAGARI SIGN VIRAMA]"~
   "\c[DEVANAGARI LETTER GA]";
 
-my HarfBuzz $hb .= new: :$file, :$text, :language<epo>, :$size;
+my HarfBuzz $hb .= new: :font{ :$file, :$size}, :$text, :language<epo>,;
 my @info = $hb.shape>>.ast;
 
 is-deeply $hb.scale, (1024, 1024);
@@ -60,7 +60,7 @@ my @expected = [
 ];
 
 unless $version >= v2.6.4 {
-    # advance-x older HarfBuzz versions
+    # advance-x not available older HarfBuzz versions
     .<ax>:delete for flat @expected, @info;
 }
 unless $version >= v2.6.6 {

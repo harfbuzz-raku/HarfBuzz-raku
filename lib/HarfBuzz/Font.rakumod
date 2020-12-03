@@ -5,10 +5,12 @@ use HarfBuzz::Raw::Defs :types;
 use HarfBuzz::Buffer;
 use HarfBuzz::Face;
 use HarfBuzz::Feature;
+use Font::FreeType::Face;
 use NativeCall;
 
 has HarfBuzz::Face $.face handles<Blob>;
 has hb_font $.raw is required;
+has HarfBuzz::Feature() @.features;
 
 submethod TWEAK(:@scale, Numeric :$size) {
     $!raw.reference;
@@ -18,6 +20,22 @@ submethod TWEAK(:@scale, Numeric :$size) {
 
 submethod DESTROY {
     $!raw.destroy;
+}
+
+multi method COERCE(%font ( :@scale, Numeric :$size=12, :@features, Str :$file, Font::FreeType::Face :$ft-face) ) {
+    if $ft-face.defined {
+        warn "ignoring ':file' option" with $file;
+        $ft-face.set-char-size($size);
+        my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
+        my HarfBuzz::Face() $face = $raw.get-face();
+        (require ::('HarfBuzz::Font::FreeType')).new(:$raw, :$face, :$ft-face, :@scale, :$size, :@features);
+    }
+    else {
+        my HarfBuzz::Face() $face = $file;
+        my hb_font $raw = hb_font::create($face.raw);
+        self.new(:$raw, :$face, :@scale, :$size, :@features);
+    }
+
 }
 
 method size is rw {
@@ -55,11 +73,9 @@ method glyph-extents(UInt:D $codepoint) {
     $glyph-extents;
 }
 
-method shape(HarfBuzz::Buffer:D :$buf!, HarfBuzz::Feature() :@features) {
-    my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@features);
+method shape(HarfBuzz::Buffer:D :$buf!) {
+    my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@!features);
     my hb_features $feats = nativecast(hb_features, $feats-buf);
-    for 0 ..^ +@features {
-        $feats[$_] = @features[$_].raw;
-    }
-    $!raw.shape($buf.raw, $feats, +@features);
+    $feats[.key] = .value.raw for @!features.pairs;
+    $!raw.shape($buf.raw, $feats, +@!features);
 }

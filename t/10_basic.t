@@ -14,7 +14,7 @@ if $version < v1.6.0 {
 is hb-tag-dec(hb-tag-enc('post')), 'post';
 
 my $file = 't/fonts/NimbusRoman-Regular.otf';
-my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<test>, :language<epo>;
+my HarfBuzz $hb .= new: :font{ :$file, :size(36), :scale[1000], }, :text<test>, :language<epo>;
 is $hb.text, 'test';
 $hb.text = 'Hell€!';
 is $hb.text, 'Hell€!';

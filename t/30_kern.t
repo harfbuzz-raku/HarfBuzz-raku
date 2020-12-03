@@ -11,7 +11,7 @@ if $version < v1.6.0 {
 my $file := 't/fonts/NimbusRoman-Regular.otf';
 my $size := 36;
 my $text := 'LVAT';
-my HarfBuzz $hb .= new: :$file, :$size, :$text, :language<epo>;
+my HarfBuzz $hb .= new: :font{ :$file, :$size,},  :$text, :language<epo>;
 my @info = $hb.shaper;
 my @expected = [
   { ax => 17.86, ay => 0.0, dx => 0.0, dy => 0.0, g => 45, name => 'L' },
@@ -26,7 +26,7 @@ if $version < v2.6.6 {
 }
 is-deeply @info, @expected, "content default kern";
 
-$hb .= new: :$file, :$size, :$text, :language<epo>, :features[ '-kern' ];
+$hb .= new: :font{ :$file, :$size, :features[ '-kern' ] }, :$text, :language<epo>, ;
 @info = $hb.shaper;
 
 @expected = [
