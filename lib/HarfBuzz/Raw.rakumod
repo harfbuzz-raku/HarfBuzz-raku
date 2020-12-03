@@ -109,6 +109,12 @@ class hb_language is repr('CPointer') is export {
         from_string($tag, $len);
     }
     method to-string(--> Str) is native($HB) is symbol('hb_language_to_string') {*}
+    multi method COERCE(Str:D $tag) {
+        from_string($tag.encode);
+    }
+    method Str(hb_language:D:) {
+        self.to-string;
+    }
 }
 
 class hb_buffer is repr('CPointer') is export {
@@ -147,10 +153,16 @@ class hb_feature is export is repr('CStruct') is rw {
     has uint32  $.value;
     has uint32  $.start;
     has uint32  $.end;
-    sub from-string(Blob, int32, hb_feature --> hb_bool) is native($HB) is symbol('hb_feature_from_string')  {*}
+    sub from_string(Blob, int32, hb_feature --> hb_bool) is native($HB) is symbol('hb_feature_from_string')  {*}
     method to-string(blob8, uint32) is native($HB) is symbol('hb_feature_to_string')  {*}
     method from-string(Blob $buf, $len = $buf.bytes) {
-        from-string($buf, $len, self);
+        from_string($buf, $len, self);
+    }
+    multi method COERCE(Str:D $tag) {
+        from_string($tag.encode);
+    }
+    method Str(hb_language:D:) {
+        self.to-string;
     }
 };
 

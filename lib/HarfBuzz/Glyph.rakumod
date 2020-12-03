@@ -4,7 +4,7 @@ use HarfBuzz::Raw;
 
 has $.buf is required;
 has Str:D $.name is required;
-has @.vec is required;
+has @.vec[2] is required;
 has hb_glyph_position $!pos;
 has hb_glyph_info     $!info;
 
@@ -21,6 +21,7 @@ method x-advance {
 method y-advance {
     $.vec(y, $!pos.y-advance);
 }
+method advance { Complex.new( $.x-advance, $.y-advance ); }
 
 method x-offset {
     $.vec(x, $!pos.x-offset);
@@ -28,6 +29,7 @@ method x-offset {
 method y-offset {
     $.vec(y, $!pos.y-offset);
 }
+method offset { Complex.new( $.x-offset, $.y-offset ); }
 
 method ast {
     %(

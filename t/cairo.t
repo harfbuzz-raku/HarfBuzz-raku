@@ -16,7 +16,7 @@ my $text = 'Hell€!';
 my @scale = 1000;
 my HarfBuzz $hb .= new: :$file, :$text, :language<epo>, :@scale;
 my HarfBuzz $hb-ft .= new: :text<blah>, :language<epo>, :$ft-face, :@scale;
-$hb-ft.set-text: $text;
+$hb-ft.text = $text;
 
 for $hb, $hb-ft {
     my Cairo::Glyphs $glyphs = .cairo-glyphs;

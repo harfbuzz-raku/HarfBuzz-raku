@@ -11,7 +11,7 @@ use NativeCall;
 use Method::Also;
 use Font::FreeType::Face;
 
-has HarfBuzz::Buffer $!buf handles<length language lang script direction add-text cairo-glyphs is-horizontal is-vertical>;
+has HarfBuzz::Buffer $!buf handles<length language lang script direction get-text cairo-glyphs is-horizontal is-vertical>;
 has HarfBuzz::Font $!font handles<face size scale glyph-name glyph-from-name glyph-extents ft-load-flags>;
 has HarfBuzz::Feature() @!features;
 method features { @!features }
@@ -61,6 +61,21 @@ method shape {
     Iteration.new: :$!buf, :$!font;
 }
 
+method measure {
+    my hb_glyph_position $Pos = $!buf.raw.get-glyph-positions(0);
+    my UInt:D ($dx, $dy);
+    my @vec = @.scale.map: $.size / *;
+    my enum <x y>;
+
+    for 0 ..^ $!buf.length {
+        given $Pos[$_] {
+            $dx += .x-advance;
+            $dy += .y-advance;
+        }
+    }
+    Complex.new(($dx * @vec[x]).round(.01), ($dy * @vec[y]).round(.01));
+}
+
 method ast is also<shaper> {
     self.shape.map: *.ast;
 }
@@ -70,7 +85,15 @@ method version {
 }
 
 method set-text(Str:D $text) {
-    $!buf .= clone: :$text;
+    $!buf.set-text: $text;
     $!font.shape: :$!buf, :@!features;
 }
 
+method text is rw {
+    Proxy.new(
+        FETCH => { self.get-text },
+        STORE => -> $, Str:D $str {
+            self.set-text: $str;
+        }
+    );
+}

@@ -5,12 +5,21 @@ use HarfBuzz::Raw::Defs :types, :&hb-tag-enc, :hb-direction;
 use Method::Also;
 use Cairo;
 
-has hb_buffer $.raw is built handles<guess-segment-properties get-length clear-contents> .= new;
+has hb_buffer $.raw is built handles<guess-segment-properties get-length set-length> .= new;
+has hb_language $!lang;
+has UInt $!script;
+has UInt $!direction;
+has Str $.text is built;
+
+method clear-contents {
+    $!raw.clear-contents;
+    $!text = '';
+}
 
 method get-language { $!raw.get-language.to-string }
 method set-language(Str:D $tag) {
-    with hb_language.from-string($tag.encode) -> hb_language:D $lang {
-        $!raw.set-language($lang);
+    with hb_language.from-string($tag.encode) -> hb_language:D $!lang {
+        $!raw.set-language($!lang);
     }
     else {
         warn "unknown language: $tag";
@@ -35,16 +44,16 @@ method length is rw {
 }
 
 method get-script { $!raw.get-script }
-multi method set-script(Str:D $script) {
-    $!raw.set-script(hb-tag-enc($script));
+multi method set-script(Str:D $tag) {
+    self.set-script(hb-tag-enc($tag));
 }
-multi method set-script(UInt:D $script) {
-    $!raw.set-script($script);
+multi method set-script(UInt:D $!script) {
+    $!raw.set-script($!script);
 }
 method script is rw {
     Proxy.new(
         FETCH => { self.get-script },
-        STORE => -> $, $_ {
+        STORE => -> $, Str() $_ {
             self.set-script($_);
         }
     );
@@ -57,18 +66,19 @@ multi method set-direction(UInt:D $direction) {
 method direction is rw {
     Proxy.new(
         FETCH => { self.get-direction },
-        STORE => -> $, $_ {
+        STORE => -> $, Int() $_ {
             self.set-direction($_);
         }
     );
 }
 
-method is-horizontal { self.get-direction ~~ HB_DIRECTION_LTR |  HB_DIRECTION_RTL }
-method is-vertical { self.get-direction ~~ HB_DIRECTION_TTB |  HB_DIRECTION_BTT }
+method is-horizontal { self.get-direction ~~ HB_DIRECTION_LTR | HB_DIRECTION_RTL }
+method is-vertical { self.get-direction ~~ HB_DIRECTION_TTB | HB_DIRECTION_BTT }
 
-method add-text(Str:D $text, UInt :$offset = 0) {
-    my $utf8 = $text.encode;
+method add-text(Str:D $str, UInt :$offset = 0) {
+    my blob8:D $utf8 = $str.encode;
     $!raw.add-utf8($utf8, $utf8.elems, $offset, $utf8.elems);
+    $!text ~= $str;
 }
 
 method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scale = 1.0) {
@@ -98,15 +108,23 @@ method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scal
 
 submethod TWEAK(Str :$text, Str :$language, :$script, UInt :$direction) {
     $!raw.reference;
-    self.add-text($_) with $text;
+    self.set-text($_) with $text;
     self.guess-segment-properties();
     self.set-language($_) with $language;
     self.set-script($_) with $script;
     self.set-direction($_) with $direction;
 }
 
-method clone(|c) {
-    self.new: :$.language, :$.script, :$.direction, |c;
+method get-text { $!text }
+
+method set-text(Str:D $str) {
+    self.clear-contents();
+    self.add-text($str);
+    self.guess-segment-properties();
+    # reapply any explicit settings
+    $!raw.set-language($_) with $!lang;
+    $!raw.set-script($_) with $!script;
+    $!raw.set-direction($_) with $!direction;
 }
 
 submethod DESTROY {

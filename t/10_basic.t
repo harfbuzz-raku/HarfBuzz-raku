@@ -1,7 +1,7 @@
 use HarfBuzz;
 use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
 use Test;
-plan 22;
+plan 25;
 my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
@@ -14,7 +14,10 @@ if $version < v1.6.0 {
 is hb-tag-dec(hb-tag-enc('post')), 'post';
 
 my $file = 't/fonts/NimbusRoman-Regular.otf';
-my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<Hell€!>, :language<epo>;
+my HarfBuzz $hb .= new: :$file, :size(36), :scale[1000], :text<test>, :language<epo>;
+is $hb.text, 'test';
+$hb.text = 'Hell€!';
+is $hb.text, 'Hell€!';
 is $hb.size, 36;
 is $hb.scale[0], 1000;
 is $hb.length, 6;
@@ -79,6 +82,8 @@ unless $version >= v2.6.6 {
     .<name>:delete for flat @expected, @info;
 }
 is-deeply @info, @expected;
+
+is-approx $hb.measure.re, @info.map(*<ax>).sum;
 
 constant H_Gid = 41;
 my $codepoint = $hb.glyph-from-name('H');

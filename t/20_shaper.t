@@ -64,7 +64,7 @@ unless $version >= v2.6.4 {
     .<ax>:delete for flat @expected, @info;
 }
 unless $version >= v2.6.6 {
-    # names not avaiable in older HarfBuzz versions
+    # names not available in older HarfBuzz versions
     .<name>:delete for flat @expected, @info;
 }
 
