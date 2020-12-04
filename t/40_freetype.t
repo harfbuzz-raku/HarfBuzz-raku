@@ -16,7 +16,7 @@ my $file = 't/fonts/NimbusRoman-Regular.otf';
 my Font::FreeType::Face $ft-face = Font::FreeType.new.face($file);
 my $size = 36;
 my @scale = 1000, 1000;
-my HarfBuzz $hb .= new: :text<Hell€!>, :language<epo>, :font{ :$ft-face, :$size, :@scale};
+my HarfBuzz $hb .= new: :buf{:text<Hell€!>, :language<epo>}, :font{ :$ft-face, :$size, :@scale};
 is $hb.size, 36;
 is $hb.scale[0], 1000;
 is $hb.length, 6;

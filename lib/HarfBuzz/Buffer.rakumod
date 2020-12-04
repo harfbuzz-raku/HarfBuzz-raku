@@ -9,7 +9,18 @@ has hb_buffer $.raw is built handles<guess-segment-properties get-length set-len
 has hb_language $!lang;
 has UInt $!script;
 has UInt $!direction;
-has Str $.text is built;
+has Str $.text;
+
+submethod TWEAK(Str :$language, :$script, UInt :$direction) {
+    $!raw.reference;
+    $!raw.add-text($_) with $!text;
+    self.guess-segment-properties();
+    self.set-language($_) with $language;
+    self.set-script($_) with $script;
+    self.set-direction($_) with $direction;
+}
+
+multi method COERCE(%opts) { self.new: |%opts }
 
 method clear-contents {
     $!raw.clear-contents;
@@ -75,12 +86,6 @@ method direction is rw {
 method is-horizontal { self.get-direction ~~ HB_DIRECTION_LTR | HB_DIRECTION_RTL }
 method is-vertical { self.get-direction ~~ HB_DIRECTION_TTB | HB_DIRECTION_BTT }
 
-method add-text(Str:D $str, UInt :$offset = 0) {
-    my blob8:D $utf8 = $str.encode;
-    $!raw.add-utf8($utf8, $utf8.elems, $offset, $utf8.elems);
-    $!text ~= $str;
-}
-
 method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scale = 1.0) {
     my $elems = $!raw.get-length;
     my Cairo::Glyphs $glyphs .= new: :$elems;
@@ -106,25 +111,29 @@ method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scal
     $glyphs;
 }
 
-submethod TWEAK(Str :$text, Str :$language, :$script, UInt :$direction) {
-    $!raw.reference;
-    self.set-text($_) with $text;
-    self.guess-segment-properties();
-    self.set-language($_) with $language;
-    self.set-script($_) with $script;
-    self.set-direction($_) with $direction;
-}
-
-method get-text { $!text }
-
-method set-text(Str:D $str) {
-    self.clear-contents();
-    self.add-text($str);
-    self.guess-segment-properties();
+method reset {
+    $!raw.clear-contents();
+    $!raw.add-text($!text);
+    $!raw.guess-segment-properties();
     # reapply any explicit settings
     $!raw.set-language($_) with $!lang;
     $!raw.set-script($_) with $!script;
     $!raw.set-direction($_) with $!direction;
+}
+
+method get-text { $!text }
+
+method set-text(Str:D $!text) {
+    self.reset();
+}
+
+method text is rw {
+    Proxy.new(
+        FETCH => { self.get-text },
+        STORE => -> $, Str:D $str {
+            self.set-text: $str;
+        }
+    );
 }
 
 submethod DESTROY {

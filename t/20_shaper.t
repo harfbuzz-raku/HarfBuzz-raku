@@ -18,7 +18,7 @@ my $text =
   "\c[DEVANAGARI SIGN VIRAMA]"~
   "\c[DEVANAGARI LETTER GA]";
 
-my HarfBuzz $hb .= new: :font{ :$file, :$size}, :$text, :language<epo>,;
+my HarfBuzz $hb .= new: :font{ :$file, :$size}, :buf{ :$text, :language<epo>, };
 my @info = $hb.shape>>.ast;
 
 is-deeply $hb.scale, (1024, 1024);

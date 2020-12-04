@@ -7,7 +7,8 @@ use HarfBuzz::Raw;
 use Font::FreeType::Face;
 has Font::FreeType::Face:D $.ft-face is required;
 
-submethod TWEAK(:$funcs = True) {
+submethod TWEAK(:$funcs = True, UInt:D :$size = 12) {
+    $!ft-face.set-char-size($size);
     self.raw.ft-set-funcs()
         if $funcs;
 }

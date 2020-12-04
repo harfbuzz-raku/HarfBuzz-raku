@@ -9,40 +9,30 @@ use Font::FreeType::Face;
 use NativeCall;
 
 has HarfBuzz::Face $.face handles<Blob>;
-has hb_font $.raw is required;
+has hb_font $.raw is required handles<get-size set-size>;
 has HarfBuzz::Feature() @.features;
 
-submethod TWEAK(:@scale, Numeric :$size) {
+submethod TWEAK(:@scale, Num() :$size=12e0) {
     $!raw.reference;
     self.scale = @scale if @scale;
-    self.size = $size if $size;
+    self.set-size($size) if $size;
 }
 
 submethod DESTROY {
     $!raw.destroy;
 }
 
-multi method COERCE(%font ( :@scale, Numeric :$size=12, :@features, Str :$file, Font::FreeType::Face :$ft-face) ) {
-    if $ft-face.defined {
-        warn "ignoring ':file' option" with $file;
-        $ft-face.set-char-size($size);
-        my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
-        my HarfBuzz::Face() $face = $raw.get-face();
-        (require ::('HarfBuzz::Font::FreeType')).new(:$raw, :$face, :$ft-face, :@scale, :$size, :@features);
-    }
-    else {
-        my HarfBuzz::Face() $face = $file;
-        my hb_font $raw = hb_font::create($face.raw);
-        self.new(:$raw, :$face, :@scale, :$size, :@features);
-    }
-
+multi method COERCE(% ( Font::FreeType::Face:D :$ft-face!, :$file, :@features, |opts) ) {
+    warn "ignoring ':file' option" with $file;
+    my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
+    my HarfBuzz::Face() $face = $raw.get-face();
+    (require ::('HarfBuzz::Font::FreeType')).new(:$raw, :$face, :$ft-face, :@features, |opts)
 }
 
-method size is rw {
-    Proxy.new(
-        FETCH => { $!raw.get-size },
-        STORE => -> $, Num() $_ { $!raw.set-size($_) }
-    );
+multi method COERCE(% ( Str:D :$file!, :@features, |opts) ) {
+    my HarfBuzz::Face() $face = $file;
+    my hb_font $raw = hb_font::create($face.raw);
+    self.new: :$raw, :$face, :@features, |opts;
 }
 
 method scale is rw {

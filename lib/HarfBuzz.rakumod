@@ -9,12 +9,30 @@ use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
 
-has HarfBuzz::Buffer $!buf handles<length language lang script direction get-text cairo-glyphs is-horizontal is-vertical>;
-has HarfBuzz::Font $!font handles<face size scale glyph-name glyph-from-name glyph-extents ft-load-flags features>;
+has HarfBuzz::Buffer() $!buf handles<length language lang script direction get-text cairo-glyphs is-horizontal is-vertical>;
+has HarfBuzz::Font() $!font handles<face scale glyph-name glyph-from-name glyph-extents ft-load-flags features>;
 
-submethod TWEAK( HarfBuzz::Font() :$!font, |buf-opts) {
-    $!buf .= new: |buf-opts;
-    $!font.shape: :$!buf;
+submethod TWEAK( HarfBuzz::Font() :$!font, HarfBuzz::Buffer() :$!buf = HarfBuzz::Buffer.new) {
+    self.reset
+}
+
+method buf is rw {
+    Proxy.new(
+        FETCH => { $!buf },
+        STORE => -> $, $!buf {
+            self.reset;
+        }
+    )
+}
+
+method font is rw {
+    Proxy.new(
+        FETCH => { $!font },
+        STORE => -> $, $!font {
+            $!buf.reset;
+            self.reset;
+        }
+    )
 }
 
 method shape {
@@ -30,7 +48,7 @@ method shape {
                 my hb_glyph_position:D $pos = $!Pos[$!idx];
                 my hb_glyph_info:D $info = $!Info[$!idx];
                 $!idx++;
-                my @vec = @.scale.map: $.size / *;
+                my @vec = @.scale.map: $!font.get-size / *;
                 my Str:D $name = $!font.glyph-name($info.codepoint);
                 HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$!buf, :@vec;
             }
@@ -65,9 +83,13 @@ method version {
     HarfBuzz::Raw::version();
 }
 
+method reset {
+    $!font.shape: :$!buf;
+}    
+
 method set-text(Str:D $text) {
     $!buf.set-text: $text;
-    $!font.shape: :$!buf;
+    self.reset();
 }
 
 method text is rw {
@@ -78,3 +100,15 @@ method text is rw {
         }
     );
 }
+
+method size is rw {
+    Proxy.new(
+        FETCH => { $!font.get-size },
+        STORE => -> $, Num() $_ {
+            $!font.set-size($_);
+            $!buf.reset;
+            self.reset;
+        }
+    );
+}
+

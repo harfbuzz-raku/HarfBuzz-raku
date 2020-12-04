@@ -47,22 +47,33 @@ Methods
 
 ### new
 ```
-multi method new(
-    HarfBuzz::Font() :$font,                     # font object
-    Str :$text,                     # text to be shaped
-    *%options
+method new(
+    HarfBuzz::Font()   :$font,      # font object
+    HarfBuzz::Buffer() :$buf,       # buffer to be shaped
 ) returns HarfBuzz:D;
 ```
-Where font options are:
-```
-    Numeric :@scale,                # font scale [x and y (optional)]
-    Numeric :$size = 12,            # font size (default 12)
-    HarfBuzz::Feature() :@features, # font features to enable
-    Str :$language,                 # language code
-    Str :$script,                   # font script
-    UInt :$direction,               # font direction
-```
 Creates a new HarfBuzz object for text shaping, font subsetting, etc.
+
+`:$font` and `:$buf` can be supplied as objects or coerced from option hashes, logically:
+```
+method new(
+    :%font (
+      Numeric :@scale,                # font scale [x and y (optional)]
+      Numeric :$size = 12,            # font size (default 12)
+      HarfBuzz::Feature() :@features, # font features to enable
+    ),
+    :%buf (
+      Str :$language,                 # language code
+      Str :$script,                   # font script
+      UInt :$direction,               # font direction
+    ),
+)
+```
+
+shape returns
+====
+Returns an iterable see of Harf
+
 
 See Also
 --------
