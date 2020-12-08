@@ -1,4 +1,4 @@
-use HarfBuzz;
+use HarfBuzz::Shaper;
 use HarfBuzz::Raw::Defs :&hb-tag-dec, :hb-script, :hb-direction;
 use Test;
 use Font::FreeType;
@@ -7,8 +7,8 @@ use Font::FreeType::Raw::Defs;
 
 plan 9;
 
-if HarfBuzz.version < v1.6.0 {
-    skip-rest "HarfBuzz version is too old";
+if HarfBuzz::Shaper.version < v1.6.0 {
+    skip-rest "HarfBuzz::Shaper version is too old";
     exit;
 }
 
@@ -16,7 +16,7 @@ my $file = 't/fonts/NimbusRoman-Regular.otf';
 my Font::FreeType::Face $ft-face = Font::FreeType.new.face($file);
 my $size = 36;
 my @scale = 1000, 1000;
-my HarfBuzz $hb .= new: :buf{:text<Hell€!>, :language<epo>}, :font{ :$ft-face, :$size, :@scale};
+my HarfBuzz::Shaper $hb .= new: :buf{:text<Hell€!>, :language<epo>}, :font{ :$ft-face, :$size, :@scale};
 is $hb.size, 36;
 is $hb.scale[0], 1000;
 is $hb.length, 6;
@@ -77,7 +77,7 @@ my @expected = [
   },
 ];
 
-unless HarfBuzz.version >= v2.6.6 {
+unless HarfBuzz::Shaper.version >= v2.6.6 {
     # name not available in older HarfBuzz versions
     .<name>:delete for flat @expected, @info;
 }

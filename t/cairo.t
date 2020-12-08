@@ -1,12 +1,12 @@
-use HarfBuzz;
+use HarfBuzz::Shaper;
 use Cairo;
 use Font::FreeType;
 use Font::FreeType::Face;
 use Test;
 plan 42;
 
-if HarfBuzz.version < v1.6.0 {
-    skip-rest "HarfBuzz version ({HarfBuzz.version}) is too old";
+if HarfBuzz::Shaper.version < v1.6.0 {
+    skip-rest "HarfBuzz version ({HarfBuzz::Shaper.version}) is too old";
     exit;
 }
 
@@ -14,8 +14,8 @@ my $file = 't/fonts/NimbusRoman-Regular.otf';
 my $ft-face = Font::FreeType.new.face($file);
 my $text = 'Hell€!';
 my @scale = 1000;
-my HarfBuzz $hb .= new: :font{:$file, :@scale}, :buf{:$text, :language<epo>};
-my HarfBuzz $hb-ft .= new: :buf{:text<blah>, :language<epo>}, :font{ :$ft-face, :@scale};
+my HarfBuzz::Shaper $hb .= new: :font{:$file, :@scale}, :buf{:$text, :language<epo>};
+my HarfBuzz::Shaper $hb-ft .= new: :buf{:text<blah>, :language<epo>}, :font{ :$ft-face, :@scale};
 $hb-ft.text = $text;
 
 for $hb, $hb-ft {

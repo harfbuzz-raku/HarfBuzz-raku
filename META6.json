@@ -25,7 +25,8 @@
     "HarfBuzz::Font::FreeType" : "lib/HarfBuzz/Font/FreeType.rakumod",
     "HarfBuzz::Glyph"          : "lib/HarfBuzz/Glyph.rakumod",
     "HarfBuzz::Raw"            : "lib/HarfBuzz/Raw.rakumod",
-    "HarfBuzz::Raw::Defs"      : "lib/HarfBuzz/Raw/Defs.rakumod"
+    "HarfBuzz::Raw::Defs"      : "lib/HarfBuzz/Raw/Defs.rakumod",
+    "HarfBuzz::Shaper"         : "lib/HarfBuzz/Shaper.rakumod"
   },
   "resources": [
   ],

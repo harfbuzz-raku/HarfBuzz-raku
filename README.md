@@ -15,8 +15,8 @@ Synopsis
 use HarfBuzz;
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my @features = <smcp -kern -liga>; # enable small-caps, disable kerning and ligatures
-my HarfBuzz $hb .= new: :font{:$file, :size(36), :@features} :text<Hello!>;
-my @info = $hb.shape>>.ast;
+my HarfBuzz::Shaper $shaper .= new: :font{:$file, :size(36), :@features} :buf{:text<Hello!>};
+my @info = $shaper.ast;
 ```
 
 The result is an array of hashes, one element for each glyph to be typeset.

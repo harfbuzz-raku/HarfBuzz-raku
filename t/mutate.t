@@ -1,9 +1,9 @@
 # check that we can update various object properties
 use Test;
 plan 8;
-use HarfBuzz;
+use HarfBuzz::Shaper;
 sub hb(:$size = 24, :$text = 'test', :$file = 't/fonts/NimbusRoman-Regular.otf') {
-   HarfBuzz.new: :font{ :$file, :$size }, :buf{:$text, :language<epo>};
+   HarfBuzz::Shaper.new: :font{ :$file, :$size }, :buf{:$text, :language<epo>};
 }
 
 my \case-size_36 = hb(:size(36));

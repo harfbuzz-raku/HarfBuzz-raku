@@ -1,10 +1,10 @@
-use HarfBuzz;
+use HarfBuzz::Shaper;
 use Test;
 plan 3;
 
-my $version = HarfBuzz.version;
+my $version = HarfBuzz::Shaper.version;
 if $version < v1.6.0 {
-    skip-rest "HarfBuzz version is too old";
+    skip-rest "HarfBuzz::Shaper version is too old";
     exit;
 }
 
@@ -18,7 +18,7 @@ my $text =
   "\c[DEVANAGARI SIGN VIRAMA]"~
   "\c[DEVANAGARI LETTER GA]";
 
-my HarfBuzz $hb .= new: :font{ :$file, :$size}, :buf{ :$text, :language<epo>, };
+my HarfBuzz::Shaper $hb .= new: :font{ :$file, :$size}, :buf{ :$text, :language<epo>, };
 my @info = $hb.shape>>.ast;
 
 is-deeply $hb.scale, (1024, 1024);
@@ -60,11 +60,11 @@ my @expected = [
 ];
 
 unless $version >= v2.6.4 {
-    # advance-x not available older HarfBuzz versions
+    # advance-x not available older HarfBuzz::Shaper versions
     .<ax>:delete for flat @expected, @info;
 }
 unless $version >= v2.6.6 {
-    # names not available in older HarfBuzz versions
+    # names not available in older HarfBuzz::Shaper versions
     .<name>:delete for flat @expected, @info;
 }
 
