@@ -42,7 +42,7 @@ method shape {
     class Iteration does Iterable does Iterator {
         has UInt $.idx = 0;
         has HarfBuzz::Buffer:D $.buf is required;
-        has HarfBuzz::Font:D $.font is required handles<size scale>;
+        has HarfBuzz::Font:D $.font is required;
         has hb_glyph_position $!Pos = $!buf.raw.get-glyph-positions(0);
         has hb_glyph_info     $!Info = $!buf.raw.get-glyph-infos(0);
         method iterator { self }
@@ -51,7 +51,7 @@ method shape {
                 my hb_glyph_position:D $pos = $!Pos[$!idx];
                 my hb_glyph_info:D $info = $!Info[$!idx];
                 $!idx++;
-                my @vec = @.scale.map: $!font.get-size / *;
+                my @vec = $!font.scale.map: $!font.get-size / *;
                 my Str:D $name = $!font.glyph-name($info.codepoint);
                 HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$!buf, :@vec;
             }
