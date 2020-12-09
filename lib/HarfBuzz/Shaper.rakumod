@@ -64,18 +64,10 @@ method shape {
 }
 
 method measure {
-    my hb_glyph_position $Pos = $!buf.raw.get-glyph-positions(0);
-    my UInt:D ($dx, $dy);
-    my @vec = @.scale.map: $.size / *;
     my enum <x y>;
-
-    for 0 ..^ $!buf.length {
-        given $Pos[$_] {
-            $dx += .x-advance;
-            $dy += .y-advance;
-        }
-    }
-    Complex.new(($dx * @vec[x]).round(.01), ($dy * @vec[y]).round(.01));
+    my @vec = @.scale.map: $.size / *;
+    my @adv = $!buf.text-advance();
+    Complex.new((@adv[x] * @vec[x]).round(.01), (@adv[y] * @vec[y]).round(.01));
 }
 
 method ast is also<shaper> {

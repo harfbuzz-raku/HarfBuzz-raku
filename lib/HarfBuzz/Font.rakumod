@@ -20,7 +20,7 @@ submethod TWEAK(:@scale, Num() :$size=12e0) {
     else {
         $!raw.get-scale(my uint32 $x, my uint32 $y);
         if $x == 0 || $y == 0 {
-            $x ||= 1024;
+            $x ||= 2048;
             $y ||= $x;
             $!raw.set-scale($x, $y);
         }

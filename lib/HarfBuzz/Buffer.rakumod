@@ -102,7 +102,6 @@ method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scal
         $glyph.index = $info.codepoint;
         $glyph.x = $x  +  $pos.x-offset * $sc;
         $glyph.y = $y  +  $pos.y-offset * $sc;
-
         $x += $pos.x-advance * $sc;
         $y += $pos.y-advance * $sc;
     }
@@ -134,6 +133,21 @@ method text is rw {
             self.set-text: $str;
         }
     );
+}
+
+method text-advance {
+    my hb_glyph_position $Pos = self.raw.get-glyph-positions(0);
+    my UInt:D $dx = 0;
+    my UInt:D $dy = 0;
+
+    for 0 ..^ self.length {
+        given $Pos[$_] {
+            $dx += .x-advance;
+            $dy += .y-advance;
+        }
+    }
+
+    ($dx, $dy);
 }
 
 submethod DESTROY {

@@ -2,13 +2,13 @@
 
 use Font::FreeType;
 use Font::FreeType::Face;
-use HarfBuzz;
+use HarfBuzz::Shaper;
 use HarfBuzz::Glyph;
 use Cairo;
 
 sub MAIN(Str $font-file, Str $text = 'Hello from HarfBuzz', :@features, :$output = 'out.png', UInt :$font-size = 36, Numeric :$margin = $font-size / 2) {
     my Font::FreeType::Face:D $ft-face = Font::FreeType.face($font-file);
-    my HarfBuzz $shaper .= new: :$ft-face, :$text, :size($font-size), :@features;
+    my HarfBuzz::Shaper $shaper .= new: :font{ :$ft-face, :@features, :size($font-size) } :buf{:$text }
     my HarfBuzz::Glyph @glyphs = $shaper.shape;
     my $width  = 2 * $margin + @glyphs>>.x-advance.sum ;
     my $height = 2 * $margin - @glyphs>>.y-advance.sum;
