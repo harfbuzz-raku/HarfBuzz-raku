@@ -83,7 +83,7 @@ unless $version >= v2.6.6 {
 }
 is-deeply @info, @expected;
 
-is-approx $shaper.measure.re, @info.map(*<ax>).sum;
+is-approx $shaper.text-advance.re, @info.map(*<ax>).sum;
 
 constant H_Gid = 41;
 my $codepoint = $shaper.glyph-from-name('H');

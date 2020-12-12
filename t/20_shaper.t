@@ -1,6 +1,6 @@
 use HarfBuzz::Shaper;
 use Test;
-plan 3;
+plan 5;
 
 my $version = HarfBuzz::Shaper.version;
 if $version < v1.6.0 {
@@ -18,7 +18,10 @@ my $text =
   "\c[DEVANAGARI SIGN VIRAMA]"~
   "\c[DEVANAGARI LETTER GA]";
 
-my HarfBuzz::Shaper $hb .= new: :font{ :$file, :$size}, :buf{ :$text, :language<epo>, };
+my HarfBuzz::Buffer $buf .= new: :$text;
+nok $buf.shaped;
+my HarfBuzz::Shaper $hb .= new: :font{ :$file, :$size}, :$buf;
+ok $buf.shaped;
 my @info = $hb.shape>>.ast;
 
 is-deeply $hb.scale, (1024, 1024);

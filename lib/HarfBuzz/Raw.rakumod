@@ -133,6 +133,8 @@ class hb_buffer is repr('CPointer') is export {
     method set-script(hb_script) is native($HB) is symbol('hb_buffer_set_script') {*}
     method get-script(--> hb_script) is native($HB) is symbol('hb_buffer_get_script') {*}
     method clear-contents() is native($HB) is symbol('hb_buffer_clear_contents')  {*}
+    method get-content-type(--> int32) is native($HB) is symbol('hb_buffer_get_content_type')  {*}
+    method set-content-type(int32) is native($HB) is symbol('hb_buffer_set_content_type')  {*}
     method add-text(Str:D $str, UInt :$offset = 0) {
         my blob8:D $utf8 = $str.encode;
         self.add-utf8($utf8, $utf8.elems, $offset, $utf8.elems);

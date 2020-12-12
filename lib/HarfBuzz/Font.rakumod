@@ -1,4 +1,4 @@
-unit class HarfBuzz::Font;
+unit class HarfBuzz::Font; #| HarfBuzz core font data-type
 
 use HarfBuzz::Raw;
 use HarfBuzz::Raw::Defs :types;
@@ -79,3 +79,12 @@ method shape(HarfBuzz::Buffer:D :$buf!) {
     $feats[.key] = .value.raw for @!features.pairs;
     $!raw.shape($buf.raw, $feats, +@!features);
 }
+
+=begin pod
+
+==head2 Synopsis
+
+   use HarfBuzz::Font;
+   my HarfBuzz::Font() .= %( :$file, :@features, :$size, :@scale );
+
+=end pod

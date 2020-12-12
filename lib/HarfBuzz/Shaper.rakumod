@@ -12,18 +12,21 @@ use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
 
-has HarfBuzz::Buffer() $!buf handles<length language lang script direction get-text cairo-glyphs is-horizontal is-vertical>;
+has HarfBuzz::Buffer() $!buf handles<length language script direction get-text cairo-glyphs is-horizontal is-vertical>;
 has HarfBuzz::Font() $!font handles<face scale glyph-name glyph-from-name glyph-extents ft-load-flags features>;
 
-submethod TWEAK( HarfBuzz::Font() :$!font, HarfBuzz::Buffer() :$!buf = HarfBuzz::Buffer.new) {
-    self.reset
+submethod TWEAK(
+    HarfBuzz::Font() :$!font,
+    HarfBuzz::Buffer() :$!buf = HarfBuzz::Buffer.new,
+) {
+    self.reshape
 }
 
 method buf is rw {
     Proxy.new(
         FETCH => { $!buf },
         STORE => -> $, $!buf {
-            self.reset;
+            self.reshape;
         }
     )
 }
@@ -33,7 +36,7 @@ method font is rw {
         FETCH => { $!font },
         STORE => -> $, $!font {
             $!buf.reset;
-            self.reset;
+            self.reshape;
         }
     )
 }
@@ -63,11 +66,14 @@ method shape {
     Iteration.new: :$!buf, :$!font;
 }
 
-method measure {
+method text-advance {
     my enum <x y>;
     my @vec = @.scale.map: $.size / *;
     my @adv = $!buf.text-advance();
-    Complex.new((@adv[x] * @vec[x]).round(.01), (@adv[y] * @vec[y]).round(.01));
+    Complex.new(
+        (@adv[x] * @vec[x]).round(.01),
+        (@adv[y] * @vec[y]).round(.01),
+    )
 }
 
 method ast is also<shaper> {
@@ -78,13 +84,13 @@ method version {
     HarfBuzz::Raw::version();
 }
 
-method reset {
+method reshape {
     $!font.shape: :$!buf;
 }    
 
 method set-text(Str:D $text) {
     $!buf.set-text: $text;
-    self.reset();
+    self.reshape();
 }
 
 method text is rw {
@@ -102,7 +108,7 @@ method size is rw {
         STORE => -> $, Num() $_ {
             $!font.set-size($_);
             $!buf.reset;
-            self.reset;
+            self.reshape;
         }
     );
 }

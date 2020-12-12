@@ -29,6 +29,12 @@ enum hb-direction is export(:hb-direction) «
     HB_DIRECTION_BTT
     »;
 
+enum hb-buffer-content-type is export(:hb-buffer-content-type) «
+    HB_BUFFER_CONTENT_TYPE_INVALID
+    HB_BUFFER_CONTENT_TYPE_UNICODE
+    HB_BUFFER_CONTENT_TYPE_GLYPHS
+    »;
+
 sub hb-tag-enc(Str:D $tag) is export(:hb-tag-enc) {
     my uint32 $enc = 0;
     for $tag.comb {

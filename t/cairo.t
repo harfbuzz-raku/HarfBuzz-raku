@@ -1,9 +1,11 @@
 use HarfBuzz::Shaper;
+use HarfBuzz::Font;
+use HarfBuzz::Buffer;
 use Cairo;
 use Font::FreeType;
 use Font::FreeType::Face;
 use Test;
-plan 42;
+plan 65;
 
 if HarfBuzz::Shaper.version < v1.6.0 {
     skip-rest "HarfBuzz version ({HarfBuzz::Shaper.version}) is too old";
@@ -18,7 +20,15 @@ my HarfBuzz::Shaper $hb .= new: :font{:$file, :@scale}, :buf{:$text, :language<e
 my HarfBuzz::Shaper $hb-ft .= new: :buf{:text<blah>, :language<epo>}, :font{ :$ft-face, :@scale};
 $hb-ft.text = $text;
 
-for $hb, $hb-ft {
+my HarfBuzz::Buffer $buf .= new: :$text, :language<epo>;
+nok $buf.shaped;
+
+given %(:$file, :@scale) -> HarfBuzz::Font() $_ {
+    .shape: :$buf;
+}
+ok $buf.shaped;
+
+for $hb, $hb-ft, $buf {
     my Cairo::Glyphs $glyphs = .cairo-glyphs;
     is $glyphs.elems, $text.chars;
     enum <index x y>;

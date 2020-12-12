@@ -1,7 +1,7 @@
 use HarfBuzz::Font;
 
 unit class HarfBuzz::Font::FreeType
-    is HarfBuzz::Font;
+    is HarfBuzz::Font; #| HarfBuzz FreeType bound font data-type
 
 use HarfBuzz::Raw;
 use Font::FreeType::Face;
@@ -29,3 +29,14 @@ method ft-load-flags is rw {
         }
     );
 }
+
+=begin pod
+
+==head2 Synopsis
+
+   use HarfBuzz::Font::FreeType;
+   use Font::FreeType::Face;
+   my  Font::FreeType::Face .= new: ...;
+   my HarfBuzz::Font::FreeType() .= %( :$ft-face, :@features, :$size, :@scale );
+
+=end pod

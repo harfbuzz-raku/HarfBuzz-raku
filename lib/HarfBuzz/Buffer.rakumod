@@ -1,11 +1,11 @@
 unit class HarfBuzz::Buffer;
 
 use HarfBuzz::Raw;
-use HarfBuzz::Raw::Defs :types, :&hb-tag-enc, :hb-direction;
+use HarfBuzz::Raw::Defs :types, :&hb-tag-enc, :hb-direction, :hb-buffer-content-type;
 use Method::Also;
 use Cairo;
 
-has hb_buffer $.raw is built handles<guess-segment-properties get-length set-length> .= new;
+has hb_buffer $.raw is built handles<guess-segment-properties get-length set-length get-content-type set-content-type> .= new;
 has hb_language $!lang;
 has UInt $!script;
 has UInt $!direction;
@@ -54,6 +54,15 @@ method length is rw {
     );
 }
 
+method content-type is rw {
+    Proxy.new(
+        FETCH => { self.get-content-type },
+        STORE => -> $, Int() $_ {
+            self.set-content-type($_);
+        }
+    );
+}
+
 method get-script { $!raw.get-script }
 multi method set-script(Str:D $tag) {
     self.set-script(hb-tag-enc($tag));
@@ -81,6 +90,10 @@ method direction is rw {
             self.set-direction($_);
         }
     );
+}
+
+method shaped {
+    self.content-type == HB_BUFFER_CONTENT_TYPE_GLYPHS;
 }
 
 method is-horizontal { self.get-direction ~~ HB_DIRECTION_LTR | HB_DIRECTION_RTL }
@@ -114,7 +127,7 @@ method reset {
     $!raw.clear-contents();
     $!raw.add-text($!text);
     $!raw.guess-segment-properties();
-    # reapply any explicit settings
+    # re-apply any explicit settings
     $!raw.set-language($_) with $!lang;
     $!raw.set-script($_) with $!script;
     $!raw.set-direction($_) with $!direction;
