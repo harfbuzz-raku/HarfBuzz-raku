@@ -50,12 +50,12 @@ Note that the number of glyphs does not necessarily match the number of input ch
 Classes/Modules in this distribution
 -------
 
-- [HarfBuzz::Buffer](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Fonts
-- [HarfBuzz::Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Text and shaping context
+- [HarfBuzz::Buffer](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping content and context
+- [HarfBuzz::Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping font
 - [HarfBuzz::Font::FreeType](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font/FreeType) - HarfBuzz / FreeType integration
 - [HarfBuzz::Feature](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Feature) - Font Features
 - [HarfBuzz::Glyph](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph) - Shaped Glyphs
-- [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Font/Buffer shapper
+- [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Font/Buffer shaper
 - [HarfBuzz::Raw](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw) - Native bindings
 - [HarfBuzz::Raw::Defs](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw/Defs) - Enumerations and other constants
 
