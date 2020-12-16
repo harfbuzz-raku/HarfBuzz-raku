@@ -1,5 +1,5 @@
 use HarfBuzz::Shaper;
-use HarfBuzz::Raw::Defs :&hb-tag-dec, :hb-script, :hb-direction;
+use HarfBuzz::Raw::Defs :hb-script, :hb-direction;
 use Test;
 use Font::FreeType;
 use Font::FreeType::Face;
@@ -21,8 +21,8 @@ is $hb.size, 36;
 is $hb.scale[0], 1000;
 is $hb.length, 6;
 is $hb.language, 'epo';
-is $hb.script, +HB_SCRIPT_LATIN;
-is $hb.script.&hb-tag-dec, 'Latn';
+is $hb.script, HB_SCRIPT_LATIN;
+is $hb.script, 'Latn';
 is $hb.direction, +HB_DIRECTION_LTR;
 is $hb.ft-load-flags, +FT_LOAD_NO_HINTING;
 my @info = $hb.shape>>.ast;

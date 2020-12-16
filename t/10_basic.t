@@ -22,8 +22,8 @@ is $shaper.size, 36;
 is $shaper.scale[0], 1000e0;
 is $shaper.length, 6;
 is $shaper.language, 'epo';
-is $shaper.script, +HB_SCRIPT_LATIN;
-is $shaper.script.&hb-tag-dec, 'Latn';
+is $shaper.script, HB_SCRIPT_LATIN;
+is $shaper.script, 'Latn';
 is $shaper.direction, +HB_DIRECTION_LTR;
 my @info = $shaper.shape>>.ast;
 my @expected = [
@@ -83,7 +83,7 @@ unless $version >= v2.6.6 {
 }
 is-deeply @info, @expected;
 
-is-approx $shaper.text-advance.re, @info.map(*<ax>).sum;
+is-approx $shaper.text-advance[0], @info.map(*<ax>).sum;
 
 constant H_Gid = 41;
 my $codepoint = $shaper.glyph-from-name('H');

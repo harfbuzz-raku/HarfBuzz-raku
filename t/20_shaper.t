@@ -1,6 +1,6 @@
 use HarfBuzz::Shaper;
 use Test;
-plan 5;
+plan 6;
 
 my $version = HarfBuzz::Shaper.version;
 if $version < v1.6.0 {
@@ -21,8 +21,9 @@ my $text =
 my HarfBuzz::Buffer $buf .= new: :$text;
 nok $buf.shaped;
 my HarfBuzz::Shaper $hb .= new: :font{ :$file, :$size}, :$buf;
-ok $buf.shaped;
+nok $buf.shaped;
 my @info = $hb.shape>>.ast;
+ok $buf.shaped;
 
 is-deeply $hb.scale, (1024, 1024);
 is-deeply $hb.size, $size.Num;

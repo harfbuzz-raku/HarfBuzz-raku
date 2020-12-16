@@ -6,10 +6,14 @@
 class Attribute+{<anon|2>}.new(handles => "Blob")
 -------------------------------------------------
 
-HarfBuzz core font data-type
+HarfBuzz font data-type
 
-==head2 Synopsis
+Synopsis
+--------
 
     use HarfBuzz::Font;
     my HarfBuzz::Font() .= %( :$file, :@features, :$size, :@scale );
+
+Methods
+-------
 

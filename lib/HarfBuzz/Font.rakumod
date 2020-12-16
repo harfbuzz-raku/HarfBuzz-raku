@@ -1,4 +1,4 @@
-unit class HarfBuzz::Font; #| HarfBuzz core font data-type
+unit class HarfBuzz::Font; #| HarfBuzz font data-type
 
 use HarfBuzz::Raw;
 use HarfBuzz::Raw::Defs :types;
@@ -9,8 +9,9 @@ use Font::FreeType::Face;
 use NativeCall;
 
 has HarfBuzz::Face $.face handles<Blob>;
-has hb_font $.raw is required handles<get-size set-size>;
+has hb_font $.raw is required;
 has HarfBuzz::Feature() @.features;
+has UInt $.gen is built; # mutation generation
 
 submethod TWEAK(:@scale, Num() :$size=12e0) {
     $!raw.reference;
@@ -25,7 +26,8 @@ submethod TWEAK(:@scale, Num() :$size=12e0) {
             $!raw.set-scale($x, $y);
         }
     }
-    self.set-size($size) if $size;
+    $!raw.set-size($size) if $size;
+    $!gen = 1;
 }
 
 submethod DESTROY {
@@ -45,17 +47,35 @@ multi method COERCE(% ( Str:D :$file!, :@features, |opts) ) {
     self.new: :$raw, :$face, :@features, |opts;
 }
 
-method scale is rw {
+method scale is rw returns List {
     Proxy.new(
         FETCH => { $!raw.get-scale(my uint32 $x, my uint32 $y); ($x, $y || $x) },
-        STORE => -> $, [ $x, $y = $x ] { $!raw.set-scale($x.Int, $y.Int) }
+        STORE => -> $, [ $x, $y = $x ] {
+            $!gen++;
+            $!raw.set-scale($x.Int, $y.Int);
+        }
     );
+}
+
+method size is rw returns Numeric {
+    Proxy.new(
+        FETCH => { $!raw.get-size },
+        STORE => -> $, Num:D() $_ {
+            $!gen++;
+            $!raw.set-size($_);
+        }
+    );
+}
+
+method add-features(HarfBuzz::Feature() @features) {
+    @!features.append: @features;
+    $!gen++;
 }
 
 method glyph-name(UInt:D $codepoint --> Str) {
     my buf8 $name-buf .= allocate(64);
     $!raw.get-glyph-name($codepoint, $name-buf, $name-buf.elems);
-    $name-buf.reallocate: (0 ..^ $name-buf.elems).first: {$name-buf[$_] == 0};
+    $name-buf.reallocate: (0 ..^ 64).first: {$name-buf[$_] == 0};
 
     $name-buf.decode;
 }
@@ -82,9 +102,11 @@ method shape(HarfBuzz::Buffer:D :$buf!) {
 
 =begin pod
 
-==head2 Synopsis
+=head2 Synopsis
 
    use HarfBuzz::Font;
    my HarfBuzz::Font() .= %( :$file, :@features, :$size, :@scale );
+
+=head2 Methods
 
 =end pod

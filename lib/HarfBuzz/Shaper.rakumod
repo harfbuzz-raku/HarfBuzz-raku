@@ -1,5 +1,6 @@
 use HarfBuzz;
 
+#| HarfBuzz shaping object
 unit class HarfBuzz::Shaper:ver<0.0.1>
     is HarfBuzz;
 
@@ -11,37 +12,39 @@ use HarfBuzz::Glyph;
 use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
+use Cairo;
 
-has HarfBuzz::Buffer() $!buf handles<length language script direction get-text cairo-glyphs is-horizontal is-vertical>;
-has HarfBuzz::Font() $!font handles<face scale glyph-name glyph-from-name glyph-extents ft-load-flags features>;
+has HarfBuzz::Buffer() $!buf handles<length language script script-name direction text is-horizontal is-vertical>;
+has HarfBuzz::Font() $!font handles<face scale size glyph-name glyph-from-name glyph-extents ft-load-flags features add-features>;
+has $!gen = 0; # to detect font/buffer mutation
 
 submethod TWEAK(
     HarfBuzz::Font() :$!font,
     HarfBuzz::Buffer() :$!buf = HarfBuzz::Buffer.new,
-) {
-    self.reshape
-}
+) { }
 
-method buf is rw {
-    Proxy.new(
-        FETCH => { $!buf },
-        STORE => -> $, $!buf {
-            self.reshape;
-        }
-    )
-}
-
-method font is rw {
+#| Gets or sets the font
+method font is rw returns HarfBuzz::Font {
     Proxy.new(
         FETCH => { $!font },
         STORE => -> $, $!font {
-            $!buf.reset;
-            self.reshape;
+            $!gen = 0;
         }
     )
 }
 
-method shape {
+#| Gets or sets the shaping buffer
+method buf is rw returns HarfBuzz::Buffer {
+    Proxy.new(
+        FETCH => { $!buf },
+        STORE => -> $, $!buf {
+            $!gen = 0;
+        }
+    )
+}
+
+#| Returns a set of shaped HarfBuzz::Glyph objects
+method shape returns Iterator {
     class Iteration does Iterable does Iterator {
         has UInt $.idx = 0;
         has HarfBuzz::Buffer:D $.buf is required;
@@ -54,7 +57,7 @@ method shape {
                 my hb_glyph_position:D $pos = $!Pos[$!idx];
                 my hb_glyph_info:D $info = $!Info[$!idx];
                 $!idx++;
-                my @vec = $!font.scale.map: $!font.get-size / *;
+                my @vec = $!font.scale.map: $!font.raw.get-size / *;
                 my Str:D $name = $!font.glyph-name($info.codepoint);
                 HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$!buf, :@vec;
             }
@@ -63,53 +66,111 @@ method shape {
             }
         }
     }
+
+    self!reshape()
+        unless $!gen == $!buf.gen + $!font.gen;
     Iteration.new: :$!buf, :$!font;
 }
 
-method text-advance {
+#| Returns Cairo compatible glyph layouts
+method cairo-glyphs returns Cairo::Glyphs {
+    self!reshape()
+        unless $!gen == $!buf.gen + $!font.gen;
+    $!buf.cairo-glyphs;
+}
+=begin pod
+
+=para Typically passed to either the Cairo::Context show_glyphs() or glyph_path() methods
+
+=end pod
+
+#| Returns scaled X and Y displacement of the shaped text
+method text-advance returns List {
     my enum <x y>;
     my @vec = @.scale.map: $.size / *;
     my @adv = $!buf.text-advance();
-    Complex.new(
+    (
         (@adv[x] * @vec[x]).round(.01),
         (@adv[y] * @vec[y]).round(.01),
     )
 }
 
-method ast is also<shaper> {
+#| Returns a Hash of scaled glyphs
+method ast is also<shaper> returns Seq {
     self.shape.map: *.ast;
 }
+=begin pod
 
-method version {
+Entries are:
+
+=item  `ax`:   horizontal advance
+=item  `ay`:   vertical advance
+=item  `dx`:   horizontal offset
+=item  `dy`:   vertical offset
+=item  `g`:    glyph index in font (CId)
+=item  `name`: glyph name
+
+=end pod
+
+#| Returns the version of the nativeHarfBuzz library
+method version returns Version {
     HarfBuzz::Raw::version();
 }
 
-method reshape {
+method !reshape {
+    $!buf.reset;
     $!font.shape: :$!buf;
+    $!gen = $!font.gen + $!buf.gen;
 }    
 
-method set-text(Str:D $text) {
-    $!buf.set-text: $text;
-    self.reshape();
-}
+=begin pod
 
-method text is rw {
-    Proxy.new(
-        FETCH => { self.get-text },
-        STORE => -> $, Str:D $str {
-            self.set-text: $str;
-        }
-    );
-}
+=head3 size
 
-method size is rw {
-    Proxy.new(
-        FETCH => { $!font.get-size },
-        STORE => -> $, Num() $_ {
-            $!font.set-size($_);
-            $!buf.reset;
-            self.reshape;
-        }
-    );
-}
+  method size(--> Num) is rw;
 
+Get or set the font size used for shaping.
+
+Note that the font size will in general affect details of the appearance, A 5 point fontsize magnified 10 times is not identical to 50 point font size.
+
+=head3 text
+
+  method text(--> Str) is rw;
+
+Gets or sets the text to shape.
+
+=head3 features
+
+  method features(--> HarfBuzz::Feature() @)
+
+Get shaping features. 
+
+=head3 add-features
+
+  method add-features(HarfBuzz::Feature() @features)
+
+Add specified features are added to the set of persistent features.
+Features may be added as HarfBuzz::Feature objects, or coerced from strings as described in https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-feature-from-string and https://css-tricks.com/almanac/properties/f/font-feature-settings/#values.
+
+=head3 language
+
+  method language returns Str is rw
+
+Gets or sets the language for shaping. The language must be a string containing a valid BCP-47 language code.
+
+=head3 script
+
+  method script returns Str is rw
+
+Gets or sets the script (alphabet) for shaping. script must be a string containing a valid ISO-15924 script code. For example, "Latn" for the Latin (Western European) script, or "Arab" for arabic script.
+
+=head3 direction
+
+  use HarfBuzz::Raw::Defs :hb-direction;
+  method direction returns UInt is rw;
+
+Gets or sets the direction for shaping: `HB_DIRECTION_LTR` (left-to-right),  `HB_DIRECTION_RTL` (right-to-left), `HB_DIRECTION_TTB` (top-to-bottom), or `HB_DIRECTION_BTT` (bottom-to-top).
+
+If you don't set a direction, HarfBuzz::Shaper will make a guess based on the text string. This may or may not yield desired results.
+
+=end pod

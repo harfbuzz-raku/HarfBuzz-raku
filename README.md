@@ -107,12 +107,12 @@ Getter/setter for the underlying HarfBuzz::Buffer object.
 method font is rw returns HarfBuzz::Font
 ```
 Getter/setter for the underlying HarfBuzz::Font object.
-```
+
 
 See Also
 --------
 
-[HarfBuzz::Shaper](https://metacpan.org/pod/HarfBuzz::Shaper) - Perl CPAN module.
-[Cairo](https://github.com/timo/cairo-p6) - Raku bindings to Cairo 2D graphics library
-[Font::FreeType](https://pdf-raku.github.io/Font-FreeType-raku/) - Raku bindings to the FreeType2 font library
-[HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) - Raku bindings to harfbuzz-subset font subsetting library
+- [HarfBuzz::Shaper](https://metacpan.org/pod/HarfBuzz::Shaper) - Perl CPAN module.
+- [Cairo](https://github.com/timo/cairo-p6) - Raku bindings to Cairo 2D graphics library
+- [Font::FreeType](https://pdf-raku.github.io/Font-FreeType-raku/) - Raku bindings to the FreeType2 font library
+- [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) - Raku bindings to harfbuzz-subset font subsetting library
