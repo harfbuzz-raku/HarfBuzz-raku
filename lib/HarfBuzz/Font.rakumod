@@ -13,6 +13,23 @@ has hb_font $.raw is required;
 has HarfBuzz::Feature() @.features;
 has UInt $.gen is built; # mutation generation
 
+=begin pod
+
+=head2 Synopsis
+
+   use HarfBuzz::Font;
+   my HarfBuzz::Font() .= %( :$file, :@features, :$size, :@scale );
+
+=head2 Description
+
+A HarfBuzz font is used for shaping text (See class L<HarfBuzz::Shaper>).
+
+Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module L<HarfBuzz::Subset>).
+
+=head2 Methods
+
+=end pod
+
 submethod TWEAK(:@scale, Num() :$size=12e0) {
     $!raw.reference;
     if @scale {
@@ -47,6 +64,7 @@ multi method COERCE(% ( Str:D :$file!, :@features, |opts) ) {
     self.new: :$raw, :$face, :@features, |opts;
 }
 
+#| Gets or sets x and y scale
 method scale is rw returns List {
     Proxy.new(
         FETCH => { $!raw.get-scale(my uint32 $x, my uint32 $y); ($x, $y || $x) },
@@ -57,6 +75,7 @@ method scale is rw returns List {
     );
 }
 
+#| Gets or sets the font size
 method size is rw returns Numeric {
     Proxy.new(
         FETCH => { $!raw.get-size },
@@ -67,32 +86,41 @@ method size is rw returns Numeric {
     );
 }
 
-method add-features(HarfBuzz::Feature() @features) {
-    @!features.append: @features;
+#| Add font features
+method add-features(HarfBuzz::Feature() @features --> Array[HarfBuzz::Feature]) {
     $!gen++;
+    @!features.append: @features;
 }
 
-method glyph-name(UInt:D $codepoint --> Str) {
+#| Returns the glyph name for a glyph identifier
+method glyph-name(UInt:D $gid --> Str) {
     my buf8 $name-buf .= allocate(64);
-    $!raw.get-glyph-name($codepoint, $name-buf, $name-buf.elems);
+    $!raw.get-glyph-name($gid, $name-buf, $name-buf.elems);
     $name-buf.reallocate: (0 ..^ 64).first: {$name-buf[$_] == 0};
 
     $name-buf.decode;
 }
 
-method glyph-from-name(Str:D $name) {
+#| Returns the glyph identifier for a given glyph name
+method glyph-from-name(Str:D $name --> UInt) {
     my Blob $buf = $name.encode;
-    my hb_codepoint $codepoint;
-    $!raw.get-glyph-from-name($buf, $buf.bytes, $codepoint);
-    $codepoint;
+    my hb_codepoint $gid;
+    $!raw.get-glyph-from-name($buf, $buf.bytes, $gid);
+    $gid;
 }
 
-method glyph-extents(UInt:D $codepoint) {
+#| Returns metrics for a glyph
+method glyph-extents(UInt:D $gid --> hb_glyph_extents) {
     my hb_glyph_extents $glyph-extents .= new;
-    $!raw.get-glyph-extents($codepoint, $glyph-extents);
+    $!raw.get-glyph-extents($gid, $glyph-extents);
     $glyph-extents;
 }
+=begin pod
+=para Note that `hb_glyph_extents` is a `CStruct` with `Num` attributes `x-advance`, `y-advance`, `x-offset` and `y-offset`.
 
+=end pod
+
+#| Shape a buffer using this font
 method shape(HarfBuzz::Buffer:D :$buf!) {
     $buf.reset if $buf.shaped;
     my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@!features);
@@ -101,13 +129,3 @@ method shape(HarfBuzz::Buffer:D :$buf!) {
     $!raw.shape($buf.raw, $feats, +@!features);
 }
 
-=begin pod
-
-=head2 Synopsis
-
-   use HarfBuzz::Font;
-   my HarfBuzz::Font() .= %( :$file, :@features, :$size, :@scale );
-
-=head2 Methods
-
-=end pod

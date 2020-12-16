@@ -55,7 +55,7 @@ Classes/Modules in this distribution
 - [HarfBuzz::Font::FreeType](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font/FreeType) - HarfBuzz / FreeType integration
 - [HarfBuzz::Feature](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Feature) - Font Features
 - [HarfBuzz::Glyph](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph) - Shaped Glyphs
-- [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Font/Buffer shaper
+- [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Shape a buffer using a given font and features
 - [HarfBuzz::Raw](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw) - Native bindings
 - [HarfBuzz::Raw::Defs](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw/Defs) - Enumerations and other constants
 
