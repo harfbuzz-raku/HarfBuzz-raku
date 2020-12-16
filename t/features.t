@@ -3,8 +3,9 @@ plan 21;
 use HarfBuzz;
 use HarfBuzz::Feature;
 
-if HarfBuzz.version < v1.6.0 {
-    skip-rest "HarfBuzz version is too old";
+my $version = HarfBuzz.version;
+unless $version >= v1.6.0 {
+    skip-rest "HarfBuzz version $version is too old to run these tests";
     exit;
 }
 

@@ -3,8 +3,8 @@ use Test;
 plan 2;
 
 my $version = HarfBuzz::Shaper.version;
-if $version < v1.6.0 {
-    skip-rest "HarfBuzz::Shaper version is too old";
+unless $version >= v1.6.0 {
+    skip-rest "HarfBuzz version $version is too old to run these tests";
     exit;
 }
 

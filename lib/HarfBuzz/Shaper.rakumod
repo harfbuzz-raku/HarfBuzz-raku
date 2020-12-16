@@ -162,7 +162,9 @@ Gets or sets the language for shaping. The language must be a string containing 
 
   method script returns Str is rw
 
-Gets or sets the script (alphabet) for shaping. script must be a string containing a valid ISO-15924 script code. For example, "Latn" for the Latin (Western European) script, or "Arab" for arabic script.
+Gets or sets the script (alphabet) for shaping.
+
+script must be a string containing a valid ISO-15924 script code. For example, "Latn" for the Latin (Western European) script, or "Arab" for arabic script.
 
 =head3 direction
 

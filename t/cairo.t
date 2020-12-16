@@ -1,3 +1,4 @@
+use HarfBuzz;
 use HarfBuzz::Shaper;
 use HarfBuzz::Font;
 use HarfBuzz::Buffer;
@@ -7,8 +8,9 @@ use Font::FreeType::Face;
 use Test;
 plan 65;
 
-if HarfBuzz::Shaper.version < v1.6.0 {
-    skip-rest "HarfBuzz version ({HarfBuzz::Shaper.version}) is too old";
+my $version = HarfBuzz.version;
+unless $version >= v1.6.0 {
+    skip-rest "HarfBuzz version $version is too old to run these tests";
     exit;
 }
 

@@ -94,6 +94,7 @@ method glyph-extents(UInt:D $codepoint) {
 }
 
 method shape(HarfBuzz::Buffer:D :$buf!) {
+    $buf.reset if $buf.shaped;
     my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@!features);
     my hb_features $feats = nativecast(hb_features, $feats-buf);
     $feats[.key] = .value.raw for @!features.pairs;

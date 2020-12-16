@@ -3,7 +3,7 @@ DocProj=pdf-raku.github.io
 DocRepo=https://github.com/pdf-raku/$(DocProj)
 DocLinker=../$(DocProj)/etc/resolve-links.raku
 
-all : doc
+all :
 
 docs/index.md : README.md
 	cp $< $@
