@@ -1,3 +1,4 @@
+#| A HarfBuzz font feature
 unit class HarfBuzz::Feature;
 
 use HarfBuzz::Raw;
@@ -25,7 +26,8 @@ multi method COERCE( HarfBuzz::Feature:D $_ ) { $_ }
 multi method COERCE( Str:D $str )             { self.new: :$str  }
 multi method COERCE( hb_feature:D $raw )      { self.new: :$raw  }
 
-method tag is rw {
+#| Font tag (e.g. 'kern')
+method tag returns Str is rw {
     Proxy.new(
         FETCH => {
             my buf8 $buf .= allocate(4);
@@ -51,7 +53,8 @@ method end is rw {
     )
 }
 
-method enabled is rw {
+#| Whether the feature is enabled
+method enabled returns Bool is rw {
     Proxy.new(
         FETCH => {
             ? self.value
@@ -62,9 +65,13 @@ method enabled is rw {
     )
 }
 
+#| String representation of the enabled/disabled font feature
 method Str {
     my buf8 $buf .= allocate(128);
     $!raw.to-string($buf, $buf.bytes);
     $buf.reallocate: (0 ..^ $buf.elems).first: {$buf[$_] == 0};
     $buf.decode;
 }
+=begin pod
+=para E.g. `kern` (enabled), or `-kern` (disabled)
+=end pod

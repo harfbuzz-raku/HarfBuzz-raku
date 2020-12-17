@@ -1,3 +1,4 @@
+#| A context free HarfBuzz font face
 unit class HarfBuzz::Face;
 
 use HarfBuzz::Raw;

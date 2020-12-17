@@ -1,4 +1,5 @@
-unit class HarfBuzz::Font; #| HarfBuzz font data-type
+ #| HarfBuzz font data-type
+unit class HarfBuzz::Font;
 
 use HarfBuzz::Raw;
 use HarfBuzz::Raw::Defs :types;

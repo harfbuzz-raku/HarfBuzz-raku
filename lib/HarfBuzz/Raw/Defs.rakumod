@@ -1,3 +1,4 @@
+#| Native Enums and constants
 unit module HarfBuzz::Raw::Defs;
 
 our $HB is export(:HB) = 'harfbuzz';

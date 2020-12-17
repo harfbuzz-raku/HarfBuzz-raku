@@ -1,3 +1,4 @@
+#| Native HarfBuzz bindings
 unit module HarfBuzz::Raw;
 
 use Font::FreeType::Raw;
@@ -35,6 +36,7 @@ class hb_var_int is repr('CUnion') {
   has int8   $!i8;   #[4]
 }
 
+#| A relative glyph position
 class hb_glyph_position is export is repr('CStruct') {
     has hb_position  $.x-advance;
     has hb_position  $.y-advance;
@@ -45,6 +47,7 @@ class hb_glyph_position is export is repr('CStruct') {
     HAS hb_var_int   $!var;
 }
 
+#| A contiguous array of glyph positions
 class hb_glyph_positions
     is hb_glyph_position
     is export
@@ -52,6 +55,7 @@ class hb_glyph_positions
     does ContiguousArray {
 }
 
+#| Additional glyph information
 class hb_glyph_info is export is repr('CStruct') {
     has hb_codepoint $.codepoint;
     #< private >
@@ -64,6 +68,7 @@ class hb_glyph_info is export is repr('CStruct') {
     HAS hb_var_int   $!var2;
 }
 
+#| A contiguous array of glyph information
 class hb_glyph_infos
     is hb_glyph_info
     is export
@@ -71,6 +76,7 @@ class hb_glyph_infos
     does ContiguousArray {
 }
 
+#| Unscaled glyph metrics
 class hb_glyph_extents is export is repr('CStruct') {
     # Note that height is negative in coordinate systems that grow up.
     has hb_position $.x-bearing; # left side of glyph from origin.
@@ -79,6 +85,7 @@ class hb_glyph_extents is export is repr('CStruct') {
     has hb_position $.height;    # distance from top to bottom side.
 }
 
+#| Storage for a HarfBuzz buffer
 class hb_blob is repr('CPointer') is export {
     our sub create(Blob, uint32, int32, Pointer, Pointer --> hb_blob) is native($HB) is symbol('hb_blob_create') {*}
     our sub create_from_file(Str --> hb_blob) is native($HB) is symbol('hb_blob_create_from_file') {*}
@@ -103,6 +110,7 @@ class hb_blob is repr('CPointer') is export {
     method destroy() is native($HB) is symbol('hb_blob_destroy')  {*}
 }
 
+#| HarfBuzz language representation
 class hb_language is repr('CPointer') is export {
     our sub from_string(Blob, int32 --> hb_language) is native($HB) is symbol('hb_language_from_string') {*}
     method from-string(Blob $tag, UInt $len = $tag.bytes) {
@@ -117,6 +125,7 @@ class hb_language is repr('CPointer') is export {
     }
 }
 
+#| A HarfBuzz buffer
 class hb_buffer is repr('CPointer') is export {
     our sub create(--> hb_buffer) is native($HB) is symbol('hb_buffer_create') {*}
     method new(--> hb_buffer) { create() }
@@ -143,7 +152,11 @@ class hb_buffer is repr('CPointer') is export {
     method reference(--> hb_buffer) is native($HB) is symbol('hb_buffer_reference') {*}
     method destroy() is native($HB) is symbol('hb_buffer_destroy')  {*}
 }
+=begin pod
+=para This holds text or glyph transforms, plus context, inlcuding language, script and direction.
+=end pod
 
+#| HarfBuzz generalized set representation
 class hb_set is repr('CPointer') is export {
     method add(hb_codepoint) is native($HB) is symbol('hb_set_add') {*}
     method del(hb_codepoint) is native($HB) is symbol('hb_set_del') {*}
@@ -154,6 +167,7 @@ class hb_set is repr('CPointer') is export {
     method prev(hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_set_previous') {*}
 }
 
+#| HarfBuzz representation  of a font feature
 class hb_feature is export is repr('CStruct') is rw {
     has hb_tag  $.tag;
     has uint32  $.value;
@@ -172,6 +186,7 @@ class hb_feature is export is repr('CStruct') is rw {
     }
 };
 
+#| A contiguous arry of font features
 class hb_features
     is hb_feature
     is export
@@ -179,6 +194,7 @@ class hb_features
     does ContiguousArray {
 }
 
+#| A context free representation of a HarfBuzz font face
 class hb_face is repr('CPointer') is export {
     our sub create(hb_blob, uint32 --> hb_face) is native($HB) is symbol('hb_face_create') {*}
     method new(hb_blob :$blob!, UInt:D :$index=0 --> hb_face) { create($blob, $index) }
@@ -188,6 +204,7 @@ class hb_face is repr('CPointer') is export {
     method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
 }
 
+#| A contextual representation of a HarfBuzz font
 class hb_font is repr('CPointer') is export {
     our sub create(hb_face --> hb_font) is native($HB) is symbol('hb_font_create') {*}
     method new(hb_face :$face! --> hb_font) { create($face) }
@@ -205,7 +222,11 @@ class hb_font is repr('CPointer') is export {
     method reference(--> hb_font) is native($HB) is symbol('hb_font_reference') {*}
     method destroy() is native($HB) is symbol('hb_font_destroy')  {*}
 }
+=begin pod
+=para include font-face, size and scale. A Font can be haped against a buffer.
+=end pod
 
+#| A FreeType integrated font face
 class hb_ft_font is hb_font is repr('CPointer') is export {
     # FreeType integration
     our sub create(FT_Face --> hb_ft_font) is native($HB) is symbol('hb_ft_font_create_referenced') {*}

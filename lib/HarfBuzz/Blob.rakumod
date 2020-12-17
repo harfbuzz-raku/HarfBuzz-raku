@@ -1,3 +1,4 @@
+#| HarfBuzz representation of a Blob
 unit class HarfBuzz::Blob;
 
 use HarfBuzz::Raw;
@@ -22,6 +23,7 @@ multi method COERCE(Str:D $file!)    { self.new: :$file; }
 multi method COERCE(hb_blob:D $raw!) { self.new: :$raw; }
 multi method COERCE(Blob:D $buf!)    { self.new: :$buf; }
 
+#| Convert to a Raku Blob
 method Blob {
     my uint32 $len;
     my Pointer $data = $!raw.get-data($len);

@@ -3,8 +3,8 @@
  / [HarfBuzz](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz)
  :: [Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font)
 
-class Attribute+{<anon|2>}.new(handles => "Blob")
--------------------------------------------------
+class HarfBuzz::Font
+--------------------
 
 HarfBuzz font data-type
 
