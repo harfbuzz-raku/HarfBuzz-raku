@@ -53,7 +53,7 @@ Note that the number of glyphs does not necessarily match the number of input ch
 Classes/Modules in this distribution
 -------
 
-- [HarfBuzz::Buffer](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping text and context
+- [HarfBuzz::Buffer](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Buffer) - Shaping text and context
 - [HarfBuzz::Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping font
 - [HarfBuzz::Font::FreeType](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font/FreeType) - HarfBuzz / FreeType integration
 - [HarfBuzz::Feature](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Feature) - Font Features

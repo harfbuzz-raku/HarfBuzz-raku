@@ -52,6 +52,6 @@ clean :
 	@rm -f $(SRC)/ft6_*%O%
 
 realclean : clean
-	@rm -f Makefile README.md docs/*.md docs/HarfBuzz/*.md
+	@rm -f Makefile README.md docs/*.md docs/HarfBuzz/*.md docs/HarfBuzz/*/*.md
 
 

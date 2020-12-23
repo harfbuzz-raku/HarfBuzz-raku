@@ -30,6 +30,7 @@ method !to-blob(HarfBuzz::Blob() $!blob) {
 multi method COERCE(hb_face:D $raw)  { self.new: :$raw; }
 multi method COERCE(Str:D $file)     { self.new: :$file; }
 multi method COERCE(Blob:D $buf)     { self.new: :$buf; }
+multi method COERCE(%opts where {.<raw file buf>:exists}) { self.new: |%opts }
 
 submethod DESTROY {
     $!raw.destroy;
