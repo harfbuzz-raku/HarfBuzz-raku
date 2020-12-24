@@ -9,8 +9,6 @@ before_install:
   - sudo apt-get -y install libharfbuzz-dev
 install:
   - rakudobrew build zef
-  - git clone https://github.com/timo/cairo-p6.git -b glyphs
-  - (cd cairo-p6/ && zef install .)
   - zef --depsonly install .
 script:
   - prove -ve "raku -I."
