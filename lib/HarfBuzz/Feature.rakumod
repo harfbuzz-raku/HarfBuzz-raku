@@ -25,6 +25,7 @@ multi submethod TWEAK(Str:D :$tag!, UInt :$start = 0, :$end = Inf, Bool :$enable
 multi method COERCE( HarfBuzz::Feature:D $_ ) { $_ }
 multi method COERCE( Str:D $str )             { self.new: :$str  }
 multi method COERCE( hb_feature:D $raw )      { self.new: :$raw  }
+multi method COERCE( Pair:D $_)               { self.new: :tag(.key), :enabled(.value.so) }
 
 #| Font tag (e.g. 'kern')
 method tag returns Str is rw {
