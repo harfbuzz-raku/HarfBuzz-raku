@@ -80,6 +80,34 @@ Note that a buffer needs to be reshaped after updating its properties, including
 
 See also [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper), which manages a font/buffer pairing for you.
 
+### method is-horizontal
+
+```perl6
+method is-horizontal() returns Bool
+```
+
+True if the writing direction is left-to-right or right-to-left
+
+### method is-vertical
+
+```perl6
+method is-vertical() returns Bool
+```
+
+True if the writing direction is top-to-bottom or bottom-to-top
+
+### method cairo-glyphs
+
+```perl6
+method cairo-glyphs(
+    Numeric :x($x0) = 0e0,
+    Numeric :y($y0) = 0e0,
+    Numeric :$scale = 1.0
+) returns Mu
+```
+
+Return a set of Cairo compatible shaped glyphs
+
 The return object is typically passed to either the Cairo::Context show_glyphs() or glyph_path() methods
 
 ### method reset

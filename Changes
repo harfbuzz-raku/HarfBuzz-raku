@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.0.2  2021-01-29T11:29:41+13:00
     - Make $.buf() reshape if buffer or font has been updated
 
 0.0.1 2020-12-25

@@ -7,27 +7,28 @@
     "LibraryMake"
   ],
   "depends": [
-      "Cairo:ver<0.2.7+>",
-      "Font::FreeType:ver<0.3.7+>",
-      "Method::Also"
+    "Cairo:ver<0.2.7+>",
+    "Font::FreeType:ver<0.3.7+>",
+    "Method::Also"
   ],
   "description": "binds to the HarfBuzz font shaping library",
   "license": "Artistic-2.0",
   "name": "HarfBuzz",
-  "raku": "6",
+  "perl": "6.d",
   "provides": {
-    "HarfBuzz"                 : "lib/HarfBuzz.rakumod",
-    "HarfBuzz::Blob"           : "lib/HarfBuzz/Blob.rakumod",
-    "HarfBuzz::Buffer"         : "lib/HarfBuzz/Buffer.rakumod",
-    "HarfBuzz::Face"           : "lib/HarfBuzz/Face.rakumod",
-    "HarfBuzz::Feature"        : "lib/HarfBuzz/Feature.rakumod",
-    "HarfBuzz::Font"           : "lib/HarfBuzz/Font.rakumod",
-    "HarfBuzz::Font::FreeType" : "lib/HarfBuzz/Font/FreeType.rakumod",
-    "HarfBuzz::Glyph"          : "lib/HarfBuzz/Glyph.rakumod",
-    "HarfBuzz::Raw"            : "lib/HarfBuzz/Raw.rakumod",
-    "HarfBuzz::Raw::Defs"      : "lib/HarfBuzz/Raw/Defs.rakumod",
-    "HarfBuzz::Shaper"         : "lib/HarfBuzz/Shaper.rakumod"
+    "HarfBuzz": "lib/HarfBuzz.rakumod",
+    "HarfBuzz::Blob": "lib/HarfBuzz/Blob.rakumod",
+    "HarfBuzz::Buffer": "lib/HarfBuzz/Buffer.rakumod",
+    "HarfBuzz::Face": "lib/HarfBuzz/Face.rakumod",
+    "HarfBuzz::Feature": "lib/HarfBuzz/Feature.rakumod",
+    "HarfBuzz::Font": "lib/HarfBuzz/Font.rakumod",
+    "HarfBuzz::Font::FreeType": "lib/HarfBuzz/Font/FreeType.rakumod",
+    "HarfBuzz::Glyph": "lib/HarfBuzz/Glyph.rakumod",
+    "HarfBuzz::Raw": "lib/HarfBuzz/Raw.rakumod",
+    "HarfBuzz::Raw::Defs": "lib/HarfBuzz/Raw/Defs.rakumod",
+    "HarfBuzz::Shaper": "lib/HarfBuzz/Shaper.rakumod"
   },
+  "raku": "6",
   "resources": [
   ],
   "source-url": "git://github.com/pdf-raku/HarfBuzz-raku.git",
@@ -36,5 +37,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.0.1"
+  "version": "0.0.2"
 }

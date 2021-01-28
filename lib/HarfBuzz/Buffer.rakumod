@@ -153,13 +153,13 @@ See also L<HarfBuzz::Shaper>, which manages a font/buffer pairing for you.
 =end pod
 
 
-# True if the writing direction is left-to-right or right-to-left
+#| True if the writing direction is left-to-right or right-to-left
 method is-horizontal returns Bool { self.get-direction ~~ HB_DIRECTION_LTR | HB_DIRECTION_RTL }
 
-# True if the writing direction is top-to-bottom or bottom-to-top
+#| True if the writing direction is top-to-bottom or bottom-to-top
 method is-vertical returns Bool { self.get-direction ~~ HB_DIRECTION_TTB | HB_DIRECTION_BTT }
 
-# Return a set of Cairo compatible shaped glyphs
+#| Return a set of Cairo compatible shaped glyphs
 method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scale = 1.0) {
     die "buffer has not been shaped"
         unless self.shaped;
@@ -187,7 +187,6 @@ method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, Numeric :$scal
 }
 =begin pod
 =para The return object is typically passed to either the Cairo::Context show_glyphs() or glyph_path() methods
-
 =end pod
 
 #| reset the buffer, ready for shaping

@@ -1,7 +1,7 @@
 use HarfBuzz;
 
 #| HarfBuzz shaping object
-unit class HarfBuzz::Shaper:ver<0.0.1>
+unit class HarfBuzz::Shaper:ver<0.0.2>
     is HarfBuzz;
 
 use HarfBuzz::Buffer;
@@ -12,7 +12,6 @@ use HarfBuzz::Glyph;
 use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
-use Cairo;
 
 has HarfBuzz::Buffer() $!buf handles<length language script script-name direction text is-horizontal is-vertical>;
 has HarfBuzz::Font() $!font handles<face scale size glyph-name glyph-from-name glyph-extents ft-load-flags features add-features>;

@@ -32,14 +32,6 @@ method shape() returns Iterator
 
 Returns a set of shaped HarfBuzz::Glyph objects
 
-### method cairo-glyphs
-
-```perl6
-method cairo-glyphs() returns Cairo::Glyphs
-```
-
-Returns Cairo compatible glyph layouts
-
 Typically passed to either the Cairo::Context show_glyphs() or glyph_path() methods
 
 ### method text-advance
