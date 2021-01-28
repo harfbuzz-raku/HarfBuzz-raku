@@ -1,2 +1,5 @@
+{{$NEXT}}
+    - Make $.buf() reshape if buffer or font has been updated
+
 0.0.1 2020-12-25
     - Initial release

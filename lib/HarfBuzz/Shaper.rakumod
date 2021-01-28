@@ -34,9 +34,13 @@ method font is rw returns HarfBuzz::Font {
 }
 
 #| Gets or sets the shaping buffer
-method buf is rw returns HarfBuzz::Buffer {
+method buf is rw returns HarfBuzz::Buffer handles <cairo-glyphs> {
     Proxy.new(
-        FETCH => { $!buf },
+        FETCH => {
+            self!reshape()
+                unless $!gen == $!buf.gen + $!font.gen;
+            $!buf;
+        },
         STORE => -> $, $!buf {
             $!gen = 0;
         }
@@ -67,17 +71,9 @@ method shape returns Iterator {
         }
     }
 
-    self!reshape()
-        unless $!gen == $!buf.gen + $!font.gen;
-    Iteration.new: :$!buf, :$!font;
+    Iteration.new: :$.buf, :$!font;
 }
 
-#| Returns Cairo compatible glyph layouts
-method cairo-glyphs returns Cairo::Glyphs {
-    self!reshape()
-        unless $!gen == $!buf.gen + $!font.gen;
-    $!buf.cairo-glyphs;
-}
 =begin pod
 
 =para Typically passed to either the Cairo::Context show_glyphs() or glyph_path() methods
@@ -88,7 +84,7 @@ method cairo-glyphs returns Cairo::Glyphs {
 method text-advance returns List {
     my enum <x y>;
     my @vec = @.scale.map: $.size / *;
-    my @adv = $!buf.text-advance();
+    my @adv = $.buf.text-advance();
     (
         (@adv[x] * @vec[x]).round(.01),
         (@adv[y] * @vec[y]).round(.01),
