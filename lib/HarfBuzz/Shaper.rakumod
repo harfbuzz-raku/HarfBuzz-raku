@@ -32,8 +32,12 @@ method font is rw returns HarfBuzz::Font {
     )
 }
 
+method cairo-glyphs(:$scale = 1000 / self.scale[0], |c) {
+    $.buf.cairo-glyphs: :$scale, |c;
+}
+
 #| Gets or sets the shaping buffer
-method buf is rw returns HarfBuzz::Buffer handles <cairo-glyphs> {
+method buf is rw returns HarfBuzz::Buffer {
     Proxy.new(
         FETCH => {
             self!reshape()
