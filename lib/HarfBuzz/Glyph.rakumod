@@ -40,8 +40,9 @@ method y-offset returns Numeric {
 method offset returns Complex { Complex.new( $.x-offset, $.y-offset ); }
 
 #| Glyph hash digest
-method ast {
-    %(
+has %!ast;
+method ast handles<AT-KEY keys> {
+    %!ast ||= %(
         :$!name, ax => $.x-advance, ay => $.y-advance,
         g => $!info.codepoint, dx => $.x-offset, dy => $.y-offset,
     );
