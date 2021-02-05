@@ -8,10 +8,6 @@ class HarfBuzz::Glyph
 
 Represents a shaped glyph
 
-### has Str:D $.name
-
-glyph name
-
 ### method x-advance
 
 ```perl6
@@ -60,11 +56,7 @@ method offset() returns Complex
 
 Relative/scaled glyph x/y offset
 
-### method ast
-
-```perl6
-method ast() returns Mu
-```
+### has Associative %!ast
 
 Glyph hash digest
 

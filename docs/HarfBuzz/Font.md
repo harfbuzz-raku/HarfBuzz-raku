@@ -19,7 +19,7 @@ Description
 
 A HarfBuzz font is used for shaping text (See class [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper)).
 
-Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Subset)).
+Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/HarfBuzz/Subset)).
 
 Methods
 -------

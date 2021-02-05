@@ -19,15 +19,17 @@ use HarfBuzz::Font;
 use HarfBuzz::Buffer;
 use HarfBuzz::Shaper;
 use HarfBuzz::Feature;
+use HarfBuzz::Glyphs;
+use Cairo;
 my HarfBuzz::Feature() @features = <smcp -kern -liga>; # enable small-caps, disable kerning and ligatures
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my HarfBuzz::Font $font .= new :$file, :size(36), :@features;
 my HarfBuzz::Buffer $buf .= new :text<Hello!>;
-my HarfBuzz::Shaper $shape .= new: :$font :$buf;
-my @info = $shape.ast;
+my HarfBuzz::Shaper $shaper .= new: :$font :$buf;
+for $shaper.shape -> HarfBuzz::Glyph $glyph { ... }
+my Hash @info = $shaper.ast;
+my Cairo::Glyphs $glyphs = $shaper.cairo-glyphs;
 ```
-
-The result is an array of hashes, one element for each glyph to be typeset.
 
 Description
 ----------

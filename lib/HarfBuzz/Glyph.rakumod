@@ -4,8 +4,8 @@ unit class HarfBuzz::Glyph;
 use HarfBuzz::Raw;
 
 has $.buf is required;
- #| glyph name
 has Str:D $.name is required;
+has UInt:D $.codepoint is required;
 has @.vec[2] is required;
 has hb_glyph_position $!pos;
 has hb_glyph_info     $!info;

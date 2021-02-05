@@ -26,6 +26,7 @@ submethod TWEAK(:$funcs = True, Num:D() :$size = 12e0, :@scale) {
         my uint32 $sc = ($!ft-face.units-per-EM * $size / 32).round;
         self.raw.set-scale($sc, $sc);
     }
+
     $!ft-face.set-char-size($size);
     self.raw.ft-set-funcs()
         if $funcs;

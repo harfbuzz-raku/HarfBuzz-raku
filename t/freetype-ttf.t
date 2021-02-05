@@ -40,10 +40,10 @@ is-approx @ft-shape.tail<ax>, @shape.tail<ax>;
 my Cairo::Glyphs $glyphs = $shaper.cairo-glyphs;
 my Cairo::Glyphs $ft-glyphs = $ft-shaper.cairo-glyphs;
 is  $glyphs.elems, $ft-glyphs.elems;
-is-approx $glyphs.x-advance, $ft-glyphs.x-advance;
+is-approx $ft-glyphs.x-advance, $glyphs.x-advance;
 my Cairo::cairo_glyph_t:D $glyph = $glyphs[1];
 my Cairo::cairo_glyph_t:D $ft-glyph = $ft-glyphs[1];
 
-is $glyph.index, $ft-glyph.index, 'glyph index';
-is-approx $glyph.x, $ft-glyph.x, 'glyph x';
-is-approx $glyph.y, $ft-glyph.y, 'glyph y';
+is $ft-glyph.index, $glyph.index, 'glyph index';
+is-approx $ft-glyph.x, $glyph.x, 'glyph x';
+is-approx $ft-glyph.y, $glyph.y, 'glyph y';
