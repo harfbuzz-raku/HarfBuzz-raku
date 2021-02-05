@@ -1,7 +1,9 @@
 {{$NEXT}}
+
+0.0.3  2021-02-06T06:50:03+13:00
     - Moved cairo-glyphs() method from HarfBuzz::Buffer to
       HarfBuzz::Shaper. Refactored to reprocess shape()
-      glyphs. Solves sizing issues #2
+      glyphs. Solves sizing issues raised in #2
 
 0.0.2  2021-01-29T11:29:41+13:00
     - Make $.buf() reshape if buffer or font has been updated

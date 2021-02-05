@@ -5,13 +5,11 @@ use Font::FreeType;
 use Font::FreeType::Face;
 use Cairo;
 use Test;
-plan 13;
+plan 12;
 unless $*RAKU.compiler.version >= v2020.11 {
     die "This version of Raku is too old to use the HarfBuzz semantics";
 }
-my Version $version;
-lives-ok { $version = HarfBuzz.version }, 'got version';
-note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
+my Version $version = HarfBuzz.version;
 
 unless $version >= v1.6.0 {
     skip-rest "HarfBuzz version $version is too old to run these tests";

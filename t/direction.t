@@ -2,13 +2,11 @@ use HarfBuzz;
 use HarfBuzz::Shaper;
 use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
 use Test;
-plan 11;
+plan 10;
 unless $*RAKU.compiler.version >= v2020.11 {
     die "This version of Raku is too old to use the HarfBuzz semantics";
 }
-my Version $version;
-lives-ok { $version = HarfBuzz.version }, 'got version';
-note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
+my Version $version = HarfBuzz.version;
 
 unless $version >= v1.6.0 {
     skip-rest "HarfBuzz version $version is too old to run these tests";

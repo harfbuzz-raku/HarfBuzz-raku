@@ -1,7 +1,7 @@
 use HarfBuzz;
 
 #| HarfBuzz shaping object
-unit class HarfBuzz::Shaper:ver<0.0.2>
+unit class HarfBuzz::Shaper:ver<0.0.3>
     is HarfBuzz;
 
 use HarfBuzz::Buffer;
