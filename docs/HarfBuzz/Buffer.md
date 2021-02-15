@@ -18,7 +18,6 @@ Synopsis
     my HarfBuzz::Font $font .= new: :file<t/fonts/NimbusRoman-Regular.otf>;
     $font.shape: :$buf;
     say $font.shaped; # True
-    say $font.cairo-glyphs.raku;
 
 Description
 -----------

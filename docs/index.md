@@ -20,7 +20,6 @@ use HarfBuzz::Buffer;
 use HarfBuzz::Shaper;
 use HarfBuzz::Feature;
 use HarfBuzz::Glyphs;
-use Cairo;
 my HarfBuzz::Feature() @features = <smcp -kern -liga>; # enable small-caps, disable kerning and ligatures
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my HarfBuzz::Font $font .= new :$file, :size(36), :@features;
@@ -28,7 +27,6 @@ my HarfBuzz::Buffer $buf .= new :text<Hello!>;
 my HarfBuzz::Shaper $shaper .= new: :$font :$buf;
 for $shaper.shape -> HarfBuzz::Glyph $glyph { ... }
 my Hash @info = $shaper.ast;
-my Cairo::Glyphs $glyphs = $shaper.cairo-glyphs;
 ```
 
 Description
@@ -57,17 +55,28 @@ Classes/Modules in this distribution
 
 - [HarfBuzz::Buffer](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Buffer) - Shaping text and context
 - [HarfBuzz::Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping font
-- [HarfBuzz::Font::FreeType](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font/FreeType) - HarfBuzz / FreeType integration
 - [HarfBuzz::Feature](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Feature) - Font Features
 - [HarfBuzz::Glyph](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph) - Shaped Glyphs
 - [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Shape a buffer using a given font and features
 - [HarfBuzz::Raw](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw) - Native bindings
 - [HarfBuzz::Raw::Defs](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw/Defs) - Enumerations and other constants
 
+Installation
+-----
+This module depends on the `libharfbuzz-dev`, which should be installed first:
+
+`$ sudo apt-get install libharfbuzz-dev`
+
+*IMPORTANT* If your are installing this as a [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) prerequisite, please check
+
+Additional Modules
+------
+
+- [HarfBuzz::Font::FreeType](https://pdf-raku.github.io/HarfBuzz-Font-FreeType-raku/) - HarfBuzz / FreeType integration
+- [HarfBuzz::Shaper::Cairo](https://pdf-raku.github.io/HarfBuzz-Shaper-Cairo-raku/) - HarfBuzz / Cairo shaping integration
+- [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) - Raku bindings to harfbuzz-subset font subsetting library
+
 See Also
 --------
 
 - [HarfBuzz::Shaper](https://metacpan.org/pod/HarfBuzz::Shaper) - Perl CPAN module.
-- [Cairo](https://github.com/timo/cairo-p6) - Raku bindings to Cairo 2D graphics library
-- [Font::FreeType](https://pdf-raku.github.io/Font-FreeType-raku/) - Raku bindings to the FreeType2 font library
-- [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) - Raku bindings to harfbuzz-subset font subsetting library

@@ -12,7 +12,6 @@ use HarfBuzz::Glyph;
 use HarfBuzz::Raw;
 use NativeCall;
 use Method::Also;
-use Cairo;
 
 has HarfBuzz::Buffer() $!buf handles<length language script script-name direction text is-horizontal is-vertical>;
 has HarfBuzz::Font() $!font handles<face scale size glyph-name glyph-from-name glyph-extents ft-load-flags features add-features>;
@@ -78,32 +77,6 @@ method shape returns Iterator {
     Iteration.new: :$.buf, :$!font;
 }
 
-#| Return a set of Cairo compatible shaped glyphs
-method cairo-glyphs(Numeric :x($x0) = 0e0, Numeric :y($y0) = 0e0, |c) {
-    my Cairo::Glyphs $cairo-glyphs .= new: :elems($!buf.length);
-    my Cairo::cairo_glyph_t $cairo-glyph;
-    my int $i = -1;
-    my Num $x = $x0.Num;
-    my Num $y = $y0.Num;
-
-    for self.shape(|c) -> $glyph {
-        $cairo-glyph = $cairo-glyphs[++$i];
-        $cairo-glyph.index = $glyph.codepoint;
-        $cairo-glyph.x = $x + $glyph.x-offset;
-        $cairo-glyph.y = $y + $glyph.y-offset;
-        $x += $glyph.x-advance;
-        $y += $glyph.y-advance;
-    }
-
-    $cairo-glyphs.x-advance = $x - $x0;
-    $cairo-glyphs.y-advance = $y - $y0;
-
-    $cairo-glyphs;
-}
-=begin pod
-=para The return object is typically passed to either the Cairo::Context show_glyphs() or glyph_path() methods
-=end pod
-
 #| Returns scaled X and Y displacement of the shaped text
 method text-advance returns List {
     my enum <x y>;
@@ -115,7 +88,7 @@ method text-advance returns List {
     )
 }
 
-#| Returns a Hash of scaled glyphs
+#| Returns a Hash sequence of scaled glyphs
 method ast is also<shaper> returns Seq {
     self.shape.map: *.ast;
 }

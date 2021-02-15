@@ -7,8 +7,6 @@
     "LibraryMake"
   ],
   "depends": [
-    "Cairo:ver<0.2.7+>",
-    "Font::FreeType:ver<0.3.7+>",
     "Method::Also"
   ],
   "description": "binds to the HarfBuzz font shaping library",
@@ -22,7 +20,6 @@
     "HarfBuzz::Face": "lib/HarfBuzz/Face.rakumod",
     "HarfBuzz::Feature": "lib/HarfBuzz/Feature.rakumod",
     "HarfBuzz::Font": "lib/HarfBuzz/Font.rakumod",
-    "HarfBuzz::Font::FreeType": "lib/HarfBuzz/Font/FreeType.rakumod",
     "HarfBuzz::Glyph": "lib/HarfBuzz/Glyph.rakumod",
     "HarfBuzz::Raw": "lib/HarfBuzz/Raw.rakumod",
     "HarfBuzz::Raw::Defs": "lib/HarfBuzz/Raw/Defs.rakumod",

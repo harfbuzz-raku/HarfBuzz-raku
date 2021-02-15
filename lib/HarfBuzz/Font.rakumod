@@ -6,7 +6,6 @@ use HarfBuzz::Raw::Defs :types;
 use HarfBuzz::Buffer;
 use HarfBuzz::Face;
 use HarfBuzz::Feature;
-use Font::FreeType::Face;
 use NativeCall;
 
 has HarfBuzz::Face $.face handles<Blob>;
@@ -52,14 +51,8 @@ submethod DESTROY {
     $!raw.destroy;
 }
 
-multi method COERCE(% ( Font::FreeType::Face:D :$ft-face!, :$file, :@features, |opts) ) {
-    warn "ignoring ':file' option" with $file;
-    my hb_ft_font $raw = hb_ft_font::create($ft-face.raw);
-    my HarfBuzz::Face() $face = $raw.get-face();
-    (require ::('HarfBuzz::Font::FreeType')).new(:$raw, :$face, :$ft-face, :@features, |opts)
-}
-
-multi method COERCE(% ( Str:D :$file!, :@features, |opts) ) {
+multi method COERCE(% ( Str:D :$file!, :$ft-face, :@features, |opts) ) {
+    warn "ignoring ':ft-face' option; reserved for HarfBuzz::Font::FreeType" with $ft-face;
     my HarfBuzz::Face() $face = $file;
     my hb_font $raw = hb_font::create($face.raw);
     self.new: :$raw, :$face, :@features, |opts;

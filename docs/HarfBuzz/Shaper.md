@@ -32,20 +32,6 @@ method shape() returns Iterator
 
 Returns a set of shaped HarfBuzz::Glyph objects
 
-### method cairo-glyphs
-
-```perl6
-method cairo-glyphs(
-    Numeric :x($x0) = 0e0,
-    Numeric :y($y0) = 0e0,
-    |c
-) returns Mu
-```
-
-Return a set of Cairo compatible shaped glyphs
-
-The return object is typically passed to either the Cairo::Context show_glyphs() or glyph_path() methods
-
 ### method text-advance
 
 ```perl6
@@ -60,7 +46,7 @@ Returns scaled X and Y displacement of the shaped text
 method ast() returns Seq
 ```
 
-Returns a Hash of scaled glyphs
+Returns a Hash sequence of scaled glyphs
 
 Entries are:
 

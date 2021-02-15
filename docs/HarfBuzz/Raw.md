@@ -77,8 +77,3 @@ A contextual representation of a HarfBuzz font
 
 include font-face, size and scale. A Font can be haped against a buffer.
 
-class HarfBuzz::Raw::hb_ft_font
--------------------------------
-
-A FreeType integrated font face
-
