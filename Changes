@@ -2,6 +2,8 @@
     - Moved HarfBuzz::Shaper::Cairo and HarfBuzz::Font::FreeType
       from this distribution into seperate modules. This eliminates
       dependencies on Cairo and Font::FreeType modules.
+    - Treating this module as experimental. It requires Debian
+      11+ (buster) which is currently testing, for HarfBuzz v2.6.6+.
 
 0.0.3  2021-02-06T06:50:03+13:00
     - Moved cairo-glyphs() method from HarfBuzz::Buffer to

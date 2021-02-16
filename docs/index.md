@@ -6,6 +6,8 @@ HarfBuzz-raku
 
 Bindings to the HarfBuzz text shaping library.
 
+**EXPERIMENTAL** requires HarfBuzz 2.6.6+ - See [Installation](#installation) 
+
 Name
 ----
 
@@ -63,11 +65,13 @@ Classes/Modules in this distribution
 
 Installation
 -----
-This module depends on the `libharfbuzz-dev`, which should be installed first:
+This module requires a HarfBuzz 2.6.6+ to be fully operational and pass all it's tests.
+
+You may need to build the HarfBuzz library from [its repo](https://github.com/harfbuzz/harfbuzz/releases/), or wait for a stable release, such as Debian bullseye to do:
 
 `$ sudo apt-get install libharfbuzz-dev`
 
-*IMPORTANT* If your are installing this as a [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) prerequisite, please check
+If your are installing this as a [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) dependency, please also check that module's installation instructions.
 
 Additional Modules
 ------

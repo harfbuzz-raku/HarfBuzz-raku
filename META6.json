@@ -9,7 +9,7 @@
   "depends": [
     "Method::Also"
   ],
-  "description": "binds to the HarfBuzz font shaping library",
+  "description": "bindings to the HarfBuzz font shaping library (experimental)",
   "license": "Artistic-2.0",
   "name": "HarfBuzz",
   "perl": "6.d",
