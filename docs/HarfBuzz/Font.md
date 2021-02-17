@@ -1,7 +1,7 @@
-[[Raku PDF Project]](https://pdf-raku.github.io)
- / [[HarfBuzz Module]](https://pdf-raku.github.io/HarfBuzz-raku)
- / [HarfBuzz](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz)
- :: [Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font)
+[[Raku HarfBuzz Project]](https://harfbuzz-raku.github.io)
+ / [[HarfBuzz Module]](https://harfbuzz-raku.github.io/HarfBuzz-raku)
+ / [HarfBuzz](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz)
+ :: [Font](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Font)
 
 class HarfBuzz::Font
 --------------------
@@ -17,9 +17,9 @@ Synopsis
 Description
 -----------
 
-A HarfBuzz font is used for shaping text (See class [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper)).
+A HarfBuzz font is used for shaping text (See class [HarfBuzz::Shaper](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper)).
 
-Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/HarfBuzz/Subset)).
+Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module [HarfBuzz::Subset](https://harfbuzz-raku.github.io/HarfBuzz-Subset-raku/HarfBuzz/Subset)).
 
 Methods
 -------

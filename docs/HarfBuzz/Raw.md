@@ -1,7 +1,7 @@
-[[Raku PDF Project]](https://pdf-raku.github.io)
- / [[HarfBuzz Module]](https://pdf-raku.github.io/HarfBuzz-raku)
- / [HarfBuzz](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz)
- :: [Raw](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw)
+[[Raku HarfBuzz Project]](https://harfbuzz-raku.github.io)
+ / [[HarfBuzz Module]](https://harfbuzz-raku.github.io/HarfBuzz-raku)
+ / [HarfBuzz](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz)
+ :: [Raw](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw)
 
 module HarfBuzz::Raw
 --------------------

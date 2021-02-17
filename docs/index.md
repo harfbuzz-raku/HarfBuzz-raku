@@ -6,7 +6,7 @@ HarfBuzz-raku
 
 Bindings to the HarfBuzz text shaping library.
 
-**EXPERIMENTAL** requires HarfBuzz 2.6.6+ - See [Installation](#installation) 
+**EXPERIMENTAL** recommended minimum HarfBuzz version is v2.6.6 - See [Installation](#installation)
 
 Name
 ----
@@ -55,30 +55,30 @@ Note that the number of glyphs does not necessarily match the number of input ch
 Classes/Modules in this distribution
 -------
 
-- [HarfBuzz::Buffer](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Buffer) - Shaping text and context
-- [HarfBuzz::Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping font
-- [HarfBuzz::Feature](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Feature) - Font Features
-- [HarfBuzz::Glyph](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph) - Shaped Glyphs
-- [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Shape a buffer using a given font and features
-- [HarfBuzz::Raw](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw) - Native bindings
-- [HarfBuzz::Raw::Defs](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw/Defs) - Enumerations and other constants
+- [HarfBuzz::Buffer](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Buffer) - Shaping text and context
+- [HarfBuzz::Font](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping font
+- [HarfBuzz::Feature](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Feature) - Font Features
+- [HarfBuzz::Glyph](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph) - Shaped Glyphs
+- [HarfBuzz::Shaper](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Shape a buffer using a given font and features
+- [HarfBuzz::Raw](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw) - Native bindings
+- [HarfBuzz::Raw::Defs](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Raw/Defs) - Enumerations and other constants
 
 Installation
 -----
-This module requires a HarfBuzz 2.6.6+ to be fully operational and pass all it's tests.
+This module requires HarfBuzz 2.6.6+ to be fully operational and pass all it's tests, which typically means Debian 11 Bullseye (currently testing).
 
-You may need to build the HarfBuzz library from [its repo](https://github.com/harfbuzz/harfbuzz/releases/), or wait for a stable release, such as Debian bullseye to do:
+`$ sudo apt-get install libharfbuzz-dev # Debian 11+`
 
-`$ sudo apt-get install libharfbuzz-dev`
+Or the HarfBuzz library needs to be built from source [its repo](https://github.com/harfbuzz/harfbuzz/releases/):
 
-If your are installing this as a [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) dependency, please also check that module's installation instructions.
+A source build is required if you are installing this as [HarfBuzz::Subset](https://harfbuzz-raku.github.io/HarfBuzz-Subset-raku/) dependency.
 
 Additional Modules
 ------
 
-- [HarfBuzz::Font::FreeType](https://pdf-raku.github.io/HarfBuzz-Font-FreeType-raku/) - HarfBuzz / FreeType integration
-- [HarfBuzz::Shaper::Cairo](https://pdf-raku.github.io/HarfBuzz-Shaper-Cairo-raku/) - HarfBuzz / Cairo shaping integration
-- [HarfBuzz::Subset](https://pdf-raku.github.io/HarfBuzz-Subset-raku/) - Raku bindings to harfbuzz-subset font subsetting library
+- [HarfBuzz::Font::FreeType](https://harfbuzz-raku.github.io/HarfBuzz-Font-FreeType-raku/) - HarfBuzz / FreeType integration
+- [HarfBuzz::Shaper::Cairo](https://harfbuzz-raku.github.io/HarfBuzz-Shaper-Cairo-raku/) - HarfBuzz / Cairo shaping integration
+- [HarfBuzz::Subset](https://harfbuzz-raku.github.io/HarfBuzz-Subset-raku/) - Raku bindings to harfbuzz-subset font subsetting library
 
 See Also
 --------

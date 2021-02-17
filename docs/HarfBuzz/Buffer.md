@@ -1,7 +1,7 @@
-[[Raku PDF Project]](https://pdf-raku.github.io)
- / [[HarfBuzz Module]](https://pdf-raku.github.io/HarfBuzz-raku)
- / [HarfBuzz](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz)
- :: [Buffer](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Buffer)
+[[Raku HarfBuzz Project]](https://harfbuzz-raku.github.io)
+ / [[HarfBuzz Module]](https://harfbuzz-raku.github.io/HarfBuzz-raku)
+ / [HarfBuzz](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz)
+ :: [Buffer](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Buffer)
 
 class HarfBuzz::Buffer
 ----------------------
@@ -73,11 +73,11 @@ method shaped() returns Bool
 
 Check if the buffer has been shaped.
 
-A buffer is shaped by calling the `shape()` method from a [HarfBuzz::Font](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) object.
+A buffer is shaped by calling the `shape()` method from a [HarfBuzz::Font](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) object.
 
 Note that a buffer needs to be reshaped after updating its properties, including text, language, script or direction.
 
-See also [HarfBuzz::Shaper](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper), which manages a font/buffer pairing for you.
+See also [HarfBuzz::Shaper](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper), which manages a font/buffer pairing for you.
 
 ### method is-horizontal
 

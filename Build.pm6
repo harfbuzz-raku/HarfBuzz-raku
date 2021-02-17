@@ -9,9 +9,9 @@ class Build {
     #| Sets up a C<Makefile> and runs C<make>.  C<$folder> should be
     #| C<"$folder/resources/lib"> and C<$libname> should be the name of the library
     #| without any prefixes or extensions.
-    sub make(Str $folder, Str $destfolder, IO() :$libname!) {
+    sub make(Str $folder, Str $destfolder, IO() :$libname) {
         my %vars = LibraryMake::get-vars($destfolder);
-        %vars<LIB-NAME> = ~ $*VM.platform-library-name($libname);
+        %vars<LIB-NAME> = ~ $*VM.platform-library-name($_) with $libname;
         %vars<LIB-LDFLAGS> = '-lharfbuzz';
         %vars<LIB-CFLAGS> = '-I/usr/include/harfbuzz';
 
@@ -23,7 +23,7 @@ class Build {
     method build($workdir) {
         my $destdir = 'resources/libraries';
         mkdir $destdir;
-        make($workdir, "$destdir", :libname<hb-glue>);
+        make($workdir, "$destdir");
         True;
     }
 }

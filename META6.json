@@ -28,7 +28,7 @@
   "raku": "6",
   "resources": [
   ],
-  "source-url": "git://github.com/pdf-raku/HarfBuzz-raku.git",
+  "source-url": "git://github.com/harfbuzz-raku/HarfBuzz-raku.git",
   "tags": [
     "font"
   ],

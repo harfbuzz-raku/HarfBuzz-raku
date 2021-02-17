@@ -1,7 +1,7 @@
-[[Raku PDF Project]](https://pdf-raku.github.io)
- / [[HarfBuzz Module]](https://pdf-raku.github.io/HarfBuzz-raku)
- / [HarfBuzz](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz)
- :: [Glyph](https://pdf-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph)
+[[Raku HarfBuzz Project]](https://harfbuzz-raku.github.io)
+ / [[HarfBuzz Module]](https://harfbuzz-raku.github.io/HarfBuzz-raku)
+ / [HarfBuzz](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz)
+ :: [Glyph](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph)
 
 class HarfBuzz::Glyph
 ---------------------

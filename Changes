@@ -1,4 +1,5 @@
 {{$NEXT}}
+    - Moved source project pdf-raku -> harfbuzz-raku
 
 0.0.4  2021-02-16T13:28:36+13:00
     - Moved HarfBuzz::Shaper::Cairo and HarfBuzz::Font::FreeType
