@@ -6,7 +6,7 @@ HarfBuzz-raku
 
 Bindings to the HarfBuzz text shaping library.
 
-**EXPERIMENTAL** recommended minimum HarfBuzz version is v2.6.6 - See [Installation](#installation)
+**EXPERIMENTAL** minimum HarfBuzz version is v2.6.6 - See [Installation](#installation)
 
 Name
 ----
