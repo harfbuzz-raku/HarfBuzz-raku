@@ -1,8 +1,9 @@
 use HarfBuzz;
 use HarfBuzz::Shaper;
 use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
+constant Min-HarfBuzz-Version = v2.6.6;
 use Test;
-plan 25;
+plan 26;
 unless $*RAKU.compiler.version >= v2020.11 {
     die "This version of Raku is too old to use the HarfBuzz semantics";
 }
@@ -10,10 +11,8 @@ my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
 
-unless $version >= v1.6.0 {
-    skip-rest "HarfBuzz version $version is too old to run these tests";
-    exit;
-}
+ok($version >= Min-HarfBuzz-Version, "HarfBuzz version is suppported")
+    or diag "sorry this version of libxml is not supported ($version < {Min-HarfBuzz-Version})";
 
 is hb-tag-dec(hb-tag-enc('post')), 'post';
 
