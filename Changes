@@ -1,6 +1,9 @@
 {{$NEXT}}
+
+0.0.5  2021-02-20T06:06:23+13:00
     - Moved source project pdf-raku -> harfbuzz-raku
     - Fix is-horizontal() and is-vertical() methods
+    - Raise miminum HarfBuzz version to 2.6.6 #4
 
 0.0.4  2021-02-16T13:28:36+13:00
     - Moved HarfBuzz::Shaper::Cairo and HarfBuzz::Font::FreeType
