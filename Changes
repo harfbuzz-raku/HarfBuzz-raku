@@ -1,5 +1,6 @@
 {{$NEXT}}
     - Moved source project pdf-raku -> harfbuzz-raku
+    - Fix is-horizontal() and is-vertical() methods
 
 0.0.4  2021-02-16T13:28:36+13:00
     - Moved HarfBuzz::Shaper::Cairo and HarfBuzz::Font::FreeType

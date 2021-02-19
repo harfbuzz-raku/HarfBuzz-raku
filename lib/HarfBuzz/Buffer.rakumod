@@ -152,10 +152,10 @@ See also L<HarfBuzz::Shaper>, which manages a font/buffer pairing for you.
 
 
 #| True if the writing direction is left-to-right or right-to-left
-method is-horizontal returns Bool { self.get-direction ~~ HB_DIRECTION_LTR | HB_DIRECTION_RTL }
+method is-horizontal returns Bool { $!raw.get-direction ~~ HB_DIRECTION_LTR | HB_DIRECTION_RTL }
 
 #| True if the writing direction is top-to-bottom or bottom-to-top
-method is-vertical returns Bool { self.get-direction ~~ HB_DIRECTION_TTB | HB_DIRECTION_BTT }
+method is-vertical returns Bool { $!raw.get-direction ~~ HB_DIRECTION_TTB | HB_DIRECTION_BTT }
 
 #| reset the buffer, ready for shaping
 method reset {

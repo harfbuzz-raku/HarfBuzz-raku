@@ -10,7 +10,7 @@ use NativeCall;
 
 has HarfBuzz::Face $.face handles<Blob>;
 has hb_font $.raw is required;
-has HarfBuzz::Feature() @.features;
+has HarfBuzz::Feature() @.features is built;
 has UInt $.gen is built; # mutation generation
 
 =begin pod
@@ -30,7 +30,7 @@ Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module L<Ha
 
 =end pod
 
-submethod TWEAK(:@scale, Num() :$size=12e0) {
+submethod TWEAK(:@scale, Num() :$size=12e0, :@!features) {
     $!raw.reference;
     if @scale {
         self.scale = @scale
