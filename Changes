@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.0.6  2021-02-23T05:54:04+13:00
+    - Documentation link fixes for moved source project
+
 0.0.5  2021-02-20T06:06:23+13:00
     - Moved source project pdf-raku -> harfbuzz-raku
     - Fix is-horizontal() and is-vertical() methods

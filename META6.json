@@ -30,9 +30,11 @@
   ],
   "source-url": "git://github.com/harfbuzz-raku/HarfBuzz-raku.git",
   "tags": [
-      "font", "harfbuzz", "freetype"
+    "font",
+    "harfbuzz",
+    "freetype"
   ],
   "test-depends": [
   ],
-  "version": "0.0.5"
+  "version": "0.0.6"
 }
