@@ -4,7 +4,6 @@
     "David Warring"
   ],
   "build-depends": [
-    "LibraryMake"
   ],
   "depends": [
     "Method::Also"

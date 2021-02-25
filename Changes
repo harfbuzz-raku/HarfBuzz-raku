@@ -1,4 +1,6 @@
 {{$NEXT}}
+    - Remove superfluous: Makefile.in, Build.pm and LibraryMake
+      dependency
 
 0.0.6  2021-02-23T05:54:04+13:00
     - Documentation link fixes for moved source project

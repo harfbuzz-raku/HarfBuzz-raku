@@ -41,15 +41,12 @@ docs/HarfBuzz/Raw/Defs.md : lib/HarfBuzz/Raw/Defs.rakumod
 docs/HarfBuzz/Shaper.md : lib/HarfBuzz/Shaper.rakumod
 
 test : all
-	@prove -e"raku -I ." t
+	@prove6 -I .
 
 loudtest : all
-	@prove -e"raku -I ." -v t
+	@prove6 -I . -v
 
 clean :
-	@rm -f $(SRC)/ft6_*%O%
-
-realclean : clean
-	@rm -f Makefile README.md docs/*.md docs/HarfBuzz/*.md docs/HarfBuzz/*/*.md
+	@rm -f README.md docs/*.md docs/HarfBuzz/*.md docs/HarfBuzz/*/*.md
 
 
