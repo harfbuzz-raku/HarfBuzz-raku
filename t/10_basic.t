@@ -12,7 +12,7 @@ lives-ok { $version = HarfBuzz.version }, 'got version';
 note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
 
 ok($version >= Min-HarfBuzz-Version, "HarfBuzz version is suppported")
-    or diag "sorry this version of libxml is not supported ($version < {Min-HarfBuzz-Version})";
+    or diag "sorry this version of HarfBuzz is not supported ($version < {Min-HarfBuzz-Version})";
 
 is hb-tag-dec(hb-tag-enc('post')), 'post';
 
