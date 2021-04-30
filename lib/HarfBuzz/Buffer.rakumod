@@ -120,7 +120,7 @@ method direction is rw {
 =begin pod
 
   use HarfBuzz::Raw::Defs :hb-direction;
-  $buf.direction = `HB_DIRECTION_RTL' # right-to-left
+  $buf.direction = HB_DIRECTION_RTL; # right-to-left
 
 Direction should be `HB_DIRECTION_LTR` (left-to-right),  `HB_DIRECTION_RTL` (right-to-left), `HB_DIRECTION_TTB` (top-to-bottom), or `HB_DIRECTION_BTT` (bottom-to-top).
 
