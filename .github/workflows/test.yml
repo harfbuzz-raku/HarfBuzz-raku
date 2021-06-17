@@ -14,7 +14,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          #- macOS-latest
+          - macOS-latest
           #- windows-latest
         raku-version:
           - 'latest'
@@ -28,19 +28,17 @@ jobs:
       - name: Install Dependencies
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
-              :;
+              ## Requires Debian 11+
+              wget https://github.com/harfbuzz/harfbuzz/archive/2.7.4.tar.gz
+              (tar xzf 2.7.4.tar.gz && cd harfbuzz-2.7.4 && ./autogen.sh && make)
               ##sudo apt-get install -y libharfbuzz-dev
           elif [ "$RUNNER_OS" == "macOS" ]; then
               brew update
-              brew install autoconf automake libtool
-              ##brew install harfbuzz
+              ## brew install autoconf automake libtool
+              brew install harfbuzz
           else
               echo "$RUNNER_OS not supported"
           fi
-            ## Requires Debian 11+
-          ##sudo apt-get install -y libharfbuzz-dev
-          wget https://github.com/harfbuzz/harfbuzz/archive/2.7.4.tar.gz
-          (tar xzf 2.7.4.tar.gz && cd harfbuzz-2.7.4 && ./autogen.sh && make)
           zef install --/test App::Prove6
           zef --deps-only install .
       - name: Run Tests
