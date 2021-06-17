@@ -14,10 +14,11 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          #- macOS-latest
+          - macOS-latest
           #- windows-latest
         raku-version:
           - 'latest'
+          - '2020.05.1'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -35,5 +36,5 @@ jobs:
       - name: Run Tests
         run: |
           export LD_LIBRARY_PATH=harfbuzz-2.7.4/src/.libs
-          prove6 -l t
+          prove6 -I. t
           zef install .
