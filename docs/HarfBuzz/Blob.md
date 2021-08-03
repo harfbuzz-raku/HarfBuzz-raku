@@ -10,7 +10,7 @@ HarfBuzz representation of a Blob
 
 ### method Blob
 
-```perl6
+```raku
 method Blob() returns Mu
 ```
 

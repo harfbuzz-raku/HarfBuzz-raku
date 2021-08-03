@@ -10,7 +10,7 @@ HarfBuzz shaping object
 
 ### method font
 
-```perl6
+```raku
 method font() returns HarfBuzz::Font
 ```
 
@@ -18,7 +18,7 @@ Gets or sets the font
 
 ### method buf
 
-```perl6
+```raku
 method buf() returns HarfBuzz::Buffer
 ```
 
@@ -26,7 +26,7 @@ Gets or sets the shaping buffer
 
 ### method shape
 
-```perl6
+```raku
 method shape() returns Iterator
 ```
 
@@ -34,7 +34,7 @@ Returns a set of shaped HarfBuzz::Glyph objects
 
 ### method text-advance
 
-```perl6
+```raku
 method text-advance() returns List
 ```
 
@@ -42,7 +42,7 @@ Returns scaled X and Y displacement of the shaped text
 
 ### method ast
 
-```perl6
+```raku
 method ast() returns Seq
 ```
 
@@ -64,7 +64,7 @@ Entries are:
 
 ### method version
 
-```perl6
+```raku
 method version() returns Version
 ```
 

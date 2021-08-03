@@ -26,7 +26,7 @@ Methods
 
 ### method scale
 
-```perl6
+```raku
 method scale() returns List
 ```
 
@@ -34,7 +34,7 @@ Gets or sets x and y scale
 
 ### method size
 
-```perl6
+```raku
 method size() returns Numeric
 ```
 
@@ -42,7 +42,7 @@ Gets or sets the font size
 
 ### method add-features
 
-```perl6
+```raku
 method add-features(
     HarfBuzz::Feature(Any) @features
 ) returns Array[HarfBuzz::Feature]
@@ -52,7 +52,7 @@ Add font features
 
 ### method glyph-name
 
-```perl6
+```raku
 method glyph-name(
     Int:D $gid where { ... }
 ) returns Str
@@ -62,7 +62,7 @@ Returns the glyph name for a glyph identifier
 
 ### method glyph-from-name
 
-```perl6
+```raku
 method glyph-from-name(
     Str:D $name
 ) returns UInt
@@ -72,7 +72,7 @@ Returns the glyph identifier for a given glyph name
 
 ### method glyph-extents
 
-```perl6
+```raku
 method glyph-extents(
     Int:D $gid where { ... }
 ) returns HarfBuzz::Raw::hb_glyph_extents
@@ -84,7 +84,7 @@ Note that `hb_glyph_extents` is a `CStruct` with `Num` attributes `x-advance`, `
 
 ### method shape
 
-```perl6
+```raku
 method shape(
     HarfBuzz::Buffer:D :$buf!
 ) returns Mu

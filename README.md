@@ -21,7 +21,7 @@ use HarfBuzz::Font;
 use HarfBuzz::Buffer;
 use HarfBuzz::Shaper;
 use HarfBuzz::Feature;
-use HarfBuzz::Glyphs;
+use HarfBuzz::Glyph;
 my HarfBuzz::Feature() @features = <smcp -kern -liga>; # enable small-caps, disable kerning and ligatures
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my HarfBuzz::Font $font .= new :$file, :size(36), :@features;

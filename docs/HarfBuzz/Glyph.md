@@ -10,7 +10,7 @@ Represents a shaped glyph
 
 ### method x-advance
 
-```perl6
+```raku
 method x-advance() returns Numeric
 ```
 
@@ -18,7 +18,7 @@ Relative/scaled glyph x-advance
 
 ### method y-advance
 
-```perl6
+```raku
 method y-advance() returns Numeric
 ```
 
@@ -26,7 +26,7 @@ Relative/scaled glyph y-advance
 
 ### method advance
 
-```perl6
+```raku
 method advance() returns Complex
 ```
 
@@ -34,7 +34,7 @@ Relative/scaled glyph x/y advance
 
 ### method x-offset
 
-```perl6
+```raku
 method x-offset() returns Numeric
 ```
 
@@ -42,7 +42,7 @@ Relative/scaled glyph x offset
 
 ### method y-offset
 
-```perl6
+```raku
 method y-offset() returns Numeric
 ```
 
@@ -50,7 +50,7 @@ Relative/scaled glyph y offset
 
 ### method offset
 
-```perl6
+```raku
 method offset() returns Complex
 ```
 

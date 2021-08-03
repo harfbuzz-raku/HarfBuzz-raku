@@ -10,7 +10,7 @@ A HarfBuzz font feature
 
 ### method tag
 
-```perl6
+```raku
 method tag() returns Str
 ```
 
@@ -18,7 +18,7 @@ Font tag (e.g. 'kern')
 
 ### method enabled
 
-```perl6
+```raku
 method enabled() returns Bool
 ```
 
@@ -26,7 +26,7 @@ Whether the feature is enabled
 
 ### method Str
 
-```perl6
+```raku
 method Str() returns Mu
 ```
 

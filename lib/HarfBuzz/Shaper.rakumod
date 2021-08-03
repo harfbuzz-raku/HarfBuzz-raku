@@ -90,7 +90,7 @@ method text-advance returns List {
 
 #| Returns a Hash sequence of scaled glyphs
 method ast is also<shaper> returns Seq {
-    self.shape.map: *.ast;
+    self.shape».ast;
 }
 =begin pod
 
