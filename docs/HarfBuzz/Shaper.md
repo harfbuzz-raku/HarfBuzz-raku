@@ -43,7 +43,7 @@ Returns scaled X and Y displacement of the shaped text
 ### method ast
 
 ```raku
-method ast() returns Seq
+method ast() returns List
 ```
 
 Returns a Hash sequence of scaled glyphs
