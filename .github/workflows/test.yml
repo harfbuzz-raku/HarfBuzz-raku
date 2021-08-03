@@ -39,6 +39,7 @@ jobs:
           ## brew install autoconf automake libtool
           brew install harfbuzz
       - name: Install Dependencies
+        run: |
           zef install --/test App::Prove6
           zef --deps-only install .
       - name: Run Tests
