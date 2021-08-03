@@ -25,18 +25,19 @@ jobs:
       - uses: Raku/setup-raku@v1
         with:
           raku-version: ${{ matrix.raku-version }}
-      - name: Platform specific setup
-          - if: contains(matrix.os, 'ubuntu')
-            run: |
-              ## Requires Debian 11+
-              wget https://github.com/harfbuzz/harfbuzz/archive/2.7.4.tar.gz
-              (tar xzf 2.7.4.tar.gz && cd harfbuzz-2.7.4 && ./autogen.sh && make)
-              ##sudo apt-get install -y libharfbuzz-dev
-          - if: contains(matrix.os, 'macOS')
-            run: |
-              brew update
-              ## brew install autoconf automake libtool
-              brew install harfbuzz
+      - name: Linux specific setup
+        if: contains(matrix.os, 'ubuntu')
+        run: |
+          ## Requires Debian 11+
+          wget https://github.com/harfbuzz/harfbuzz/archive/2.7.4.tar.gz
+          (tar xzf 2.7.4.tar.gz && cd harfbuzz-2.7.4 && ./autogen.sh && make)
+          ##sudo apt-get install -y libharfbuzz-dev
+      - name: macOS specific setup
+        if: contains(matrix.os, 'macOS')
+        run: |
+          brew update
+          ## brew install autoconf automake libtool
+          brew install harfbuzz
       - name: Install Dependencies
           zef install --/test App::Prove6
           zef --deps-only install .
