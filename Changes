@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.0.8  2022-01-31T13:16:48+13:00
     - Add %ast<c> - cluster position to Glyph ast() method
     - Change hb_buffer add-text() method to use hb_buffer_add_codepoints()
       rather than 'hb_buffer_add_utf8(). This ensures that the cluster
