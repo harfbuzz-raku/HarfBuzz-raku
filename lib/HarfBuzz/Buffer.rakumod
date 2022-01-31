@@ -177,7 +177,7 @@ method text-advance returns List {
     my UInt:D $dx = 0;
     my UInt:D $dy = 0;
 
-    for 0 ..^ self.length {
+    for ^self.length {
         given $Pos[$_] {
             $dx += .x-advance;
             $dy += .y-advance;

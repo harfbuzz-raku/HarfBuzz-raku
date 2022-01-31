@@ -45,8 +45,19 @@ method ast handles<AT-KEY keys> {
     %!ast ||= %(
         :$!name, ax => $.x-advance, ay => $.y-advance,
         g => $!info.codepoint, dx => $.x-offset, dy => $.y-offset,
+        c => $!info.cluster,
     );
 }
 =begin pod
-=para Of the form `%( :$ax, :$ay, :$dx, :$dy, :g($gid))`
+=para Of the form `%( :$ax, :$ay, :$dx, :$dy, :g($gid), :$c)`
+
+where
+
+=item I<dx> - pre X offset
+=item I<dx> - pre Y offset
+=item I<ax> - post X advance
+=item I<ay> - post Y advance
+=item I<g>  - Glyph ID
+=item I<c>  - Input character position
+
 =end pod

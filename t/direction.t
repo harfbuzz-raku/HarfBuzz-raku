@@ -27,6 +27,7 @@ is $shaper.direction, +HB_DIRECTION_RTL;
 my @info = $shaper.shape>>.ast;
 my @expected = reverse [
   {
+    c => 0,
     ax => 25.99,
     ay => 0.0,
     dx => 0.0,
@@ -35,6 +36,7 @@ my @expected = reverse [
     name => 'H',
   },
   {
+    c => 1,
     ax => 15.98,
     ay => 0.0,
     dx => 0.0,
@@ -43,6 +45,7 @@ my @expected = reverse [
     name => 'e',
   },
   {
+    c => 2,
     ax => 10.01,
     ay => 0.0,
     dx => 0.0,
@@ -51,6 +54,7 @@ my @expected = reverse [
     name => 'l',
   },
   {
+    c => 3,
     ax => 10.01,
     ay => 0.0,
     dx => 0.0,
@@ -59,6 +63,7 @@ my @expected = reverse [
     name => 'l',
   },
   {
+    c => 4,
     ax => 18.0,
     ay => 0.0,
     dx => 0.0,
@@ -67,6 +72,7 @@ my @expected = reverse [
     name => 'Euro',
   },
   {
+    c => 5,
     ax => 11.99,
     ay => 0.0,
     dx => 0.0,

@@ -14,10 +14,10 @@ my $text := 'LVAT';
 my HarfBuzz::Shaper $hb .= new: :font{ :$file, :$size,},  :buf{ :$text, :language<epo> };
 my @info = $hb.shaper;
 my @expected = [
-  { ax => 17.86, ay => 0.0, dx => 0.0, dy => 0.0, g => 45, name => 'L' },
-  { ax => 21.67, ay => 0.0, dx => 0.0, dy => 0.0, g => 55, name => 'V' },
-  { ax => 24.05, ay => 0.0, dx => 0.0, dy => 0.0, g => 34, name => 'A' },
-  { ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 53, name => 'T' },
+  { c => 0, ax => 17.86, ay => 0.0, dx => 0.0, dy => 0.0, g => 45, name => 'L' },
+  { c => 1, ax => 21.67, ay => 0.0, dx => 0.0, dy => 0.0, g => 55, name => 'V' },
+  { c => 2, ax => 24.05, ay => 0.0, dx => 0.0, dy => 0.0, g => 34, name => 'A' },
+  { c => 3, ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 53, name => 'T' },
 ];
 
 if $version < v2.6.6 {
@@ -30,10 +30,10 @@ $hb .= new: :font{ :$file, :$size, :features[ '-kern' ] }, :buf{ :$text, :langua
 @info = $hb.shaper;
 
 @expected = [
-  { ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 45, name => 'L' },
-  { ax => 25.99, ay => 0.0, dx => 0.0, dy => 0.0, g => 55, name => 'V' },
-  { ax => 25.99, ay => 0.0, dx => 0.0, dy => 0.0, g => 34, name => 'A' },
-  { ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 53, name => 'T' },
+  { c => 0, ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 45, name => 'L' },
+  { c => 1, ax => 25.99, ay => 0.0, dx => 0.0, dy => 0.0, g => 55, name => 'V' },
+  { c => 2, ax => 25.99, ay => 0.0, dx => 0.0, dy => 0.0, g => 34, name => 'A' },
+  { c => 3, ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 53, name => 'T' },
 ];
 
 if HarfBuzz::Shaper.version < v2.6.6 {

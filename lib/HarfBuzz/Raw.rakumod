@@ -1,4 +1,4 @@
-#| Native HarfBuzz bindings
+#| Native HarfBuzz Raku bindings
 unit module HarfBuzz::Raw;
 
 use HarfBuzz::Raw::Defs :$HB, :$CLIB, :types, :hb-memory-mode;
@@ -129,6 +129,7 @@ class hb_buffer is repr('CPointer') is export {
     our sub create(--> hb_buffer) is native($HB) is symbol('hb_buffer_create') {*}
     method new(--> hb_buffer) { create() }
     method add-utf8(blob8 $buf, int32 $len, uint32 $offset, int32 $n) is native($HB) is symbol('hb_buffer_add_utf8') {*}
+    method add-codepoints(blob32 $buf, int32 $len, uint32 $offset, int32 $n) is native($HB) is symbol('hb_buffer_add_codepoints') {*}
     method guess-segment-properties() is native($HB) is symbol('hb_buffer_guess_segment_properties')  {*}
     method get-length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
     method set-length(int32) is native($HB) is symbol('hb_buffer_set_length') {*}
@@ -144,8 +145,8 @@ class hb_buffer is repr('CPointer') is export {
     method get-content-type(--> int32) is native($HB) is symbol('hb_buffer_get_content_type')  {*}
     method set-content-type(int32) is native($HB) is symbol('hb_buffer_set_content_type')  {*}
     method add-text(Str:D $str, UInt :$offset = 0) {
-        my blob8:D $utf8 = $str.encode;
-        self.add-utf8($utf8, $utf8.elems, $offset, $utf8.elems);
+        my blob32:D $ords .= new: $str.ords;
+        self.add-codepoints($ords, $ords.elems, $offset, $ords.elems);
     }
 
     method reference(--> hb_buffer) is native($HB) is symbol('hb_buffer_reference') {*}

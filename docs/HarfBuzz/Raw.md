@@ -6,7 +6,7 @@
 module HarfBuzz::Raw
 --------------------
 
-Native HarfBuzz bindings
+Native HarfBuzz Raku bindings
 
 class HarfBuzz::Raw::hb_glyph_position
 --------------------------------------

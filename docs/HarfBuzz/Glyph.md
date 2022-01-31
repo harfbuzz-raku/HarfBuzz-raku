@@ -60,5 +60,19 @@ Relative/scaled glyph x/y offset
 
 Glyph hash digest
 
-Of the form `%( :$ax, :$ay, :$dx, :$dy, :g($gid))`
+Of the form `%( :$ax, :$ay, :$dx, :$dy, :g($gid), :$c)`
+
+where
+
+  * *dx* - pre X offset
+
+  * *dx* - pre Y offset
+
+  * *ax* - post X advance
+
+  * *ay* - post Y advance
+
+  * *g* - Glyph ID
+
+  * *c* - Input character position
 

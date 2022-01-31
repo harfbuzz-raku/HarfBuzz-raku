@@ -1,4 +1,9 @@
 {{$NEXT}}
+    - Add %ast<c> - cluster position to Glyph ast() method
+    - Change hb_buffer add-text() method to use hb_buffer_add_codepoints()
+      rather than 'hb_buffer_add_utf8(). This ensures that the cluster
+      position (above) is mapped to a character position rather than an
+      offset in a UTF-8 encoded buffer.
 
 0.0.7  2021-04-30T16:45:57+12:00
     - Remove superfluous: Makefile.in, Build.pm and LibraryMake

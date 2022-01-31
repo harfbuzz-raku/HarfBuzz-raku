@@ -28,9 +28,10 @@ is $shaper.language, 'epo';
 is $shaper.script, HB_SCRIPT_LATIN;
 is $shaper.script, 'Latn';
 is $shaper.direction, +HB_DIRECTION_LTR;
-my @info = $shaper.shape>>.ast;
+my @shape = $shaper.shape>>.ast;
 my @expected = [
   {
+    c => 0,
     ax => 25.99,
     ay => 0.0,
     dx => 0.0,
@@ -39,6 +40,7 @@ my @expected = [
     name => 'H',
   },
   {
+    c => 1,
     ax => 15.19,
     ay => 0.0,
     dx => 0.0,
@@ -47,6 +49,7 @@ my @expected = [
     name => 'e',
   },
   {
+    c => 2,
     ax => 10.01,
     ay => 0.0,
     dx => 0.0,
@@ -55,6 +58,7 @@ my @expected = [
     name => 'l',
   },
   {
+    c => 3,
     ax => 10.01,
     ay => 0.0,
     dx => 0.0,
@@ -63,6 +67,7 @@ my @expected = [
     name => 'l',
   },
   {
+    c => 4,
     ax => 18.0,
     ay => 0.0,
     dx => 0.0,
@@ -71,6 +76,7 @@ my @expected = [
     name => 'Euro',
   },
   {
+    c => 5,
     ax => 11.99,
     ay => 0.0,
     dx => 0.0,
@@ -82,11 +88,11 @@ my @expected = [
 
 unless $version >= v2.6.6 {
     # name not available in older HarfBuzz versions
-    .<name>:delete for flat @expected, @info;
+    .<name>:delete for flat @expected, @shape;
 }
-is-deeply @info, @expected;
+is-deeply @shape, @expected;
 
-is-approx $shaper.text-advance[0], @info.map(*<ax>).sum;
+is-approx $shaper.text-advance[0], @shape.map(*<ax>).sum;
 
 constant H_Gid = 41;
 my $codepoint = $shaper.glyph-from-name('H');
