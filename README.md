@@ -45,6 +45,7 @@ ax:   horizontal advance
 ay:   vertical advance
 dx:   horizontal offset
 dy:   vertical offset
+c:    input character position
 g:    glyph index in font (CId)
 name: glyph name
 ```
