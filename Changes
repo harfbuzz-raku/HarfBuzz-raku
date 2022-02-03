@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.0.10  2022-02-04T09:21:12+13:00
     - Add Shaper AT-KEY method for glyph retrieval
     - Fix test for Rakudo 2022.02+
 

@@ -1,4 +1,4 @@
-unit class HarfBuzz:ver<0.0.9>;
+unit class HarfBuzz:ver<0.0.10>;
 use HarfBuzz::Raw;
 
 method version {
