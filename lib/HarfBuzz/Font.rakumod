@@ -36,7 +36,7 @@ submethod TWEAK(:@scale, Num() :$size=12e0, :@!features) {
         self.scale = @scale
     }
     else {
-        $!raw.get-scale(my uint32 $x, my uint32 $y);
+        $!raw.get-scale(my int32 $x, my int32 $y);
         if $x == 0 || $y == 0 {
             $x ||= 2048;
             $y ||= $x;
@@ -61,7 +61,7 @@ multi method COERCE(% ( Str:D :$file!, :$ft-face, :@features, |opts) ) {
 #| Gets or sets x and y scale
 method scale is rw returns List {
     Proxy.new(
-        FETCH => { $!raw.get-scale(my uint32 $x, my uint32 $y); ($x, $y || $x) },
+        FETCH => { $!raw.get-scale(my int32 $x, my int32 $y); ($x, $y || $x) },
         STORE => -> $, [ $x, $y = $x ] {
             $!gen++;
             $!raw.set-scale($x.Int, $y.Int);
