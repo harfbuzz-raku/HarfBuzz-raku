@@ -6,7 +6,10 @@ HarfBuzz-raku
 
 Bindings to the HarfBuzz text shaping library.
 
-**EXPERIMENTAL** minimum HarfBuzz version is v2.6.6 - See [Installation](#installation)
+Minimum supported HarfBuzz version is v2.6.6 - See [Installation](#installation)
+
+Note: If you wish to install the HarfBuzz::Subset module, then the minimum HarfBuzz
+version is v3.0.0+.
 
 Name
 ----
@@ -45,6 +48,7 @@ ax:   horizontal advance
 ay:   vertical advance
 dx:   horizontal offset
 dy:   vertical offset
+c:    input character position
 g:    glyph index in font (CId)
 name: glyph name
 ```
@@ -65,9 +69,9 @@ Classes/Modules in this distribution
 
 Installation
 -----
-This module requires HarfBuzz 2.6.6+ to be fully operational and pass all it's tests, which typically means Debian 11 Bullseye (currently testing).
+This module requires HarfBuzz 3.0.0+ to be fully operational and pass all it's tests.
 
-`$ sudo apt-get install libharfbuzz-dev # Debian 11+`
+`$ sudo apt-get install libharfbuzz-dev # Debian 12+`
 
 Or the HarfBuzz library needs to be built from source [its repo](https://github.com/harfbuzz/harfbuzz/releases/):
 

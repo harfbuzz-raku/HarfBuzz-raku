@@ -65,6 +65,8 @@ class hb_glyph_info is export is repr('CStruct') {
     #< private >
     HAS hb_var_int   $!var1;
     HAS hb_var_int   $!var2;
+
+    method get-flags(--> uint32) is native($HB) is symbol('hb_glyph_info_get_glyph_flags') {*}
 }
 
 #| A contiguous array of glyph information

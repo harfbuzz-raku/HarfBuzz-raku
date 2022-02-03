@@ -3,7 +3,7 @@ use HarfBuzz::Shaper;
 use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
 constant Min-HarfBuzz-Version = v2.6.6;
 use Test;
-plan 26;
+plan 28;
 unless $*RAKU.compiler.version >= v2020.11 {
     die "This version of Raku is too old to use the HarfBuzz semantics";
 }
@@ -91,6 +91,8 @@ unless $version >= v2.6.6 {
     .<name>:delete for flat @expected, @shape;
 }
 is-deeply @shape, @expected;
+is $shaper.elems, 6;
+is-deeply $shaper[2].ast, @shape[2], 'AT-POS';
 
 is-approx $shaper.text-advance[0], @shape.map(*<ax>).sum;
 

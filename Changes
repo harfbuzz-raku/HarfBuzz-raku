@@ -1,4 +1,6 @@
 {{$NEXT}}
+    - Add Shaper AT-KEY method for glyph retrieval
+    - Fix test for Rakudo 2022.02+
 
 0.0.9  2022-02-04T06:39:50+13:00
     - Fix for pending Rakudo 2022.02 release. niner++

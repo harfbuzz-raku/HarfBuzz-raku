@@ -119,3 +119,8 @@ Gets or sets the direction for shaping: `HB_DIRECTION_LTR` (left-to-right), `HB_
 
 If you don't set a direction, HarfBuzz::Shaper will make a guess based on the text string. This may or may not yield desired results.
 
+### AT-KEY
+
+    method AT-KEY(Int $pos) returns HarfBuzz::Glyph
+    say "last glyph: " ~ $shaper[$shaper.elems -1].name;
+

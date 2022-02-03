@@ -39,6 +39,8 @@ method y-offset returns Numeric {
 #| Relative/scaled glyph x/y offset
 method offset returns Complex { Complex.new( $.x-offset, $.y-offset ); }
 
+method flags { $!info.get-flags }
+
 #| Glyph hash digest
 has %!ast;
 method ast handles<AT-KEY keys> {

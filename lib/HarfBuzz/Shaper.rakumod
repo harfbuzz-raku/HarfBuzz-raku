@@ -15,12 +15,20 @@ use Method::Also;
 
 has HarfBuzz::Buffer() $!buf handles<length language script script-name direction text is-horizontal is-vertical>;
 has HarfBuzz::Font() $!font handles<face scale size glyph-name glyph-from-name glyph-extents ft-load-flags features add-features>;
+has hb_glyph_position $!Pos;
+has hb_glyph_info     $!Info;
+has Numeric @!vec;
 has $!gen = 0; # to detect font/buffer mutation
+has HarfBuzz::Glyph @!glyphs;
 
 submethod TWEAK(
     HarfBuzz::Font() :$!font,
     HarfBuzz::Buffer() :$!buf = HarfBuzz::Buffer.new,
-) { }
+) {
+    @!vec = $!font.scale.map: $!font.raw.get-size / *;
+}
+
+method elems { $.buf.length }
 
 #| Gets or sets the font
 method font is rw returns HarfBuzz::Font {
@@ -46,27 +54,33 @@ method buf is rw returns HarfBuzz::Buffer {
     )
 }
 
-#| Returns a set of shaped HarfBuzz::Glyph objects
-method shape returns Iterator {
-    class Iteration does Iterable does Iterator {
-        has UInt $.idx = 0;
-        has HarfBuzz::Buffer:D $.buf is required;
-        has HarfBuzz::Font:D $.font is required;
-        has hb_glyph_position $!Pos = $!buf.raw.get-glyph-positions(0);
-        has hb_glyph_info     $!Info = $!buf.raw.get-glyph-infos(0);
-        has Numeric @!vec;
-        submethod TWEAK {
-            @!vec = $!font.scale.map: $!font.raw.get-size / *;
+method AT-POS(UInt $idx) {
+    @!glyphs[$idx] //= do {
+        self.buf; # enure shaping is up-to-date
+        if $idx < $!buf.length { 
+            my hb_glyph_position:D $pos = $!Pos[$idx];
+            my hb_glyph_info:D $info = $!Info[$idx];
+            my Int:D $codepoint = $info.codepoint;
+            my Str:D $name = $!font.glyph-name($codepoint);
+            HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$codepoint, :$!buf, :@!vec;
         }
+        else {
+            HarfBuzz::Glyph
+        }
+    }
+}
+
+#| Returns a set of shaped HarfBuzz::Glyph objects
+method shape(HarfBuzz::Shaper:D $obj:) returns Iterator {
+    class Iteration does Iterable does Iterator {
+        has HarfBuzz::Shaper:D $.obj is required;
+        has UInt $.elems = $!obj.elems;
+        has UInt $.idx = 0;
+
         method iterator { self }
         method pull-one {
-            if $!idx < $!buf.length {
-                my hb_glyph_position:D $pos = $!Pos[$!idx];
-                my hb_glyph_info:D $info = $!Info[$!idx];
-                $!idx++;
-                my Int:D $codepoint = $info.codepoint;
-                my Str:D $name = $!font.glyph-name($codepoint);
-                HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$codepoint, :$!buf, :@!vec;
+            if $!idx < $!elems {
+                $obj.AT-POS: $!idx++;
             }
             else {
                 IterationEnd;
@@ -74,7 +88,7 @@ method shape returns Iterator {
         }
     }
 
-    Iteration.new: :$.buf, :$!font;
+    Iteration.new: :$obj;
 }
 
 #| Returns scaled X and Y displacement of the shaped text
@@ -114,6 +128,10 @@ method !reshape {
     $!buf.reset;
     $!font.shape: :$!buf;
     $!gen = $!font.gen + $!buf.gen;
+    $!Pos = $!buf.raw.get-glyph-positions(0);
+    $!Info = $!buf.raw.get-glyph-infos(0);
+    @!vec = $!font.scale.map: $!font.raw.get-size / *;
+    @!glyphs = ();
 }    
 
 =begin pod
@@ -167,5 +185,10 @@ script must be a string containing a valid ISO-15924 script code. For example, "
 Gets or sets the direction for shaping: `HB_DIRECTION_LTR` (left-to-right),  `HB_DIRECTION_RTL` (right-to-left), `HB_DIRECTION_TTB` (top-to-bottom), or `HB_DIRECTION_BTT` (bottom-to-top).
 
 If you don't set a direction, HarfBuzz::Shaper will make a guess based on the text string. This may or may not yield desired results.
+
+=head3 AT-KEY
+
+    method AT-KEY(Int $pos) returns HarfBuzz::Glyph
+    say "last glyph: " ~ $shaper[$shaper.elems -1].name;   
 
 =end pod

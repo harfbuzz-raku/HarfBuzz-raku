@@ -35,6 +35,11 @@ enum hb-buffer-content-type is export(:hb-buffer-content-type) «
     HB_BUFFER_CONTENT_TYPE_GLYPHS
     »;
 
+enum hb-glyph-flag is export(:hb-glyph-flag) (
+    :HB_GLYPH_FLAG_UNSAFE_TO_BREAK(1)
+    :HB_GLYPH_FLAG_UNSAFE_TO_CONCAT(2)
+    );    
+
 sub hb-tag-enc(Str:D $tag) is export(:hb-tag-enc) {
     my uint32 $enc = 0;
     for $tag.comb {
