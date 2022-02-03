@@ -14,7 +14,7 @@ my HarfBuzz::Feature $feature .= new: :str("kern=1");
 is $feature.tag, 'kern';
 is $feature.value, 1;
 is $feature.start, 0;
-is $feature.end, Inf;
+is $feature.end, Inf|4294967295;
 is-deeply $feature.enabled, True;
 
 $feature .= new: :str("kern[3;5]");
@@ -36,7 +36,7 @@ $feature .= new: :tag<kern>, :!enabled;
 is $feature.tag, 'kern';
 is $feature.value, 0;
 is $feature.start, 0;
-is $feature.end, Inf;
+is $feature.end, Inf|4294967295;
 is-deeply $feature.enabled, False;
 is $feature.Str, '-kern';
 $feature.enabled = True;
