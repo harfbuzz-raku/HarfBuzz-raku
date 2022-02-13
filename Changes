@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.0.11  2022-02-14T08:01:19+13:00
     - Deprecate Glyph codepoint() in favor of gid()
     - Add Glyph cluster method
 
