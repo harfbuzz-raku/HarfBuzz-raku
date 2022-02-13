@@ -60,9 +60,9 @@ method AT-POS(UInt $idx) {
         if $idx < $!buf.length { 
             my hb_glyph_position:D $pos = $!Pos[$idx];
             my hb_glyph_info:D $info = $!Info[$idx];
-            my Int:D $codepoint = $info.codepoint;
-            my Str:D $name = $!font.glyph-name($codepoint);
-            HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$codepoint, :$!buf, :@!vec;
+            my Int:D $gid = $info.codepoint;
+            my Str:D $name = $!font.glyph-name($gid);
+            HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$gid, :$!buf, :@!vec;
         }
         else {
             HarfBuzz::Glyph

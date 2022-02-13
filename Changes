@@ -1,4 +1,6 @@
 {{$NEXT}}
+    - Deprecate Glyph codepoint() in favor of gid()
+    - Add Glyph cluster method
 
 0.0.10  2022-02-04T09:21:12+13:00
     - Add Shaper AT-KEY method for glyph retrieval

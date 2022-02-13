@@ -5,12 +5,14 @@ use HarfBuzz::Raw;
 
 has $.buf is required;
 has Str:D $.name is required;
-has UInt:D $.codepoint is required;
+has UInt:D $.gid is required;
 has @.vec[2] is required;
 has hb_glyph_position $!pos;
-has hb_glyph_info     $!info;
+has hb_glyph_info     $!info handles<cluster>;
 
 submethod TWEAK(:$!pos!, :$!info!) {}
+
+method codepoint is DEPRECATED<gid> { $!gid }
 
 enum <x y>;
 method !scale(\i, \n) {
