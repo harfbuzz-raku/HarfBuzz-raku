@@ -1,7 +1,7 @@
 use HarfBuzz;
 use HarfBuzz::Shaper;
 use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
-constant Min-HarfBuzz-Version = v2.6.6;
+constant Min-HarfBuzz-Version = v2.6.4;
 use Test;
 plan 28;
 unless $*RAKU.compiler.version >= v2020.11 {

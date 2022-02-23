@@ -6,7 +6,7 @@ HarfBuzz-raku
 
 Bindings to the HarfBuzz text shaping library.
 
-Minimum supported HarfBuzz version is v2.6.6 - See [Installation](#installation)
+Minimum supported HarfBuzz version is v2.6.4 - See [Installation](#installation)
 
 Note: If you wish to install the HarfBuzz::Subset module, then the minimum HarfBuzz
 version is v3.0.0+.
@@ -69,13 +69,12 @@ Classes/Modules in this distribution
 
 Installation
 -----
-This module requires HarfBuzz 3.0.0+ to be fully operational and pass all it's tests.
+This module requires HarfBuzz 2.6.4+.
 
 `$ sudo apt-get install libharfbuzz-dev # Debian 12+`
 
-Or the HarfBuzz library needs to be built from source [its repo](https://github.com/harfbuzz/harfbuzz/releases/):
-
-A source build is required if you are installing this as [HarfBuzz::Subset](https://harfbuzz-raku.github.io/HarfBuzz-Subset-raku/) dependency.
+If you are installing this as a [HarfBuzz::Subset](https://harfbuzz-raku.github.io/HarfBuzz-Subset-raku/) dependency, HarfBuzz 3.0.0+ is required, which may
+(as of February 2022) require building from source [its repo](https://github.com/harfbuzz/harfbuzz/releases/).
 
 Additional Modules
 ------

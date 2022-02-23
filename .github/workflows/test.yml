@@ -28,15 +28,11 @@ jobs:
       - name: Linux specific setup
         if: contains(matrix.os, 'ubuntu')
         run: |
-          ## Requires Debian 11+
-          wget https://github.com/harfbuzz/harfbuzz/archive/2.7.4.tar.gz
-          (tar xzf 2.7.4.tar.gz && cd harfbuzz-2.7.4 && ./autogen.sh && make)
-          ##sudo apt-get install -y libharfbuzz-dev
+          sudo apt-get install -y libharfbuzz-dev
       - name: macOS specific setup
         if: contains(matrix.os, 'macOS')
         run: |
           brew update
-          ## brew install autoconf automake libtool
           brew install harfbuzz
       - name: Install Dependencies
         run: |
@@ -44,6 +40,5 @@ jobs:
           zef --deps-only install .
       - name: Run Tests
         run: |
-          export LD_LIBRARY_PATH=harfbuzz-2.7.4/src/.libs
           prove6 -I. t
           zef install .
