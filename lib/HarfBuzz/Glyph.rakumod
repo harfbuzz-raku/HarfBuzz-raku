@@ -3,14 +3,14 @@ unit class HarfBuzz::Glyph;
 
 use HarfBuzz::Raw;
 
-has $.buf is required;
+has $!buf-ref;
 has Str:D $.name is required;
 has UInt:D $.gid is required;
 has @.vec[2] is required;
 has hb_glyph_position $!pos;
 has hb_glyph_info     $!info handles<cluster>;
 
-submethod TWEAK(:$!pos!, :$!info!) {}
+submethod TWEAK(:$!pos!, :$!info!, :buf($buf-ref)!) {}
 
 method codepoint is DEPRECATED<gid> { $!gid }
 

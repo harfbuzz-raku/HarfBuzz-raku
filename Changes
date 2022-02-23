@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+0.0.12  2022-02-24T08:50:51+13:00
+    - Drop minimum HarfBuzz version from 2.6.6 to 2.6.4 for
+      stand-alone use of this module. Note that 3.0.0 is is needed
+      if this is being installed as a HarfBuzz::Subset dependency.
+
 0.0.11  2022-02-14T08:01:19+13:00
     - Deprecate Glyph codepoint() in favor of gid()
     - Add Glyph cluster method
