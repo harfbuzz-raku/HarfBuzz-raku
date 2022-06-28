@@ -21,25 +21,25 @@ method !scale(\i, \n) {
 
 #| Relative/scaled glyph x-advance
 method x-advance returns Numeric {
-    self!scale(x, $!pos.x-advance);
+    self!scale: x, $!pos.x-advance;
 }
 #| Relative/scaled glyph y-advance
 method y-advance returns Numeric {
-    self!scale(y, $!pos.y-advance);
+    self!scale: y, $!pos.y-advance;
 }
 #| Relative/scaled glyph x/y advance
-method advance returns Complex { Complex.new( $.x-advance, $.y-advance ); }
+method advance returns Complex { Complex.new: $.x-advance, $.y-advance; }
 
 #| Relative/scaled glyph x offset
 method x-offset returns Numeric {
-    self!scale(x, $!pos.x-offset);
+    self!scale: x, $!pos.x-offset;
 }
 #| Relative/scaled glyph y offset
 method y-offset returns Numeric {
-    self!scale(y, $!pos.y-offset);
+    self!scale: y, $!pos.y-offset;
 }
 #| Relative/scaled glyph x/y offset
-method offset returns Complex { Complex.new( $.x-offset, $.y-offset ); }
+method offset returns Complex { Complex.new: $.x-offset, $.y-offset; }
 
 method flags { $!info.get-flags }
 

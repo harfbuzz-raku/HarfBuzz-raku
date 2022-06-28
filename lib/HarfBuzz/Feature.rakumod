@@ -70,7 +70,7 @@ method enabled returns Bool is rw {
 method Str {
     my buf8 $buf .= allocate(128);
     $!raw.to-string($buf, $buf.bytes);
-    $buf.reallocate: (^$buf.elems).first: {$buf[$_] == 0};
+    $buf.reallocate: HarfBuzz::Raw::CLib::strnlen($buf, $buf.bytes);
     $buf.decode;
 }
 =begin pod

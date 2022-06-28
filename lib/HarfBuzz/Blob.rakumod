@@ -28,7 +28,7 @@ method Blob {
     my uint32 $len;
     my Pointer $data = $!raw.get-data($len);
     my buf8 $buf .= allocate($len);
-    HarfBuzz::Raw::memcpy(nativecast(Pointer, $buf), $data, $len);
+    HarfBuzz::Raw::CLib::memcpy(nativecast(Pointer, $buf), $data, $len);
     $buf;
 }
 

@@ -12,7 +12,7 @@ constant hb_tag       is export(:types) = uint32;
 constant hb_script    is export(:types) = uint32;
 constant hb_direction is export(:types) = uint32;
 
-constant HB_SET_VALUE_INVALID is export(:hb-set-value) = (my uint32 $ -1);
+constant HB_SET_VALUE_INVALID is export(:hb-set-value) = (my uint32 $ = -1);
 
 enum hb-memory-mode is export(:hb-memory-mode) «
     :HB_MEMORY_MODE_DUPLICATE(0)

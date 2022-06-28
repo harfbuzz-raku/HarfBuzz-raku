@@ -4,15 +4,18 @@ unit module HarfBuzz::Raw;
 use HarfBuzz::Raw::Defs :$HB, :$CLIB, :types, :hb-memory-mode;
 use NativeCall;
 
-role ContiguousArray {
-    sub memcpy(Pointer, Pointer, size_t) is native($CLIB) {*}
+module CLib {
+    our sub memcpy(Pointer $dest, Pointer $src, size_t $len) is native($CLIB) {*}
+    our sub strnlen(Blob, size_t --> size_t) is native($CLIB) {*}
+}
 
+role ContiguousArray {
     method AT-POS(UInt:D $idx) {
         my Pointer:D $base-addr = nativecast(Pointer, self);
         my Pointer:D $src = Pointer.new(+$base-addr  +  $idx * nativesizeof(self));
         given self.new -> $dest {
             my size_t $len = nativesizeof(self); 
-            memcpy(nativecast(Pointer, $dest), $src, $len);
+            CLib::memcpy(nativecast(Pointer, $dest), $src, $len);
             $dest
         }
     }
@@ -21,7 +24,7 @@ role ContiguousArray {
         my Pointer:D $base-addr = nativecast(Pointer, self);
         my Pointer:D $dest = Pointer.new(+$base-addr  +  $idx * nativesizeof(self));
         my size_t $len = nativesizeof(self);
-        memcpy($dest, nativecast(Pointer, $src), $len);
+        CLib::memcpy($dest, nativecast(Pointer, $src), $len);
         nativecast(self.WHAT, $dest);
     }
 }
@@ -225,7 +228,7 @@ class hb_font is repr('CPointer') is export {
     method destroy() is native($HB) is symbol('hb_font_destroy')  {*}
 }
 =begin pod
-=para include font-face, size and scale. A Font can be haped against a buffer.
+=para include font-face, size and scale. A Font can be shaped against a buffer.
 =end pod
 
 sub hb_version(uint32 $major is rw, uint32 $minor is rw, uint32 $micro is rw) is export is native($HB) {*}
@@ -238,4 +241,3 @@ our sub version () {
     Version.new: [$major, $minor, $micro];
 }
 
-our sub memcpy(Pointer $dest, Pointer $src, size_t $len) is native($CLIB) {*}
