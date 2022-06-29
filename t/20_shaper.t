@@ -2,12 +2,6 @@ use HarfBuzz::Shaper;
 use Test;
 plan 6;
 
-my $version = HarfBuzz::Shaper.version;
-unless $version >= v1.6.0 {
-    skip-rest "HarfBuzz version $version is too old to run these tests";
-    exit;
-}
-
 my $file = 't/fonts/Lohit-Devanagari.ttf';
 my $size = 36;
 my $text =
@@ -75,6 +69,8 @@ my @expected = [
     name => "exclam",
   }
 ];
+
+my $version = HarfBuzz::Shaper.version;
 
 unless $version >= v2.6.4 {
     # advance-x not available older HarfBuzz::Shaper versions

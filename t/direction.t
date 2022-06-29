@@ -6,13 +6,6 @@ plan 10;
 unless $*RAKU.compiler.version >= v2020.11 {
     die "This version of Raku is too old to use the HarfBuzz semantics";
 }
-my Version $version = HarfBuzz.version;
-
-unless $version >= v1.6.0 {
-    skip-rest "HarfBuzz version $version is too old to run these tests";
-    exit;
-}
-
 my $file = 't/fonts/NimbusRoman-Regular.otf';
 my $direction = HB_DIRECTION_RTL;
 my HarfBuzz::Shaper $shaper .= new: :font{ :$file, :size(36), :scale[1000], }, :buf{:text<Hell€!>, :language<epo>, :$direction};
@@ -82,6 +75,7 @@ my @expected = reverse [
   },
 ];
 
+my Version $version = HarfBuzz.version;
 unless $version >= v2.6.6 {
     # name not available in older HarfBuzz versions
     .<name>:delete for flat @expected, @info;

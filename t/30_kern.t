@@ -1,12 +1,7 @@
+use HarfBuzz;
 use HarfBuzz::Shaper;
 use Test;
 plan 2;
-
-my $version = HarfBuzz::Shaper.version;
-unless $version >= v1.6.0 {
-    skip-rest "HarfBuzz version $version is too old to run these tests";
-    exit;
-}
 
 my $file := 't/fonts/NimbusRoman-Regular.otf';
 my $size := 36;
@@ -20,6 +15,7 @@ my @expected = [
   { c => 3, ax => 22.00, ay => 0.0, dx => 0.0, dy => 0.0, g => 53, name => 'T' },
 ];
 
+my Version $version = HarfBuzz.version;
 if $version < v2.6.6 {
     # name not available in older HarfBuzz::Shaper versions
     .<name>:delete for flat @expected, @info;

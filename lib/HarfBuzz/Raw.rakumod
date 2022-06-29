@@ -12,7 +12,7 @@ module CLib {
 role ContiguousArray {
     method AT-POS(UInt:D $idx) {
         my Pointer:D $base-addr = nativecast(Pointer, self);
-        my Pointer:D $src = Pointer.new(+$base-addr  +  $idx * nativesizeof(self));
+        my Pointer:D $src .= new(+$base-addr  +  $idx * nativesizeof(self));
         given self.new -> $dest {
             my size_t $len = nativesizeof(self); 
             CLib::memcpy(nativecast(Pointer, $dest), $src, $len);
@@ -22,7 +22,7 @@ role ContiguousArray {
 
     method ASSIGN-POS(UInt:D $idx, $src) is rw {
         my Pointer:D $base-addr = nativecast(Pointer, self);
-        my Pointer:D $dest = Pointer.new(+$base-addr  +  $idx * nativesizeof(self));
+        my Pointer:D $dest .= new(+$base-addr  +  $idx * nativesizeof(self));
         my size_t $len = nativesizeof(self);
         CLib::memcpy($dest, nativecast(Pointer, $src), $len);
         nativecast(self.WHAT, $dest);
@@ -95,17 +95,11 @@ class hb_blob is repr('CPointer') is export {
     our sub create_from_file(Str --> hb_blob) is native($HB) is symbol('hb_blob_create_from_file') {*}
 
     multi method new(Str :$file!, --> hb_blob) {
-        if version() >= v1.7.7 {
-            create_from_file($file);
-        }
-        else {
-            my Blob $buf = $file.IO.open(:r).slurp: :bin;
-            self.new: :$buf;
-        }
+        create_from_file($file);
     }
 
     multi method new(Blob :$buf!) {
-            create($buf, $buf.bytes, HB_MEMORY_MODE_READONLY, Pointer, Pointer);
+        create($buf, $buf.bytes, HB_MEMORY_MODE_READONLY, Pointer, Pointer);
     }
 
     method get-data(uint32 $ is rw --> Pointer) is native($HB) is symbol('hb_blob_get_data') {*}

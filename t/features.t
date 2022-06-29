@@ -3,12 +3,6 @@ plan 21;
 use HarfBuzz;
 use HarfBuzz::Feature;
 
-my $version = HarfBuzz.version;
-unless $version >= v1.6.0 {
-    skip-rest "HarfBuzz version $version is too old to run these tests";
-    exit;
-}
-
 my HarfBuzz::Feature $feature .= new: :str("kern=1");
 
 is $feature.tag, 'kern';

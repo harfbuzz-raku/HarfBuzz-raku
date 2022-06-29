@@ -6,11 +6,6 @@ sub hb(:$size = 24, :$text = 'test', :$file = 't/fonts/NimbusRoman-Regular.otf')
    HarfBuzz::Shaper.new: :font{ :$file, :$size }, :buf{:$text, :language<epo>};
 }
 
-unless HarfBuzz.version >= v1.6.0 {
-       skip-rest "HarfBuzz version is too old for these tests";
-       exit 0;
-}
-
 my \case-text_test2 = hb(:text<test2>);
 
 given hb() {
