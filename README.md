@@ -8,8 +8,8 @@ Bindings to the HarfBuzz text shaping library.
 
 Minimum supported HarfBuzz version is v2.6.4 - See [Installation](#installation)
 
-Note: If you wish to install the HarfBuzz::Subset module, then the minimum HarfBuzz
-version is v3.0.0+.
+Note: If the HarfBuzz::Subset module is being installed, then the minimum HarfBuzz
+library version is v3.0.0+.
 
 Name
 ----

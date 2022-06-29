@@ -75,5 +75,5 @@ class HarfBuzz::Raw::hb_font
 
 A contextual representation of a HarfBuzz font
 
-include font-face, size and scale. A Font can be haped against a buffer.
+include font-face, size and scale. A Font can be shaped against a buffer.
 
