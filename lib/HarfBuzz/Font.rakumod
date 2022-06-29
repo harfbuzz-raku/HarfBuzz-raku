@@ -90,9 +90,7 @@ method add-features(HarfBuzz::Feature() @features --> Array[HarfBuzz::Feature]) 
 method glyph-name(UInt:D $gid --> Str) {
     my buf8 $name-buf .= allocate(64);
     $!raw.get-glyph-name($gid, $name-buf, $name-buf.elems);
-    $name-buf.reallocate: HarfBuzz::Raw::CLib::strnlen($name-buf, $name-buf.bytes);
-
-    $name-buf.decode;
+    nativecast(Str, $name-buf);
 }
 
 #| Returns the glyph identifier for a given glyph name

@@ -2,6 +2,7 @@
 unit class HarfBuzz::Feature;
 
 use HarfBuzz::Raw;
+use NativeCall;
 
 has hb_feature $.raw handles<value start>;
 
@@ -70,8 +71,7 @@ method enabled returns Bool is rw {
 method Str {
     my buf8 $buf .= allocate(128);
     $!raw.to-string($buf, $buf.bytes);
-    $buf.reallocate: HarfBuzz::Raw::CLib::strnlen($buf, $buf.bytes);
-    $buf.decode;
+    nativecast(Str, $buf);
 }
 =begin pod
 =para E.g. `kern` (enabled), or `-kern` (disabled)

@@ -6,7 +6,6 @@ use NativeCall;
 
 module CLib {
     our sub memcpy(Pointer $dest, Pointer $src, size_t $len) is native($CLIB) {*}
-    our sub strnlen(Blob, size_t --> size_t) is native($CLIB) {*}
 }
 
 role ContiguousArray {

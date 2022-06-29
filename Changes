@@ -1,4 +1,7 @@
 {{$NEXT}}
+    - Remove HarfBuzz pre 1.7.7 compatibility
+    - Remove CLib::strnlen. Just use nativecast() to convert
+      buffers to strings
 
 0.0.13  2022-06-29T08:46:17+12:00
     - Upload to zef ecosystem
