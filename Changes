@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.1.0  2022-07-07T11:22:04+12:00
     - Add scaled text-extents methods to HarfBuzz::Glyph:
       x-bearing(), y-bearing(), width(), height()
 

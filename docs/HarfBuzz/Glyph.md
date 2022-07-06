@@ -90,7 +90,7 @@ size of glyph
 
 ### has Associative %!ast
 
-Glyph hash digest
+Glyph summary hash
 
 Of the form `%( :$ax, :$ay, :$dx, :$dy, :g($gid), :$c)`
 

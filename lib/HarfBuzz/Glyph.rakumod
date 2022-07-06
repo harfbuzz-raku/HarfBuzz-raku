@@ -72,7 +72,7 @@ method size returns Complex { Complex.new: $.width, $.height; }
 
 method flags { $!info.get-flags }
 
-#| Glyph hash digest
+#| Glyph summary hash
 has %!ast;
 method ast handles<AT-KEY keys> {
     %!ast ||= %(
