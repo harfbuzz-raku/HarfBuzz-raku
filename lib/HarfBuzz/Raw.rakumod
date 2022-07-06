@@ -215,7 +215,7 @@ class hb_font is repr('CPointer') is export {
     method get-glyph-name(hb_codepoint, Blob, int32 --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_name') {*}
     method get-glyph-from-name(Blob, int32, hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_from_name') {*}
     method get-glyph-extents(hb_codepoint, hb_glyph_extents --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_extents') {*}
-    method shape(hb_buffer, hb_features, uint32 --> hb_font)  is native($HB) is symbol('hb_shape') {*}
+    method shape(hb_buffer, hb_features, uint32)  is native($HB) is symbol('hb_shape') {*}
 
     method reference(--> hb_font) is native($HB) is symbol('hb_font_reference') {*}
     method destroy() is native($HB) is symbol('hb_font_destroy')  {*}

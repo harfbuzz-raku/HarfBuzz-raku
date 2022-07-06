@@ -24,10 +24,10 @@ method buf() returns HarfBuzz::Buffer
 
 Gets or sets the shaping buffer
 
-### method shape
+### method glyphs
 
 ```raku
-method shape() returns Iterator
+method glyphs() returns Iterator
 ```
 
 Returns a set of shaped HarfBuzz::Glyph objects

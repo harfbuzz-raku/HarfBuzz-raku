@@ -56,6 +56,38 @@ method offset() returns Complex
 
 Relative/scaled glyph x/y offset
 
+### method x-bearing
+
+```raku
+method x-bearing() returns Numeric
+```
+
+left side of glyph from origin
+
+### method y-bearing
+
+```raku
+method y-bearing() returns Numeric
+```
+
+top side of glyph from origin
+
+### method bearing
+
+```raku
+method bearing() returns Complex
+```
+
+position of glyph from origin
+
+### method size
+
+```raku
+method size() returns Complex
+```
+
+size of glyph
+
 ### has Associative %!ast
 
 Glyph hash digest
@@ -66,7 +98,7 @@ where
 
   * *dx* - pre X offset
 
-  * *dx* - pre Y offset
+  * *dy* - pre Y offset
 
   * *ax* - post X advance
 
