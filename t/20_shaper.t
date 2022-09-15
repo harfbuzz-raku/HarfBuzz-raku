@@ -1,3 +1,4 @@
+use HarfBuzz::Buffer;
 use HarfBuzz::Shaper;
 use Test;
 plan 6;

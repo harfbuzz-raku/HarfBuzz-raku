@@ -9,6 +9,7 @@ docs/index.md : README.md
 	cp $< $@
 
 docs/%.md : lib/%.rakumod
+	@raku -I . -c $<
 	raku -I . --doc=Markdown $< \
 	| TRAIL=$* raku -p -n  $(DocLinker) \
         > $@
@@ -16,29 +17,10 @@ docs/%.md : lib/%.rakumod
 $(DocLinker) :
 	(cd .. && git clone $(DocRepo) $(DocProj))
 
-doc : $(DocLinker) docs/index.md docs/HarfBuzz.md docs/HarfBuzz/Blob.md docs/HarfBuzz/Buffer.md docs/HarfBuzz/Feature.md docs/HarfBuzz/Face.md docs/HarfBuzz/Font.md docs/HarfBuzz/Glyph.md docs/HarfBuzz/Raw.md docs/HarfBuzz/Raw/Defs.md docs/HarfBuzz/Shaper.md
+Pod-To-Markdown-installed :
+	@raku -M Pod::To::Markdown -c
 
-docs/HarfBuzz.md : lib/HarfBuzz.rakumod
-
-docs/HarfBuzz/Shaper.md : lib/HarfBuzz/Shaper.rakumod
-
-docs/HarfBuzz/Blob.md : lib/HarfBuzz/Blob.rakumod
-
-docs/HarfBuzz/Buffer.md : lib/HarfBuzz/Buffer.rakumod
-
-docs/HarfBuzz/Feature.md : lib/HarfBuzz/Feature.rakumod
-
-docs/HarfBuzz/Face.md : lib/HarfBuzz/Face.rakumod
-
-docs/HarfBuzz/Font.md : lib/HarfBuzz/Font.rakumod
-
-docs/HarfBuzz/Glyph.md : lib/HarfBuzz/Glyph.rakumod
-
-docs/HarfBuzz/Raw.md : lib/HarfBuzz/Raw.rakumod
-
-docs/HarfBuzz/Raw/Defs.md : lib/HarfBuzz/Raw/Defs.rakumod
-
-docs/HarfBuzz/Shaper.md : lib/HarfBuzz/Shaper.rakumod
+doc : $(DocLinker) Pod-To-Markdown-installed docs/index.md docs/HarfBuzz.md docs/HarfBuzz/Blob.md docs/HarfBuzz/Buffer.md docs/HarfBuzz/Feature.md docs/HarfBuzz/Face.md docs/HarfBuzz/Font.md docs/HarfBuzz/Glyph.md docs/HarfBuzz/Raw.md docs/HarfBuzz/Raw/Defs.md docs/HarfBuzz/Shaper.md
 
 test : all
 	@prove6 -I .
