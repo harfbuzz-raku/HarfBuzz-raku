@@ -1,6 +1,6 @@
 SRC=src
-DocProj=harfbuzz-raku.github.io
-DocRepo=https://github.com/harfbuzz-raku/$(DocProj)
+DocProj=pdf-raku.github.io
+DocRepo=https://github.com/pdf-raku/$(DocProj)
 DocLinker=../$(DocProj)/etc/resolve-links.raku
 
 all :
@@ -11,7 +11,7 @@ docs/index.md : README.md
 docs/%.md : lib/%.rakumod
 	@raku -I . -c $<
 	raku -I . --doc=Markdown $< \
-	| TRAIL=$* raku -p -n  $(DocLinker) \
+	| TRAIL=$* raku -p -n $(DocLinker) \
         > $@
 
 $(DocLinker) :
