@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.1.1  2023-01-01T08:12:31+13:00
+    - Fix calls to get glyph info and positions. Fix potential
+      buffer overrun.
+
 0.1.0  2022-07-07T11:22:04+12:00
     - Add scaled text-extents methods to HarfBuzz::Glyph:
       x-bearing(), y-bearing(), width(), height()

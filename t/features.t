@@ -36,4 +36,3 @@ is $feature.Str, '-kern';
 $feature.enabled = True;
 is-deeply $feature.enabled, True;
 is $feature.Str, 'kern';
-
