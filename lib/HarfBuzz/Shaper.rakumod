@@ -95,13 +95,9 @@ method glyphs(HarfBuzz::Shaper:D $obj:) is also<shape> returns Iterator {
 
 #| Returns scaled X and Y displacement of the shaped text
 method text-advance returns List {
-    my enum <x y>;
-    my @vec = @.scale.map: $.size / *;
-    my @adv = $.buf.text-advance();
-    (
-        (@adv[x] * @vec[x]).round(.01),
-        (@adv[y] * @vec[y]).round(.01),
-    )
+    my @vec[2] = @.scale.map: $.size / *;
+    my @adv[2] = $.buf.text-advance();
+    (@vec Z* @adv)>>.round(.01);
 }
 
 #| Returns a Hash sequence of scaled glyphs
