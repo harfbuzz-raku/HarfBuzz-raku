@@ -16,7 +16,9 @@ use Method::Also;
 has HarfBuzz::Buffer() $!buf handles<length language script script-name direction text is-horizontal is-vertical>;
 has HarfBuzz::Font() $!font handles<face scale size glyph-name glyph-from-name glyph-extents ft-load-flags features add-features>;
 has hb_glyph_position $!Pos;
+has uint32 $!Pos-elems;
 has hb_glyph_info     $!Info;
+has uint32 $!Info-elems;
 has Numeric @!vec;
 has $!gen = 0; # to detect font/buffer mutation
 has HarfBuzz::Glyph @!glyphs;
@@ -57,18 +59,19 @@ method buf is rw returns HarfBuzz::Buffer {
 method AT-POS(UInt $idx) {
     @!glyphs[$idx] //= do {
         self.buf; # enure shaping is up-to-date
+        my HarfBuzz::Glyph $glyph;
         if $idx < $!buf.length { 
-            my hb_glyph_position:D $pos = $!Pos[$idx];
-            my hb_glyph_info:D $info = $!Info[$idx];
+            my hb_glyph_position:D $pos = $!Pos[$idx]
+                if $idx < $!Pos-elems;
+            my hb_glyph_info:D $info = $!Info[$idx]
+                if $idx < $!Info-elems;
             my hb_glyph_extents $extents .= new;
             my Int:D $gid = $info.codepoint;
             my Str:D $name = $!font.glyph-name($gid);
             $!font.raw.get-glyph-extents($gid, $extents);
-            HarfBuzz::Glyph.new: :$pos, :$info, :$name, :$gid, :$!buf, :$extents, :@!vec;
+            $glyph .= new: :$pos, :$info, :$name, :$gid, :$!buf, :$extents, :@!vec;
         }
-        else {
-            HarfBuzz::Glyph
-        }
+        $glyph;
     }
 }
 
@@ -126,8 +129,8 @@ method !reshape {
     $!buf.reset;
     $!font.shape: :$!buf;
     $!gen = $!font.gen + $!buf.gen;
-    $!Pos = $!buf.raw.get-glyph-positions(0);
-    $!Info = $!buf.raw.get-glyph-infos(0);
+    $!Pos = $!buf.raw.get-glyph-positions($!Pos-elems);
+    $!Info = $!buf.raw.get-glyph-infos($!Info-elems);
     @!vec = $!font.scale.map: $!font.raw.get-size / *;
     @!glyphs = ();
 }    

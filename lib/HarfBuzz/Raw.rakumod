@@ -9,9 +9,9 @@ module CLib {
 }
 
 role ContiguousArray {
+    multi method Pointer { nativecast(Pointer, self); }
     method AT-POS(UInt:D $idx) {
-        my Pointer:D $base-addr = nativecast(Pointer, self);
-        my Pointer:D $src .= new(+$base-addr  +  $idx * nativesizeof(self));
+        my Pointer:D $src .= new(+self.Pointer  +  $idx * nativesizeof(self));
         given self.new -> $dest {
             my size_t $len = nativesizeof(self); 
             CLib::memcpy(nativecast(Pointer, $dest), $src, $len);
@@ -20,8 +20,7 @@ role ContiguousArray {
     }
 
     method ASSIGN-POS(UInt:D $idx, $src) is rw {
-        my Pointer:D $base-addr = nativecast(Pointer, self);
-        my Pointer:D $dest .= new(+$base-addr  +  $idx * nativesizeof(self));
+        my Pointer:D $dest .= new(+self.Pointer  +  $idx * nativesizeof(self));
         my size_t $len = nativesizeof(self);
         CLib::memcpy($dest, nativecast(Pointer, $src), $len);
         nativecast(self.WHAT, $dest);
@@ -131,8 +130,8 @@ class hb_buffer is repr('CPointer') is export {
     method guess-segment-properties() is native($HB) is symbol('hb_buffer_guess_segment_properties')  {*}
     method get-length(--> int32) is native($HB) is symbol('hb_buffer_get_length') {*}
     method set-length(int32) is native($HB) is symbol('hb_buffer_set_length') {*}
-    method get-glyph-positions(uint32 --> hb_glyph_positions) is native($HB) is symbol('hb_buffer_get_glyph_positions')  {*}
-    method get-glyph-infos(uint32 --> hb_glyph_infos) is native($HB) is symbol('hb_buffer_get_glyph_infos')  {*}
+    method get-glyph-positions(uint32 is rw  --> hb_glyph_positions) is native($HB) is symbol('hb_buffer_get_glyph_positions')  {*}
+    method get-glyph-infos(uint32 is rw --> hb_glyph_infos) is native($HB) is symbol('hb_buffer_get_glyph_infos')  {*}
     method set-direction(hb_direction) is native($HB) is symbol('hb_buffer_set_direction') {*}
     method get-direction(--> hb_direction) is native($HB) is symbol('hb_buffer_get_direction') {*}
     method set-language(hb_language) is native($HB) is symbol('hb_buffer_set_language') {*}
