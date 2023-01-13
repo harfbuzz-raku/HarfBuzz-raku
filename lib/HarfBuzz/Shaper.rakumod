@@ -15,9 +15,9 @@ use Method::Also;
 
 has HarfBuzz::Buffer() $!buf handles<length language script script-name direction text is-horizontal is-vertical>;
 has HarfBuzz::Font() $!font handles<face scale size glyph-name glyph-from-name glyph-extents ft-load-flags features add-features>;
-has hb_glyph_position $!Pos;
+has hb_glyph_positions $!Pos;
 has uint32 $!Pos-elems;
-has hb_glyph_info     $!Info;
+has hb_glyph_infos     $!Info;
 has uint32 $!Info-elems;
 has Numeric @!vec;
 has $!gen = 0; # to detect font/buffer mutation

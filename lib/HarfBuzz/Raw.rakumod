@@ -8,22 +8,22 @@ module CLib {
     our sub memcpy(Pointer $dest, Pointer $src, size_t $len) is native($CLIB) {*}
 }
 
-role ContiguousArray {
+role ContiguousArray[\elem] {
     multi method Pointer { nativecast(Pointer, self); }
     method AT-POS(UInt:D $idx) {
-        my Pointer:D $src .= new(+self.Pointer  +  $idx * nativesizeof(self));
-        given self.new -> $dest {
-            my size_t $len = nativesizeof(self); 
+        my Pointer:D $src .= new(+self.Pointer  +  $idx * nativesizeof(elem));
+        given elem.new -> $dest {
+            my size_t $len = nativesizeof(elem);
             CLib::memcpy(nativecast(Pointer, $dest), $src, $len);
             $dest
         }
     }
 
     method ASSIGN-POS(UInt:D $idx, $src) is rw {
-        my Pointer:D $dest .= new(+self.Pointer  +  $idx * nativesizeof(self));
-        my size_t $len = nativesizeof(self);
+        my Pointer:D $dest .= new(+self.Pointer  +  $idx * nativesizeof(elem));
+        my size_t $len = nativesizeof(elem);
         CLib::memcpy($dest, nativecast(Pointer, $src), $len);
-        nativecast(self.WHAT, $dest);
+        nativecast(elem, $dest);
     }
 }
 
@@ -49,10 +49,9 @@ class hb_glyph_position is export is repr('CStruct') {
 
 #| A contiguous array of glyph positions
 class hb_glyph_positions
-    is hb_glyph_position
     is export
-    is repr('CStruct')
-    does ContiguousArray {
+    is repr('CPointer')
+    does ContiguousArray[hb_glyph_position] {
 }
 
 #| Additional glyph information
@@ -72,10 +71,9 @@ class hb_glyph_info is export is repr('CStruct') {
 
 #| A contiguous array of glyph information
 class hb_glyph_infos
-    is hb_glyph_info
     is export
-    is repr('CStruct')
-    does ContiguousArray {
+    is repr('CPointer')
+    does ContiguousArray[hb_glyph_info] {
 }
 
 #| Unscaled glyph metrics
@@ -185,10 +183,9 @@ class hb_feature is export is repr('CStruct') is rw {
 
 #| A contiguous arry of font features
 class hb_features
-    is hb_feature
     is export
-    is repr('CStruct')
-    does ContiguousArray {
+    is repr('CPointer')
+    does ContiguousArray[hb_feature] {
 }
 
 #| A context free representation of a HarfBuzz font face
@@ -214,7 +211,7 @@ class hb_font is repr('CPointer') is export {
     method get-glyph-name(hb_codepoint, Blob, int32 --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_name') {*}
     method get-glyph-from-name(Blob, int32, hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_from_name') {*}
     method get-glyph-extents(hb_codepoint, hb_glyph_extents --> hb_bool) is native($HB) is symbol('hb_font_get_glyph_extents') {*}
-    method shape(hb_buffer, hb_features, uint32)  is native($HB) is symbol('hb_shape') {*}
+    method shape(hb_buffer, Blob, uint32)  is native($HB) is symbol('hb_shape') {*}
 
     method reference(--> hb_font) is native($HB) is symbol('hb_font_reference') {*}
     method destroy() is native($HB) is symbol('hb_font_destroy')  {*}

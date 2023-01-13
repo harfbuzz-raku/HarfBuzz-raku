@@ -174,7 +174,7 @@ method text-advance returns List {
     my uint32 $length;
     die "buffer has not been shaped"
         unless self.shaped;
-    my hb_glyph_position $Pos = self.raw.get-glyph-positions($length);
+    my hb_glyph_positions $Pos = self.raw.get-glyph-positions($length);
     my UInt:D $dx = 0;
     my UInt:D $dy = 0;
 

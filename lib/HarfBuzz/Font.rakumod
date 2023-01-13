@@ -118,6 +118,6 @@ method shape(HarfBuzz::Buffer:D :$buf!) {
     my buf8 $feats-buf .= allocate(nativesizeof(hb_feature) * +@!features);
     my hb_features $feats = nativecast(hb_features, $feats-buf);
     $feats[.key] = .value.raw for @!features.pairs;
-    $!raw.shape($buf.raw, $feats, +@!features);
+    $!raw.shape($buf.raw, $feats-buf, +@!features);
 }
 
