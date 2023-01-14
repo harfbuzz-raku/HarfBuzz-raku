@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.1.2  2023-01-15T05:59:19+13:00
+    - Changed representations of contiguous arrays to make them opaque: hb_glyph_positions, hb_glyph_elems and
+      hb_features.
+
 0.1.1  2023-01-01T08:12:31+13:00
     - Fix calls to get glyph info and positions. Fix potential
       buffer overrun.
