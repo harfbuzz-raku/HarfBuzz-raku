@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.1.3  2024-01-11T07:13:15+13:00
+    - Add font coercement from blob
+    - Fix Version method
+
 0.1.2  2023-01-15T05:59:19+13:00
     - Changed representations of contiguous arrays to make them opaque: hb_glyph_positions, hb_glyph_elems and
       hb_features.
