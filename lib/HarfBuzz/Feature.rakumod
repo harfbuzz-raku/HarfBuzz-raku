@@ -6,7 +6,7 @@ use NativeCall;
 
 has hb_feature $.raw handles<value start>;
 
-multi submethod TWEAK(:$!raw!) {}
+multi submethod TWEAK(:raw($)!) {}
 
 multi submethod TWEAK(Str:D :$str!) {
     $!raw .= new;
@@ -17,10 +17,10 @@ multi submethod TWEAK(Str:D :$str!) {
 multi submethod TWEAK(Str:D :$tag!, UInt :$start = 0, :$end = Inf, Bool :$enabled = True, UInt :$value = $enabled.so.Int ) {
     $!raw .= new;
     my Blob $buf = $tag.encode;
-    $!raw.tag = hb_tag_from_string($buf, $buf.bytes);
+    $!raw.tag  = hb_tag_from_string($buf, $buf.bytes);
     self.value = $value;
     self.start = $start;
-    self.end = $end;
+    self.end   = $end;
 }
 
 multi method COERCE( HarfBuzz::Feature:D $_ ) { $_ }

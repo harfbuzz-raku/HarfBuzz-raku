@@ -58,6 +58,13 @@ multi method COERCE(% ( Str:D :$file!, :$ft-face, :@features, |opts) ) {
     self.new: :$raw, :$face, :@features, |opts;
 }
 
+multi method COERCE(% ( Blob:D :$blob!, :$ft-face, :@features, |opts) ) {
+    warn "ignoring ':ft-face' option; reserved for HarfBuzz::Font::FreeType" with $ft-face;
+    my HarfBuzz::Face() $face = $blob;
+    my hb_font $raw = hb_font::create($face.raw);
+    self.new: :$raw, :$face, :@features, |opts;
+}
+
 #| Gets or sets x and y scale
 method scale is rw returns List {
     Proxy.new(
@@ -81,10 +88,16 @@ method size is rw returns Numeric {
 }
 
 #| Add font features
-method add-features(HarfBuzz::Feature() @features --> Array[HarfBuzz::Feature]) {
+method add-features(HarfBuzz::Feature() @features --> Array) {
     $!gen++;
     @!features.append: @features;
 }
+
+method add-feature(HarfBuzz::Feature() $feature --> Array) {
+    $!gen++;
+    @!features.push: $feature;
+}
+
 
 #| Returns the glyph name for a glyph identifier
 method glyph-name(UInt:D $gid --> Str) {

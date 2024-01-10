@@ -45,7 +45,7 @@ Gets or sets the font size
 ```raku
 method add-features(
     HarfBuzz::Feature(Any) @features
-) returns Array[HarfBuzz::Feature]
+) returns Array
 ```
 
 Add font features

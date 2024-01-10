@@ -1,8 +1,8 @@
-use HarfBuzz;
-
 #| HarfBuzz shaping object
-unit class HarfBuzz::Shaper:ver<0.1.2>
-    is HarfBuzz;
+unit class HarfBuzz::Shaper;
+
+use HarfBuzz;
+also is HarfBuzz;
 
 use HarfBuzz::Buffer;
 use HarfBuzz::Face;
@@ -60,7 +60,7 @@ method AT-POS(UInt $idx) {
     @!glyphs[$idx] //= do {
         self.buf; # enure shaping is up-to-date
         my HarfBuzz::Glyph $glyph;
-        if $idx < $!buf.length { 
+        if $idx < $.buf.length {
             my hb_glyph_position:D $pos = $!Pos[$idx]
                 if $idx < $!Pos-elems;
             my hb_glyph_info:D $info = $!Info[$idx]
@@ -77,7 +77,7 @@ method AT-POS(UInt $idx) {
 
 #| Returns a set of shaped HarfBuzz::Glyph objects
 method glyphs(HarfBuzz::Shaper:D $obj:) is also<shape> returns Iterator {
-    class Iteration does Iterable does Iterator {
+    my class Iteration does Iterable does Iterator {
         has HarfBuzz::Shaper:D $.obj is required;
         has UInt $.elems = $!obj.elems;
         has UInt $.idx = 0;
@@ -90,6 +90,28 @@ method glyphs(HarfBuzz::Shaper:D $obj:) is also<shape> returns Iterator {
             else {
                 IterationEnd;
             }
+        }
+    }
+
+    Iteration.new: :$obj;
+}
+
+method clusters(HarfBuzz::Shaper:D $obj:) returns Iterator {
+    my class Iteration does Iterable does Iterator {
+        has HarfBuzz::Shaper:D $.obj is required;
+        has UInt $.elems = $!obj.elems;
+        has UInt $.idx = 0;
+
+        method iterator { self }
+        method pull-one {
+            my $c = .cluster with $obj.AT-POS($!idx);
+            my HarfBuzz::Glyph @cluster;
+            while $!idx < $!elems {
+                my HarfBuzz::Glyph $glyph := $obj.AT-POS($!idx++);
+                last unless $c == $glyph.cluster;
+                @cluster.push: $glyph;
+            }
+            @cluster || IterationEnd;
         }
     }
 
@@ -120,11 +142,6 @@ Entries are:
 
 =end pod
 
-#| Returns the version of the nativeHarfBuzz library
-method version returns Version {
-    HarfBuzz::Raw::version();
-}
-
 method !reshape {
     $!buf.reset;
     $!font.shape: :$!buf;
@@ -133,7 +150,7 @@ method !reshape {
     $!Info = $!buf.raw.get-glyph-infos($!Info-elems);
     @!vec = $!font.scale.map: $!font.raw.get-size / *;
     @!glyphs = ();
-}    
+}
 
 =begin pod
 
@@ -155,7 +172,7 @@ Gets or sets the text to shape.
 
   method features(--> HarfBuzz::Feature() @)
 
-Get shaping features. 
+Get shaping features.
 
 =head3 add-features
 
@@ -190,6 +207,6 @@ If you don't set a direction, HarfBuzz::Shaper will make a guess based on the te
 =head3 AT-KEY
 
     method AT-KEY(Int $pos) returns HarfBuzz::Glyph
-    say "last glyph: " ~ $shaper[$shaper.elems -1].name;   
+    say "last glyph: " ~ $shaper[$shaper.elems -1].name;
 
 =end pod

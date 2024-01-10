@@ -225,8 +225,4 @@ sub hb_version(uint32 $major is rw, uint32 $minor is rw, uint32 $micro is rw) is
 sub hb_tag_from_string(Blob, int32 --> hb_tag) is export is native($HB) {*}
 sub hb_tag_to_string(hb_tag, Blob) is export is native($HB) {*}
 
-our sub version () {
-    hb_version(my uint32 $major, my uint32 $minor, my uint32 $micro);
-    Version.new: [$major, $minor, $micro];
-}
 

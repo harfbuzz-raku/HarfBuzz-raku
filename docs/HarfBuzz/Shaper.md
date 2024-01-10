@@ -62,14 +62,6 @@ Entries are:
 
   * `name`: glyph name
 
-### method version
-
-```raku
-method version() returns Version
-```
-
-Returns the version of the nativeHarfBuzz library
-
 ### size
 
     method size(--> Num) is rw;
@@ -88,7 +80,7 @@ Gets or sets the text to shape.
 
     method features(--> HarfBuzz::Feature() @)
 
-Get shaping features. 
+Get shaping features.
 
 ### add-features
 

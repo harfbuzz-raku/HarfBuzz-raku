@@ -1,6 +1,9 @@
 unit class HarfBuzz:ver<0.1.2>;
 use HarfBuzz::Raw;
 
-method version {
-    HarfBuzz::Raw::version();
+#| Returns the version of the nativeHarfBuzz library
+method version returns Version {
+    hb_version(my uint32 $major, my uint32 $minor, my uint32 $micro);
+    Version.new: [$major, $minor, $micro];
 }
+
