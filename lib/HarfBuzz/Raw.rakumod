@@ -153,6 +153,8 @@ class hb_buffer is repr('CPointer') is export {
 
 #| HarfBuzz generalized set representation
 class hb_set is repr('CPointer') is export {
+    our sub create(--> hb_set) is native($HB) is symbol('hb_set_create') {*}
+    method elems(--> uint32) is native($HB) is symbol('hb_set_get_population') {*}
     method add(hb_codepoint) is native($HB) is symbol('hb_set_add') {*}
     method del(hb_codepoint) is native($HB) is symbol('hb_set_del') {*}
     method add-range (hb_codepoint, hb_codepoint) is native($HB) is symbol('hb_set_add_range') {*}
@@ -160,6 +162,19 @@ class hb_set is repr('CPointer') is export {
     method max(--> hb_codepoint) is native($HB) is symbol('hb_set_max') {*}
     method next(hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_set_next') {*}
     method prev(hb_codepoint $ is rw --> hb_bool) is native($HB) is symbol('hb_set_previous') {*}
+    method next-many(hb_codepoint, CArray[hb_codepoint], uint32 --> uint32) is native($HB) is symbol('hb_set_next_many') {*}
+    method exists(hb_codepoint --> hb_bool) is native($HB) is symbol('hb_set_has') {*}
+    method destroy() is native($HB) is symbol('hb_set_destroy') {*}
+}
+
+class hb_map is repr('CPointer') is export {
+    our sub create(--> hb_map) is native($HB) is symbol('hb_map_create') {*}
+    method get(hb_codepoint --> hb_codepoint) is native($HB) is symbol('hb_map_get') {*}
+    method keys(hb_set) is native($HB) is symbol('hb_map_keys') {*}
+    method values(hb_set) is native($HB) is symbol('hb_map_values') {*}
+    method elems(--> uint32) is native($HB) is symbol('hb_map_get_population') {*}
+    method exists(hb_codepoint --> hb_bool) is native($HB) is symbol('hb_map_has') {*}
+    method destroy() is native($HB) is symbol('hb_map_destroy') {*}
 }
 
 #| HarfBuzz representation  of a font feature
@@ -195,6 +210,10 @@ class hb_face is repr('CPointer') is export {
     method reference(--> hb_face) is native($HB) is symbol('hb_face_reference') {*}
     method reference-blob(--> hb_blob)  is native($HB) is symbol('hb_face_reference_blob') {*}
     method get-glyph-count(--> uint32) is native($HB) is symbol('hb_face_get_glyph_count') {*}
+    method collect-unicode-set(hb_set) is native($HB) is symbol('hb_face_collect_unicodes') {*}
+    method collect-unicode-map(hb_map, hb_set) is native($HB) is symbol('hb_face_collect_nominal_glyph_mapping') {*}
+    method get-table-tags(uint32, uint32 is rw, Pointer[hb_tag] is rw --> uint32) is symbol('hb_face_collect_unicodes') is native($HB) is symbol('hb_face_get_table_tags') {*}
+    method get-upem(--> uint32) is native($HB) is symbol('hb_face_get_upem') {*}
     method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
 }
 

@@ -20,8 +20,10 @@
     "HarfBuzz::Feature": "lib/HarfBuzz/Feature.rakumod",
     "HarfBuzz::Font": "lib/HarfBuzz/Font.rakumod",
     "HarfBuzz::Glyph": "lib/HarfBuzz/Glyph.rakumod",
+    "HarfBuzz::Map": "lib/HarfBuzz/Map.rakumod",
     "HarfBuzz::Raw": "lib/HarfBuzz/Raw.rakumod",
     "HarfBuzz::Raw::Defs": "lib/HarfBuzz/Raw/Defs.rakumod",
+    "HarfBuzz::Set": "lib/HarfBuzz/Set.rakumod",
     "HarfBuzz::Shaper": "lib/HarfBuzz/Shaper.rakumod"
   },
   "raku": "6",
