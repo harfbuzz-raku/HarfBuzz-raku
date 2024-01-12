@@ -21,10 +21,12 @@ subtest 'unicode-set', {
 subtest 'unicode-to-gid-map', {
     my HarfBuzz::Map $unicode-map = $face.unicode-to-gid-map;
     ok $unicode-map.exists(42), 'exists';
+    nok $unicode-map.exists(31), '!exists';
     my HarfBuzz::Set $keys = $unicode-map.keys;
     my HarfBuzz::Set $values = $unicode-map.values;
     is $values.array[10], 11, 'values';
     is $unicode-map.elems, 854, 'elems';
-    is $unicode-map[42], 11;
+    is $unicode-map{42}, 11;
+    is-deeply $unicode-map{31}, Int;
 }
 
