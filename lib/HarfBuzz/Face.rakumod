@@ -2,7 +2,7 @@
 unit class HarfBuzz::Face;
 
 use HarfBuzz::Raw;
-use HarfBuzz::Raw::Defs :types, :hb-set-value;
+use HarfBuzz::Raw::Defs :types, :hb-set-value, :&hb-tag-dec;
 use HarfBuzz::Blob;
 use HarfBuzz::Map;
 use HarfBuzz::Set;
@@ -32,6 +32,13 @@ method !to-blob(HarfBuzz::Blob() $!blob) {
 }
 
 method units-per-EM { $!raw.get-upem }
+
+method table-tags returns Seq {
+    my uint $max-tags = 128;
+    my Blob[hb_tag] $tags .= allocate($max-tags);
+    my $count = $!raw.get-table-tags(0, $max-tags, $tags);
+    (^$max-tags).map: { hb-tag-dec($tags[$_]).trim }
+}
 
 method unicode-set(::?CLASS:D:) {
     my HarfBuzz::Set $set .= new;

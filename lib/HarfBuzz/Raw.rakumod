@@ -212,7 +212,7 @@ class hb_face is repr('CPointer') is export {
     method get-glyph-count(--> uint32) is native($HB) is symbol('hb_face_get_glyph_count') {*}
     method collect-unicode-set(hb_set) is native($HB) is symbol('hb_face_collect_unicodes') {*}
     method collect-unicode-map(hb_map, hb_set) is native($HB) is symbol('hb_face_collect_nominal_glyph_mapping') {*}
-    method get-table-tags(uint32, uint32 is rw, Pointer[hb_tag] is rw --> uint32) is symbol('hb_face_collect_unicodes') is native($HB) is symbol('hb_face_get_table_tags') {*}
+    method get-table-tags(uint32, uint32 is rw, Blob[hb_tag] is rw --> uint32) is native($HB) is symbol('hb_face_get_table_tags') {*}
     method get-upem(--> uint32) is native($HB) is symbol('hb_face_get_upem') {*}
     method destroy() is native($HB) is symbol('hb_face_destroy')  {*}
 }
