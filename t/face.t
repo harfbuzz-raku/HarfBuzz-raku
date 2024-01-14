@@ -10,15 +10,16 @@ is $face.get-glyph-count, 855;
 is $face.units-per-EM, 1000;
 
 subtest 'unicode-set', {
+    plan 5;
     my HarfBuzz::Set $unicode-set = $face.unicode-set;
-    ok $unicode-set.defined;
+    ok $unicode-set.defined, 'defined';
     is $unicode-set.elems, 854, 'set elems';
     ok $unicode-set.exists(42), 'exists';
     my Version $min-version = v4.2.0;
     if HarfBuzz.version >= $min-version {
         my @unicodes := $unicode-set.array;
         is @unicodes.elems, 854, 'array elems';
-        is @unicodes[10], 42;
+        is @unicodes[10], 42, 'individual elem';
     }
     else {
         skip-rest "HarfBuzz >= v$min-version is required for set array tests";
@@ -36,8 +37,8 @@ subtest 'unicode-to-gid-map', {
         my HarfBuzz::Set $values = $unicode-map.values;
         is $values.array[10], 11, 'values';
         is $unicode-map.elems, 854, 'elems';
-        is $unicode-map{42}, 11;
-        is-deeply $unicode-map{31}, Int;
+        is $unicode-map{42}, 11, 'individual elem';
+        is-deeply $unicode-map{31}, Int, 'non-element';
     }
     else {
         skip-rest "HarfBuzz >= v$min-version is required for unicode-map tests";
