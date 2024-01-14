@@ -14,15 +14,21 @@ subtest 'unicode-set', {
     ok $unicode-set.defined;
     is $unicode-set.elems, 854, 'set elems';
     ok $unicode-set.exists(42), 'exists';
-    my @unicodes := $unicode-set.array;
-    is @unicodes.elems, 854, 'array elems';
-    is @unicodes[10], 42;
+    my Version $min-version = v4.2.0;
+    if HarfBuzz.version >= $min-version {
+        my @unicodes := $unicode-set.array;
+        is @unicodes.elems, 854, 'array elems';
+        is @unicodes[10], 42;
+    }
+    else {
+        skip-rest "HarfBuzz >= v$min-version is required for set array tests";
+    }
 }
 
 subtest 'unicode-to-gid-map', {
     plan 6;
     my Version $min-version = v7.0.0;
-    if  HarfBuzz.version >= $min-version {
+    if HarfBuzz.version >= $min-version {
         my HarfBuzz::Map $unicode-map = $face.unicode-to-gid-map;
         ok $unicode-map.exists(42), 'exists';
         nok $unicode-map.exists(31), '!exists';
@@ -34,7 +40,7 @@ subtest 'unicode-to-gid-map', {
         is-deeply $unicode-map{31}, Int;
     }
     else {
-        skip-rest "HarfBuzz >= v$min-version is required for these tests";
+        skip-rest "HarfBuzz >= v$min-version is required for unicode-map tests";
     }
 }
 
