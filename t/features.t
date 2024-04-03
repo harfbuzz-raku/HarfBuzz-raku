@@ -1,5 +1,5 @@
 use Test;
-plan 21;
+plan 23;
 use HarfBuzz;
 use HarfBuzz::Feature;
 
@@ -36,3 +36,21 @@ is $feature.Str, '-kern';
 $feature.enabled = True;
 is-deeply $feature.enabled, True;
 is $feature.Str, 'kern';
+
+subtest 'coerce feature enabled', {
+    my HarfBuzz::Feature() $feat = 'kern';
+    is $feat.tag, 'kern';
+    is $feat.value, 1;
+    is $feat.start, 0;
+    is $feat.end, Inf|4294967295;
+    is-deeply $feat.enabled, True;
+}
+
+subtest 'coerce feature disabled', {
+    my HarfBuzz::Feature() $feat = '-kern';
+    is $feat.tag, 'kern';
+    is $feat.value, 0;
+    is $feat.start, 0;
+    is $feat.end, Inf|4294967295;
+    is-deeply $feat.enabled, False;
+}

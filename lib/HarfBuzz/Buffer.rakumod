@@ -160,7 +160,7 @@ method is-vertical returns Bool { $!raw.get-direction ~~ HB_DIRECTION_TTB | HB_D
 #| reset the buffer, ready for shaping
 method reset {
     $!raw.clear-contents();
-    $!raw.add-text($!text);
+    $!raw.add-text($_) with $!text;
     $!raw.guess-segment-properties();
     # re-apply any explicit settings
     $!raw.set-language($_) with $!lang;

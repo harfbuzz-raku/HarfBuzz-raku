@@ -1,4 +1,4 @@
-#| HarfBuzz shaping object
+#| HarfBuzz font shaping object
 unit class HarfBuzz::Shaper;
 
 use HarfBuzz;

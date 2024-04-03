@@ -36,7 +36,7 @@ method units-per-EM { $!raw.get-upem }
 method table-tags returns Seq {
     my uint $max-tags = 128;
     my Blob[hb_tag] $tags .= allocate($max-tags);
-    my $count = $!raw.get-table-tags(0, $max-tags, $tags);
+    $!raw.get-table-tags(0, $max-tags, $tags);
     (^$max-tags).map: { hb-tag-dec($tags[$_]).trim }
 }
 

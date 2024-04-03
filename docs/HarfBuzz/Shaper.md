@@ -6,7 +6,7 @@
 class HarfBuzz::Shaper
 ----------------------
 
-HarfBuzz shaping object
+HarfBuzz font shaping object
 
 ### method font
 
