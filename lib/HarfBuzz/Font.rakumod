@@ -8,9 +8,9 @@ use HarfBuzz::Face;
 use HarfBuzz::Feature;
 use NativeCall;
 
-has HarfBuzz::Face $.face handles<Blob>;
-has hb_font $.raw is required;
-has HarfBuzz::Feature() @.features is built;
+has HarfBuzz::Face() $.face handles<Blob> is built;
+has hb_font $.raw;
+has HarfBuzz::Feature() @!features is built;
 has UInt $.gen is built; # mutation generation
 
 =begin pod
@@ -30,7 +30,15 @@ Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module L<Ha
 
 =end pod
 
-submethod TWEAK(:@scale, Num() :$size=12e0, :@!features) {
+submethod TWEAK(Str :$file, Blob :$blob, :$ft-face, :@scale, :$size = 12e0) {
+    $!face //= $_ with $file;
+    $!face //= $_ with $blob;
+    warn "ignoring ':ft-face' option; reserved for HarfBuzz::Font::FreeType"
+        with $ft-face;
+    fail 'one of :$face, :$blob or :$font is required'
+        without $!face;
+    $!raw //= hb_font::create($!face.raw);
+
     $!raw.reference;
     if @scale {
         self.scale = @scale
@@ -43,26 +51,19 @@ submethod TWEAK(:@scale, Num() :$size=12e0, :@!features) {
             $!raw.set-scale($x, $y);
         }
     }
-    $!raw.set-size($size) if $size;
+    $!raw.set-size($size.Num) if $size;
     $!gen = 1;
+}
+
+multi method COERCE(%opts) {
+    my HarfBuzz::Feature @features;
+    @features = .map({HarfBuzz::Feature.COERCE: $_})
+        with %opts<features>;
+    self.new: |%opts, :@features;
 }
 
 submethod DESTROY {
     $!raw.destroy;
-}
-
-multi method COERCE(% ( Str:D :$file!, :$ft-face, :@features, |opts) ) {
-    warn "ignoring ':ft-face' option; reserved for HarfBuzz::Font::FreeType" with $ft-face;
-    my HarfBuzz::Face() $face = $file;
-    my hb_font $raw = hb_font::create($face.raw);
-    self.new: :$raw, :$face, :@features, |opts;
-}
-
-multi method COERCE(% ( Blob:D :$blob!, :$ft-face, :@features, |opts) ) {
-    warn "ignoring ':ft-face' option; reserved for HarfBuzz::Font::FreeType" with $ft-face;
-    my HarfBuzz::Face() $face = $blob;
-    my hb_font $raw = hb_font::create($face.raw);
-    self.new: :$raw, :$face, :@features, |opts;
 }
 
 #| Gets or sets x and y scale
