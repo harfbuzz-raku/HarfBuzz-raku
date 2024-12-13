@@ -1,4 +1,4 @@
-unit class HarfBuzz:ver<0.1.3>;
+unit class HarfBuzz:ver<0.1.4>;
 use HarfBuzz::Raw;
 
 #| Returns the version of the nativeHarfBuzz library

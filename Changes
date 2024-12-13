@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.1.4  2024-12-14T06:03:09+13:00
+    - Fix HarfBuzz::Font stantiation. Move initialization logic from COERCE()
+      to TWEAK()
+
 0.1.3  2024-01-11T07:13:15+13:00
     - Add font coercement from blob
     - Fix Version method
