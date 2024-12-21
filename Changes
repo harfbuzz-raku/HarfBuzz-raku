@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.1.5  2024-12-22T06:46:43+13:00
+    - Support index on face creation
+
 0.1.4  2024-12-14T06:03:09+13:00
     - Fix HarfBuzz::Font stantiation. Move initialization logic from COERCE()
       to TWEAK()
