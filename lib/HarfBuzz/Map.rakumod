@@ -4,8 +4,7 @@ use HarfBuzz::Set;
 use HarfBuzz::Raw;
 use HarfBuzz::Raw::Defs :types, :hb-set-value;
 
-has hb_map:D $!raw handles<elems> = hb_map::create();
-method raw { $!raw }
+has hb_map:D $.raw is built handles<elems> = hb_map::create();
 
 method keys {
     given HarfBuzz::Set.new {

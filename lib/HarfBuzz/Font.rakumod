@@ -30,16 +30,23 @@ Fonts may also be subsetted (Reduced to a smaller set of glyphs; see module L<Ha
 
 =end pod
 
-submethod TWEAK(Str :$file, Blob :$blob, :$ft-face, :@scale, :$size = 12e0) {
-    $!face //= $_ with $file;
-    $!face //= $_ with $blob;
+multi submethod TWEAK(:$!face!, |c) { self!build: |c }
+multi submethod TWEAK(IO:D() :$file!, UInt:D :$index = 0, |c) {
+    $!face = %( :$file, :$index );
+    self!build: |c
+}
+multi submethod TWEAK(Blob:D :$buf!, UInt:D :$index = 0, |c) {
+    $!face = %( :$buf, :$index );
+    self!build: |c
+}
+
+method !build(:$ft-face, :@scale, :$size = 12e0) is hidden-from-backtrace {
     warn "ignoring ':ft-face' option; reserved for HarfBuzz::Font::FreeType"
         with $ft-face;
-    fail 'one of :$face, :$blob or :$font is required'
-        without $!face;
-    $!raw //= hb_font::create($!face.raw);
 
+    $!raw //= hb_font::create($!face.raw);
     $!raw.reference;
+
     if @scale {
         self.scale = @scale
     }

@@ -19,12 +19,16 @@ multi submethod TWEAK(hb_face:D :$!raw) {
     }
 }
 
-multi submethod TWEAK(Str:D :$file!) {
+multi submethod TWEAK(Str:D() :$file!) {
     self!to-blob: $file;
 }
 
-multi submethod TWEAK(Blob:D :$buf) {
+multi submethod TWEAK(Blob:D :$buf!) {
     self!to-blob: $buf;
+}
+
+multi submethod TWEAK(:$blob!) {
+    self!to-blob: $blob;
 }
 
 method !to-blob(HarfBuzz::Blob() $!blob) {
