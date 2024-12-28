@@ -40,10 +40,7 @@ multi submethod TWEAK(Blob:D :$buf!, UInt:D :$index = 0, |c) {
     self!build: |c
 }
 
-method !build(:$ft-face, :@scale, :$size = 12e0) is hidden-from-backtrace {
-    warn "ignoring ':ft-face' option; reserved for HarfBuzz::Font::FreeType"
-        with $ft-face;
-
+method !build(:@scale, :$size = 12e0) is hidden-from-backtrace {
     $!raw //= hb_font::create($!face.raw);
     $!raw.reference;
 
