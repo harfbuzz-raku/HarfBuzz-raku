@@ -6,6 +6,7 @@
   "build-depends": [
   ],
   "depends": [
+    "MacOS::NativeLib",
     "Method::Also"
   ],
   "description": "bindings to the HarfBuzz font shaping library (experimental)",

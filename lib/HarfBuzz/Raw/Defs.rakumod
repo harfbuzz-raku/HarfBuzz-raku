@@ -1,6 +1,8 @@
 #| Native Enums and constants
 unit module HarfBuzz::Raw::Defs;
 
+use MacOS::NativeLib 'harfbuzz';
+
 our $HB is export(:HB) = 'harfbuzz';
 our $CLIB is export(:CLIB) = Rakudo::Internals.IS-WIN ?? 'msvcrt' !! Str;
 

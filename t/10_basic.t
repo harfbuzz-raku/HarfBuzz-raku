@@ -4,12 +4,10 @@ use HarfBuzz::Raw::Defs :&hb-tag-enc, :&hb-tag-dec, :hb-script, :hb-direction;
 constant Min-HarfBuzz-Version = v2.6.4;
 use Test;
 plan 28;
-unless $*RAKU.compiler.version >= v2020.11 {
-    die "This version of Raku is too old to use the HarfBuzz semantics";
-}
+
 my Version $version;
 lives-ok { $version = HarfBuzz.version }, 'got version';
-note "HarfBuzz version is $version (bindings {HarfBuzz.^ver})";
+note "HarfBuzz version is $version (Raku bindings {HarfBuzz.^ver})";
 
 ok($version >= Min-HarfBuzz-Version, "HarfBuzz version is suppported")
     or diag "sorry this version of HarfBuzz is not supported ($version < {Min-HarfBuzz-Version})";
