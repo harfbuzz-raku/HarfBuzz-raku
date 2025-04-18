@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.1.7  2025-04-19T08:59:11+12:00
+    - Use MacOS::NativeLib for MacOS library loading
+
 0.1.6  2024-12-29T07:54:06+13:00
     - Remove spurious "ignoring ':ft-face' option" warning.
 
