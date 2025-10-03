@@ -61,6 +61,7 @@ Classes/Modules in this distribution
 
 - [HarfBuzz::Buffer](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Buffer) - Shaping text and context
 - [HarfBuzz::Font](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Font) - Shaping font
+- [HarfBuzz::Face](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Face) - An input font-face
 - [HarfBuzz::Feature](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Feature) - Font Features
 - [HarfBuzz::Glyph](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Glyph) - Shaped Glyphs
 - [HarfBuzz::Shaper](https://harfbuzz-raku.github.io/HarfBuzz-raku/HarfBuzz/Shaper) - Shape a buffer using a given font and features
